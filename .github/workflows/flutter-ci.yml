@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: handygo
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: android-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: handygo/build/app/outputs/flutter-apk/app-release.apk
 
   build-web:
     runs-on: ubuntu-latest
@@ -43,7 +47,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: web-build
-          path: build/web
+          path: handygo/build/web
 
   build-ios:
     runs-on: macos-latest
@@ -58,4 +62,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ios-build
-          path: build/ios/iphoneos
+          path: handygo/build/ios/iphoneos
