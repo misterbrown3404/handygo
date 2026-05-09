@@ -19,6 +19,8 @@ jobs:
         with:
           flutter-version: 'stable'
       - run: flutter pub get
+      - run: flutter analyze
+      - run: dart format --set-exit-if-changed .
       - run: flutter test
 
   build-android:
