@@ -3,19 +3,30 @@ class ImageStrings {
   static const String appLogo = 'assets/splash/logo.png';
 
   // Onboarding Screen
-  static const String onb1 = 'assets/onboarding/1.png';
-  static const String onb2 = 'assets/onboarding/2.png';
-  static const String onb3 = 'assets/onboarding/3.png';
+  static const String onb1 = 'assets/images/onboarding.jpg';
+  static const String onb2 = 'assets/images/onboarding_2.jpg';
+  
 
   // Auth Screen
-  static const String phone = 'assets/auth/phone.png';
-  static const String otp = 'assets/auth/otp.png';
-  static const String location = 'assets/auth/location.png';
-  static const String countryFlag = 'assets/auth/country_flag.png';
+  static const String google = 'assets/images/google.jpg';
+  static const String faceBook = 'assets/images/facebook.jpg';
 
   // Onboarding Language Icons
   static const String englishLang = 'assets/onboarding/english.png';
   static const String frenchLang = 'assets/onboarding/french.png';
+
+  //Home
+  static const String homeBanner = 'assets/images/home_image.jpg';
+  static const String homeBanner2 = 'assets/images/home_image_2.jpg';
+  static const String homeBanner3 = 'assets/images/home_image_3.jpg';
+  static const String profilePic = 'assets/images/profile.jpg';
+
+
+  //Booking
+  static const String favourite = 'assets/images/favourite.jpg';
+  static const String favorite2 = 'assets/images/favourite_2.jpg';
+  static const String favorite3 = 'assets/images/favourite_3.jpg';
+
 
   // Categories Icons
   static const String carWash = 'assets/category/car-wash.png';
@@ -31,7 +42,7 @@ class ImageStrings {
 
   // Drawer
   static const String sideMenu = 'assets/drawer/menu.png';
-  static const String profilePic = 'assets/drawer/profile.png';
+  //static const String profilePic = 'assets/drawer/profile.png';
   static const String vehicle = 'assets/drawer/vehicle.png';
   static const String myJobs = 'assets/drawer/my-jobs.png';
   static const String notification = 'assets/drawer/notification.png';
