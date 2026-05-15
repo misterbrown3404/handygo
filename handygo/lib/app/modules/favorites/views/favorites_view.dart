@@ -18,9 +18,9 @@ class FavoritesView extends GetView<FavoritesController> {
     return DefaultTabController(
       length: controller.categories.length,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           leading: const CircularBackButton(),
           title: Text(

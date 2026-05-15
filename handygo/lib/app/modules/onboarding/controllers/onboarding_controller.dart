@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/image_string.dart';
+import 'package:handygo/app/modules/auth/controllers/auth_controller.dart';
 import 'package:handygo/app/routes/app_pages.dart';
 
 class OnboardingController extends GetxController {
@@ -38,6 +39,7 @@ class OnboardingController extends GetxController {
   }
 
   void skip() {
+    Get.find<AuthController>().markOnboardingAsSeen();
     Get.offNamed(Routes.SIGN_IN);
   }
 }

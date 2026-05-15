@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:handygo/app/core/constant/color.dart';
-import 'package:handygo/app/data/models/app_models.dart';
+import 'package:handygo/app/data/models/booking_model.dart';
 import 'package:handygo/app/routes/app_pages.dart';
+
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
@@ -21,20 +23,9 @@ class BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GlassContainer(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-        border: Border.all(color: Colors.grey[100]!),
-      ),
+      borderRadius: BorderRadius.circular(24),
       child: Column(
         children: [
           Row(
@@ -45,10 +36,16 @@ class BookingCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   color: Colors.grey[100],
-                  child: Image.asset(
-                    booking.service.image ?? 'assets/images/home_image.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  child: booking.service?.icon != null && booking.service!.icon!.startsWith('http')
+                      ? Image.network(
+                          booking.service!.icon!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                        )
+                      : Image.asset(
+                          booking.service?.icon ?? 'assets/images/home_image.jpg',
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -57,12 +54,12 @@ class BookingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      booking.service.name,
+                      booking.service?.name ?? "Unknown Service",
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      booking.service.providerName,
+                      booking.worker?.name ?? "Assigning Worker...",
                       style: TextStyle(color: Colors.grey[500], fontSize: 14),
                     ),
                   ],
@@ -78,7 +75,9 @@ class BookingCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat('EEE, dd MMM, yyyy').format(booking.date),
+                    booking.scheduledAt != null 
+                        ? DateFormat('EEE, dd MMM, yyyy').format(booking.scheduledAt!)
+                        : "No Date",
                     style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                   ),
                   const SizedBox(height: 4),
@@ -90,7 +89,7 @@ class BookingCard extends StatelessWidget {
               ),
               RichText(
                 text: TextSpan(
-                  text: "\$${booking.service.price.toStringAsFixed(0)}",
+                  text: "\$${(booking.amount ?? booking.service?.basePrice ?? 0).toStringAsFixed(0)}",
                   style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
@@ -121,7 +120,8 @@ class BookingCard extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    if (booking.status == 'Ongoing') {
+    final status = booking.status?.toLowerCase();
+    if (status == 'ongoing' || status == 'pending') {
       return Row(
         children: [
           Expanded(
@@ -134,14 +134,14 @@ class BookingCard extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: _buildButton(
-              label: "E-Receipt",
-              onPressed: () => Get.toNamed(Routes.E_RECEIPT),
+              label: "Chat",
+              onPressed: () => Get.toNamed(Routes.INDIVIDUAL_CHAT),
               isOutlined: false,
             ),
           ),
         ],
       );
-    } else if (booking.status == 'Completed') {
+    } else if (status == 'completed') {
       return Row(
         children: [
           Expanded(

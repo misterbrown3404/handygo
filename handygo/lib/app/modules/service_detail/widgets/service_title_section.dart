@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handygo/app/data/models/app_models.dart';
+import 'package:handygo/app/data/models/service_model.dart';
 
 class ServiceTitleSection extends StatelessWidget {
   final ServiceModel service;
@@ -15,20 +15,20 @@ class ServiceTitleSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                service.name,
+                service.name ?? "Unknown Service",
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Text(
-                    service.providerName,
+                    service.category ?? "General",
                     style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                   const SizedBox(width: 12),
                   const Icon(Icons.star, color: Colors.amber, size: 16),
                   Text(
-                    " ${service.rating} (${service.reviewsCount} Reviews)",
+                    " ${service.rating ?? 4.5} (${service.reviewsCount ?? 0} Reviews)",
                     style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class AddressItem extends StatelessWidget {
   final IconData icon;
@@ -21,26 +22,20 @@ class AddressItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: GlassContainer(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? AppColors.primaryColor : Colors.transparent,
-            width: 1,
-          ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isSelected ? AppColors.primaryColor : Colors.white.withOpacity(0.2),
+          width: 1.5,
         ),
         child: Row(
           children: [
-            Container(
+            GlassContainer(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey[100]!),
-              ),
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.white.withOpacity(0.5),
               child: Icon(icon, color: AppColors.primaryColor, size: 24),
             ),
             const SizedBox(width: 16),

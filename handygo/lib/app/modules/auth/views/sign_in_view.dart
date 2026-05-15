@@ -13,132 +13,160 @@ class SignInView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: const CircularBackButton(),
         elevation: 0,
-        backgroundColor: AppColors.backgroundColor,
-        foregroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Sign In",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            AuthTextField(
-              label: "Email Address",
-              hint: "Enter Email Address",
-              controller: controller.emailController,
-            ),
-            const SizedBox(height: 20),
-            Obx(() => AuthTextField(
-                  label: "Password",
-                  hint: "Enter Password",
-                  controller: controller.passwordController,
-                  obscureText: controller.obscurePassword.value,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      controller.obscurePassword.value
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: Colors.grey,
-                    ),
-                    onPressed: controller.togglePasswordVisibility,
-                  ),
-                )),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: AppColors.authGradient,
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Obx(() => Checkbox(
-                          value: controller.isRememberMe.value,
-                          onChanged: (val) => controller.isRememberMe.value = val!,
-                          activeColor: AppColors.primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        )),
-                    const Text("Remember Me"),
-                  ],
-                ),
-                TextButton(
-                  onPressed: controller.goToForgotPassword,
-                  child: const Text(
-                    "Forgot Password",
-                    style: TextStyle(color: AppColors.primaryColor),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: controller.signIn,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
+                const Text(
                   "Sign In",
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Row(
-              children: [
-                Expanded(child: Divider()),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Or", style: TextStyle(color: Colors.grey)),
+                const SizedBox(height: 40),
+                AuthTextField(
+                  label: "Email Address",
+                  hint: "Enter Email Address",
+                  controller: controller.emailController,
                 ),
-                Expanded(child: Divider()),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SocialButton(assetPath: ImageStrings.google),
-                const SizedBox(width: 20),
-                SocialButton(assetPath: ImageStrings.faceBook),
-              ],
-            ),
-            const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Don't have an account? "),
-                GestureDetector(
-                  onTap: controller.goToSignUp,
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.bold,
+                const SizedBox(height: 20),
+                Obx(() => AuthTextField(
+                      label: "Password",
+                      hint: "Enter Password",
+                      controller: controller.passwordController,
+                      obscureText: controller.obscurePassword.value,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.obscurePassword.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: Colors.white70,
+                        ),
+                        onPressed: controller.togglePasswordVisibility,
+                      ),
+                    )),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Obx(() => Checkbox(
+                              value: controller.isRememberMe.value,
+                              onChanged: (val) => controller.isRememberMe.value = val!,
+                              activeColor: AppColors.primaryColor,
+                              side: const BorderSide(color: Colors.white70),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            )),
+                        const Text("Remember Me", style: TextStyle(color: Colors.white70)),
+                      ],
+                    ),
+                    TextButton(
+                      onPressed: controller.goToForgotPassword,
+                      child: const Text(
+                        "Forgot Password",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: controller.signIn,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      "Sign In",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    const Expanded(child: Divider(color: Colors.white24)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text("Or", style: TextStyle(color: Colors.white.withOpacity(0.6))),
+                    ),
+                    const Expanded(child: Divider(color: Colors.white24)),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SocialButton(
+                      assetPath: ImageStrings.google,
+                      onTap: controller.signInWithGoogle,
+                    ),
+                    const SizedBox(width: 20),
+                    SocialButton(
+                      assetPath: ImageStrings.faceBook, // Using Facebook asset for now
+                      onTap: () {}, // Facebook not yet implemented
+                    ),
+                    if (Theme.of(context).platform == TargetPlatform.iOS) ...[
+                      const SizedBox(width: 20),
+                      SocialButton(
+                        assetPath: ImageStrings.appLogo, // Assuming this exists
+                        onTap: controller.signInWithApple,
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account? ", style: TextStyle(color: Colors.white70)),
+                    GestureDetector(
+                      onTap: controller.goToSignUp,
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

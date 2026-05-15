@@ -3,25 +3,19 @@ import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/modules/main/controllers/main_controller.dart';
 
+import 'package:handygo/app/core/widgets/glass_container.dart';
+
+import 'package:handygo/app/core/widgets/scale_on_tap.dart';
+
 class CustomBottomNav extends GetView<MainController> {
   const CustomBottomNav({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
+    return GlassContainer(
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
       height: 70,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
+      borderRadius: BorderRadius.circular(35),
       child: Obx(() => Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -37,20 +31,23 @@ class CustomBottomNav extends GetView<MainController> {
 
   Widget _buildNavItem(int index, IconData activeIcon, IconData inactiveIcon) {
     final isSelected = controller.selectedIndex.value == index;
-    return GestureDetector(
+    return ScaleOnTap(
       onTap: () => controller.changeIndex(index),
-      behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? AppColors.primaryColor.withOpacity(0.15) : Colors.transparent,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          isSelected ? activeIcon : inactiveIcon,
-          color: isSelected ? AppColors.primaryColor : Colors.grey[400],
-          size: 26,
+        child: AnimatedScale(
+          scale: isSelected ? 1.1 : 1.0,
+          duration: const Duration(milliseconds: 300),
+          child: Icon(
+            isSelected ? activeIcon : inactiveIcon,
+            color: isSelected ? AppColors.primaryColor : Colors.grey[600],
+            size: 26,
+          ),
         ),
       ),
     );

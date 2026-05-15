@@ -13,13 +13,11 @@ abstract class Routes {
   static const MAIN = _Paths.MAIN;
   static const BOOKING_FORM = _Paths.BOOKING_FORM;
   static const INDIVIDUAL_CHAT = _Paths.INDIVIDUAL_CHAT;
-  static const E_RECEIPT = _Paths.E_RECEIPT;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
-  static const ADD_CARD = _Paths.ADD_CARD;
-  static const REVIEW_SUMMARY = _Paths.REVIEW_SUMMARY;
   static const SELECT_ROOMS = _Paths.SELECT_ROOMS;
   static const SELECT_ADDRESS = _Paths.SELECT_ADDRESS;
-  static const SELECT_PAYMENT_METHOD = _Paths.SELECT_PAYMENT_METHOD;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const SETTINGS = _Paths.SETTINGS;
 }
 
 abstract class _Paths {
@@ -35,11 +33,9 @@ abstract class _Paths {
   static const MAIN = '/main';
   static const BOOKING_FORM = '/booking-form';
   static const INDIVIDUAL_CHAT = '/individual-chat';
-  static const E_RECEIPT = '/e-receipt';
   static const NOTIFICATIONS = '/notifications';
-  static const ADD_CARD = '/add-card';
-  static const REVIEW_SUMMARY = '/review-summary';
   static const SELECT_ROOMS = '/select-rooms';
   static const SELECT_ADDRESS = '/select-address';
-  static const SELECT_PAYMENT_METHOD = '/select-payment-method';
+  static const EDIT_PROFILE = '/edit-profile';
+  static const SETTINGS = '/settings';
 }

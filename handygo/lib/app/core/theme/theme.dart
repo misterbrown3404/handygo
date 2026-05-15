@@ -6,12 +6,13 @@ ThemeData appTheme() {
     useMaterial3: true,
     brightness: Brightness.light,
     fontFamily: 'Poppins',
-    scaffoldBackgroundColor: AppColors.backgroundColor,
+    // We'll use a very light vibrant background or let the Scaffold handle gradients
+    scaffoldBackgroundColor: const Color(0xFFF3F4F8), 
     primaryColor: AppColors.primaryColor,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primaryColor,
       secondary: AppColors.secondaryColor,
-      surface: AppColors.surfaceColor,
+      surface: Colors.transparent, // Glassmorphism cards will handle their own opacity
       error: AppColors.errorColor,
       onPrimary: Colors.white,
       onSecondary: Colors.white,
@@ -34,14 +35,16 @@ ThemeData appTheme() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryColor.withOpacity(0.8),
         foregroundColor: Colors.white,
+        elevation: 0,
         textStyle: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: Colors.white.withOpacity(0.2), width: 1),
         ),
       ),
     ),
@@ -54,27 +57,27 @@ ThemeData appTheme() {
           fontWeight: FontWeight.w500,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.surfaceColor,
+      fillColor: Colors.white.withOpacity(0.4),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.borderColor),
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.borderColor),
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.primaryColor, width: 2),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.errorColor),
       ),
       contentPadding: const EdgeInsets.symmetric(
@@ -83,12 +86,9 @@ ThemeData appTheme() {
       ),
     ),
     cardTheme: CardThemeData(
-      color: AppColors.surfaceColor,
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.all(8),
+      color: Colors.transparent, // transparent for GlassContainer
+      elevation: 0,
+      margin: EdgeInsets.zero,
     ),
   );
 }

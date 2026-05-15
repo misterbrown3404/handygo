@@ -9,9 +9,10 @@ class NotificationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      backgroundColor: const Color(0xFFF3F4F8),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const CircularBackButton(),
         title: Text(
@@ -20,8 +21,19 @@ class NotificationsView extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(24),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: AppColors.mainGradient,
+          ),
+        ),
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(24),
         children: [
           _buildSectionHeader("Today", "Mark All As Read"),
           const SizedBox(height: 16),
@@ -65,6 +77,8 @@ class NotificationsView extends StatelessWidget {
           ),
         ],
       ),
+    ),
+      )
     );
   }
 

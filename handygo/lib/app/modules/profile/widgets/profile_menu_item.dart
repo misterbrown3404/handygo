@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:handygo/app/core/widgets/glass_container.dart';
+
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -16,20 +18,16 @@ class ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GlassContainer(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-      ),
+      borderRadius: BorderRadius.circular(16),
       child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: iconColor.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: iconColor, size: 20),
+        leading: GlassContainer(
+          width: 36,
+          height: 36,
+          borderRadius: BorderRadius.circular(18),
+          color: iconColor.withOpacity(0.15),
+          child: Center(child: Icon(icon, color: iconColor, size: 20)),
         ),
         title: Text(
           title,

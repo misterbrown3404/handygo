@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
 
+import 'package:handygo/app/core/widgets/glass_container.dart';
+
 class ServiceReviewsSection extends StatelessWidget {
   const ServiceReviewsSection({super.key});
 
@@ -31,12 +33,9 @@ class ServiceReviewsSection extends StatelessWidget {
   }
 
   Widget _buildReviewItem(String name, String date, double rating, String text) {
-    return Container(
+    return GlassContainer(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-      ),
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

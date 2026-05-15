@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/core/constant/image_string.dart';
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class SpecialOfferBanner extends StatelessWidget {
   const SpecialOfferBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GlassContainer(
       width: double.infinity,
       height: 160,
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
+      color: AppColors.primaryColor.withOpacity(0.4),
+      borderRadius: BorderRadius.circular(20),
       child: Stack(
         children: [
           Positioned(

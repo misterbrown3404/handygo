@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:handygo/app/core/widgets/glass_container.dart';
+
 class MessagesSearchBar extends StatelessWidget {
   const MessagesSearchBar({super.key});
 
@@ -7,20 +9,9 @@ class MessagesSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: Container(
+      child: GlassContainer(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey[200]!),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(16),
         child: TextField(
           decoration: InputDecoration(
             hintText: "Search Messages..",

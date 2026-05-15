@@ -10,22 +10,33 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(SplashController());
     return Scaffold(
-      body: Center(
-        child: RichText(
-          text: TextSpan(
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: AppColors.splashGradient,
+          ),
+        ),
+        child: Center(
+          child: RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+              children: [
+                const TextSpan(
+                  text: "Handy",
+                  style: TextStyle(color: Colors.white),
                 ),
-            children: [
-              const TextSpan(
-                text: "Handy",
-                style: TextStyle(color: Colors.black),
-              ),
-              const TextSpan(
-                text: "Go",
-                style: TextStyle(color: AppColors.primaryColor),
-              ),
-            ],
+                TextSpan(
+                  text: "Go",
+                  style: TextStyle(color: Colors.white.withOpacity(0.8)),
+                ),
+              ],
+            ),
           ),
         ),
       ),

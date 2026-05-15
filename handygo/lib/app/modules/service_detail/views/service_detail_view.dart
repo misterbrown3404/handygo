@@ -18,44 +18,57 @@ class ServiceDetailView extends GetView<ServiceDetailController> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Obx(() {
-        if (controller.service.value == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final s = controller.service.value!;
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ServiceImageHeader(service: s),
-                  Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ServiceTitleSection(service: s),
-                        const SizedBox(height: 24),
-                        const ServiceActionButtons(),
-                        const SizedBox(height: 32),
-                        _buildAboutSection(s.description),
-                        const SizedBox(height: 32),
-                        ServiceStatsSection(service: s),
-                        const SizedBox(height: 32),
-                        const ServiceReviewsSection(),
-                      ],
+      extendBodyBehindAppBar: true,
+      backgroundColor: const Color(0xFFF3F4F8),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFE0EAFC),
+              Color(0xFFCFDEF3),
+            ],
+          ),
+        ),
+        child: Obx(() {
+          if (controller.service.value == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final s = controller.service.value!;
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ServiceImageHeader(service: s),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ServiceTitleSection(service: s),
+                          const SizedBox(height: 24),
+                          const ServiceActionButtons(),
+                          const SizedBox(height: 32),
+                          _buildAboutSection(s.description ?? ""),
+                          const SizedBox(height: 32),
+                          ServiceStatsSection(service: s),
+                          const SizedBox(height: 32),
+                          const ServiceReviewsSection(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ServiceBottomBar(service: s),
-          ],
-        );
-      }),
+              ServiceBottomBar(service: s),
+            ],
+          );
+        }),
+      ),
     );
   }
 

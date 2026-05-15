@@ -19,9 +19,9 @@ class SocialButton extends StatelessWidget {
         height: 55,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.grey[200]!,
-          border: Border.all(color: Colors.grey[200]!),
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.white.withOpacity(0.2),
+          border: Border.all(color: Colors.white.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Image.asset(assetPath, fit: BoxFit.contain),
       ),

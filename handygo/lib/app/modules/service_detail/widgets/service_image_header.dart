@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handygo/app/data/models/app_models.dart';
+import 'package:handygo/app/data/models/service_model.dart';
 import 'package:handygo/app/modules/auth/widgets/circular_back_button.dart';
 
 class ServiceImageHeader extends StatelessWidget {
@@ -10,15 +10,22 @@ class ServiceImageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 350,
           width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(service.image ?? 'assets/images/favourite.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
+          child: service.icon != null && service.icon!.startsWith('http')
+              ? Image.network(
+                  service.icon!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                    'assets/images/favourite.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Image.asset(
+                  service.icon ?? 'assets/images/favourite.jpg',
+                  fit: BoxFit.cover,
+                ),
         ),
         Positioned(
           top: MediaQuery.of(context).padding.top + 10,

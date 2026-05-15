@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/core/constant/image_string.dart';
 
+import 'package:handygo/app/core/widgets/glass_container.dart';
+
 class ProfileHeader extends StatelessWidget {
   final String name;
   final String email;
@@ -20,15 +22,17 @@ class ProfileHeader extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Container(
+            GlassContainer(
               padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primaryColor.withOpacity(0.1), width: 2),
-              ),
+              borderRadius: BorderRadius.circular(54),
+              color: Colors.white.withOpacity(0.3),
+              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 1.5),
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage(imageUrl ?? ImageStrings.profilePic),
+                backgroundColor: Colors.grey[200],
+                backgroundImage: imageUrl != null && imageUrl!.startsWith('http')
+                    ? NetworkImage(imageUrl!) as ImageProvider
+                    : const AssetImage(ImageStrings.profilePic),
               ),
             ),
           ],

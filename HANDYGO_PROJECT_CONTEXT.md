@@ -40,7 +40,7 @@
 | Fonts (Mobile) | Poppins (bundled in assets) | — |
 | Architecture | GetX Modular (MVVM-like) | — |
 | Navigation | GetX Named Routes + Bindings | — |
-| Backend | **Not yet connected** (frontend-only) | — |
+| Backend | Laravel 10 (REST API) | ✅ Functional & Seeded |
 
 ---
 

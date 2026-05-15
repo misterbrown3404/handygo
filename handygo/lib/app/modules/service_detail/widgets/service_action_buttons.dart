@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class ServiceActionButtons extends StatelessWidget {
   const ServiceActionButtons({super.key});
@@ -20,12 +21,11 @@ class ServiceActionButtons extends StatelessWidget {
   Widget _buildActionButton(IconData icon, String label) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
+        GlassContainer(
+          width: 50,
+          height: 50,
+          borderRadius: BorderRadius.circular(25),
+          color: AppColors.primaryColor.withOpacity(0.15),
           child: Icon(icon, color: AppColors.primaryColor, size: 24),
         ),
         const SizedBox(height: 8),

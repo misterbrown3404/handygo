@@ -5,6 +5,7 @@ import 'package:handygo/app/modules/main/widgets/home_search_bar.dart';
 import 'package:handygo/app/modules/main/widgets/popular_services_list.dart';
 import 'package:handygo/app/modules/main/widgets/section_header.dart';
 import 'package:handygo/app/modules/main/widgets/special_offer_banner.dart';
+import 'package:handygo/app/modules/main/widgets/top_workers_list.dart';
 
 class HomeTabView extends StatelessWidget {
   const HomeTabView({super.key});
@@ -29,6 +30,10 @@ class HomeTabView extends StatelessWidget {
           SectionHeader(title: "Popular Services", onViewAll: () {}),
           const SizedBox(height: 15),
           const PopularServicesList(),
+          const SizedBox(height: 25),
+          SectionHeader(title: "Top Workers", onViewAll: () {}),
+          const SizedBox(height: 15),
+          const TopWorkersList(),
           const SizedBox(height: 100),
         ],
       ),

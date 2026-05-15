@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>93446101103-q8pc64kjngq1961f7ah2963ij1pp92q3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.93446101103-q8pc64kjngq1961f7ah2963ij1pp92q3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>93446101103-itc5a19bfbu734qvb79ba6qgqbr9mhvf.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBecOHcf8SrU7_GeXcvs6Ootsh7NewZSc0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>93446101103</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nurehub.handygo</string>
+	<key>PROJECT_ID</key>
+	<string>we-chats-46946</string>
+	<key>STORAGE_BUCKET</key>
+	<string>we-chats-46946.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:93446101103:ios:1770218d9d5c9f67e7159a</string>
+</dict>
+</plist>

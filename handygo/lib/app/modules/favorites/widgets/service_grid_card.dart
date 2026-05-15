@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
-import 'package:handygo/app/data/models/app_models.dart';
+import 'package:handygo/app/data/models/service_model.dart';
+
+
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class ServiceGridCard extends StatelessWidget {
   final ServiceModel service;
@@ -18,12 +21,8 @@ class ServiceGridCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey[100]!),
-        ),
+      child: GlassContainer(
+        borderRadius: BorderRadius.circular(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,10 +42,16 @@ class ServiceGridCard extends StatelessWidget {
         Positioned.fill(
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            child: Image.asset(
-              service.image ?? 'assets/images/favourite_3.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: service.icon != null && service.icon!.startsWith('http')
+                ? Image.network(
+                    service.icon!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                  )
+                : Image.asset(
+                    service.icon ?? 'assets/images/favourite_3.jpg',
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
         Positioned(
@@ -89,7 +94,7 @@ class ServiceGridCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  service.name,
+                  service.name ?? "No Name",
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -100,7 +105,7 @@ class ServiceGridCard extends StatelessWidget {
                   const Icon(Icons.star, color: Colors.amber, size: 14),
                   const SizedBox(width: 2),
                   Text(
-                    "${service.rating}",
+                    "${service.rating ?? 4.5}",
                     style: TextStyle(color: Colors.grey[600], fontSize: 11),
                   ),
                 ],
@@ -109,28 +114,16 @@ class ServiceGridCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            service.providerName,
+            service.category ?? "General",
             style: const TextStyle(color: Colors.grey, fontSize: 11),
           ),
           const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(
-              text: "${service.price.toStringAsFixed(0)}",
-              style: const TextStyle(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-              children: const [
-                TextSpan(
-                  text: "/hour",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 10,
-                  ),
-                ),
-              ],
+          Text(
+            "Tap to Book",
+            style: TextStyle(
+              color: AppColors.primaryColor.withOpacity(0.8),
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
           ),
         ],

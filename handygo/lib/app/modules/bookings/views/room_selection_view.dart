@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:handygo/app/modules/auth/widgets/circular_back_button.dart';
+import 'package:handygo/app/modules/bookings/controllers/booking_flow_controller.dart';
 import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/color.dart';
-import 'package:handygo/app/modules/auth/widgets/circular_back_button.dart';
 import 'package:handygo/app/modules/bookings/widgets/room_selection_item.dart';
 import 'package:handygo/app/routes/app_pages.dart';
+import 'package:flutter/material.dart';
 
-class RoomSelectionView extends StatelessWidget {
+class RoomSelectionView extends GetView<BookingFlowController> {
   const RoomSelectionView({super.key});
 
   @override
@@ -28,41 +29,17 @@ class RoomSelectionView extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(24),
               children: [
-                RoomSelectionItem(
+                Obx(() => RoomSelectionItem(
                   icon: Icons.weekend_outlined,
-                  title: "Living Room",
-                  count: 1,
-                  onAdd: () {},
-                  onRemove: () {},
-                ),
-                RoomSelectionItem(
-                  icon: Icons.bed_outlined,
-                  title: "Bedroom",
-                  count: 2,
-                  onAdd: () {},
-                  onRemove: () {},
-                ),
-                RoomSelectionItem(
-                  icon: Icons.restaurant_outlined,
-                  title: "Dining Room",
-                  count: 1,
-                  onAdd: () {},
-                  onRemove: () {},
-                ),
-                RoomSelectionItem(
-                  icon: Icons.cleaning_services_outlined,
-                  title: "Bathroom",
-                  count: 2,
-                  onAdd: () {},
-                  onRemove: () {},
-                ),
-                RoomSelectionItem(
-                  icon: Icons.kitchen_outlined,
-                  title: "Kitchen",
-                  count: 1,
-                  onAdd: () {},
-                  onRemove: () {},
-                ),
+                  title: "Rooms",
+                  count: controller.selectedRooms.value,
+                  onAdd: () => controller.selectedRooms.value++,
+                  onRemove: () {
+                    if (controller.selectedRooms.value > 1) {
+                      controller.selectedRooms.value--;
+                    }
+                  },
+                )),
               ],
             ),
           ),

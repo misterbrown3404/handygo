@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "93446101103",
+    "project_id": "we-chats-46946",
+    "storage_bucket": "we-chats-46946.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93446101103:android:707eff72ced5ee32e7159a",
+        "android_client_info": {
+          "package_name": "Com.annurdeveloper.campus_sage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93446101103-itc5a19bfbu734qvb79ba6qgqbr9mhvf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "Com.annurdeveloper.campus_sage",
+            "certificate_hash": "c0d37aaf15cc31a44b8f3170fb24a79e0826b6e4"
+          }
+        },
+        {
+          "client_id": "93446101103-mc943catrc5m70m9pqv5lkc1qn0i4mbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUcK2w1o2-tJ5xaRhe3gmUMuDrzbzyweg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93446101103-mc943catrc5m70m9pqv5lkc1qn0i4mbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "93446101103-ph28n2l9mskkm3j1c5v4d4sllmqia3nu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.schats"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93446101103:android:48ad172309e43ae9e7159a",
+        "android_client_info": {
+          "package_name": "com.nurehub.handygo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93446101103-mc943catrc5m70m9pqv5lkc1qn0i4mbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUcK2w1o2-tJ5xaRhe3gmUMuDrzbzyweg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93446101103-mc943catrc5m70m9pqv5lkc1qn0i4mbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "93446101103-ph28n2l9mskkm3j1c5v4d4sllmqia3nu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.schats"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

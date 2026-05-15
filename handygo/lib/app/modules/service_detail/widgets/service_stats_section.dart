@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:handygo/app/data/models/app_models.dart';
+import 'package:handygo/app/data/models/service_model.dart';
+import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class ServiceStatsSection extends StatelessWidget {
   final ServiceModel service;
@@ -9,20 +10,17 @@ class ServiceStatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _buildStatCard(service.happyCustomers, "Happy Customer")),
+        Expanded(child: _buildStatCard("200+", "Happy Customers")),
         const SizedBox(width: 16),
-        Expanded(child: _buildStatCard(service.clientSatisfaction, "Client Satisfaction")),
+        Expanded(child: _buildStatCard("99%", "Satisfaction")),
       ],
     );
   }
 
   Widget _buildStatCard(String value, String label) {
-    return Container(
+    return GlassContainer(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-      ),
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
