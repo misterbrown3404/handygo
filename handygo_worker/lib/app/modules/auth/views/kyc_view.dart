@@ -23,7 +23,7 @@ class KycView extends GetView<AuthController> {
               ),
             ),
           ),
-          Container(color: Colors.black.withOpacity(0.6)),
+          Container(color: Colors.black.withValues(alpha: 0.6)),
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.lg),
@@ -32,13 +32,20 @@ class KycView extends GetView<AuthController> {
                 children: [
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   const FadeInAnimation(
                     child: Text(
                       'Identity Verification',
-                      style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const FadeInAnimation(
@@ -49,10 +56,7 @@ class KycView extends GetView<AuthController> {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  FadeInAnimation(
-                    delay: 200,
-                    child: _buildGlassKycCard(),
-                  ),
+                  FadeInAnimation(delay: 200, child: _buildGlassKycCard()),
                 ],
               ),
             ),
@@ -70,9 +74,12 @@ class KycView extends GetView<AuthController> {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
+            color: Colors.white.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +100,14 @@ class KycView extends GetView<AuthController> {
                 icon: Icons.account_balance_outlined,
               ),
               const SizedBox(height: AppSpacing.xl),
-              const Text('Why this matters?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+              const Text(
+                'Why this matters?',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
               const SizedBox(height: 8),
               const Text(
                 'NIN and BVN are required by Nigerian law for financial transactions and identity security on professional platforms.',
@@ -115,7 +129,7 @@ class KycView extends GetView<AuthController> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.primaryColor.withOpacity(0.2),
+        color: AppColors.primaryColor.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: const Row(
@@ -125,7 +139,11 @@ class KycView extends GetView<AuthController> {
           Expanded(
             child: Text(
               'Your data is encrypted and secure.',
-              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -142,11 +160,18 @@ class KycView extends GetView<AuthController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12)),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white70,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+        ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
           ),
           child: TextField(
@@ -159,7 +184,10 @@ class KycView extends GetView<AuthController> {
               hintStyle: const TextStyle(color: Colors.white24),
               counterText: '',
               prefixIcon: Icon(icon, color: Colors.white70, size: 20),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),

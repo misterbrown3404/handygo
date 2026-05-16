@@ -27,7 +27,9 @@ class AddressItem extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isSelected ? AppColors.primaryColor : Colors.white.withOpacity(0.2),
+          color: isSelected
+              ? AppColors.primaryColor
+              : Colors.white.withValues(alpha: 0.2),
           width: 1.5,
         ),
         child: Row(
@@ -35,7 +37,7 @@ class AddressItem extends StatelessWidget {
             GlassContainer(
               padding: const EdgeInsets.all(12),
               borderRadius: BorderRadius.circular(24),
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               child: Icon(icon, color: AppColors.primaryColor, size: 24),
             ),
             const SizedBox(width: 16),
@@ -45,12 +47,19 @@ class AddressItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     address,
-                    style: TextStyle(color: Colors.grey[500], fontSize: 12, height: 1.4),
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 12,
+                      height: 1.4,
+                    ),
                   ),
                 ],
               ),

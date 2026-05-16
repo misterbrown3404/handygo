@@ -14,7 +14,11 @@ ThemeData adminTheme() {
       elevation: 0,
       centerTitle: false,
       iconTheme: IconThemeData(color: AdminColors.textPrimary),
-      titleTextStyle: TextStyle(color: AdminColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(
+        color: AdminColors.textPrimary,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
     ),
     colorScheme: const ColorScheme.light(
       primary: AdminColors.primary,

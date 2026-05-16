@@ -28,9 +28,22 @@ class ProfileView extends GetView<ProfileController> {
                     child: _ProfileMenu(
                       title: 'Account Settings',
                       items: [
-                        _MenuItem(Icons.person_outline_rounded, 'Edit Profile', () {}),
-                        _MenuItem(Icons.security_rounded, 'KYC Verification', () {}, trailing: 'Verified'),
-                        _MenuItem(Icons.notifications_none_rounded, 'Notifications', () {}),
+                        _MenuItem(
+                          Icons.person_outline_rounded,
+                          'Edit Profile',
+                          () {},
+                        ),
+                        _MenuItem(
+                          Icons.security_rounded,
+                          'KYC Verification',
+                          () {},
+                          trailing: 'Verified',
+                        ),
+                        _MenuItem(
+                          Icons.notifications_none_rounded,
+                          'Notifications',
+                          () {},
+                        ),
                       ],
                     ),
                   ),
@@ -40,7 +53,11 @@ class ProfileView extends GetView<ProfileController> {
                     child: _ProfileMenu(
                       title: 'Professional',
                       items: [
-                        _MenuItem(Icons.engineering_rounded, 'My Services', () {}),
+                        _MenuItem(
+                          Icons.engineering_rounded,
+                          'My Services',
+                          () {},
+                        ),
                         _MenuItem(Icons.history_rounded, 'Job History', () {}),
                         _MenuItem(Icons.star_outline_rounded, 'Reviews', () {}),
                       ],
@@ -51,7 +68,13 @@ class ProfileView extends GetView<ProfileController> {
                     delay: 500,
                     child: TextButton(
                       onPressed: () {},
-                      child: const Text('Sign Out', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
@@ -76,15 +99,15 @@ class ProfileView extends GetView<ProfileController> {
       ),
       child: Stack(
         children: [
-          Positioned.fill(child: Container(color: Colors.black.withOpacity(0.3))),
+          Positioned.fill(
+            child: Container(color: Colors.black.withValues(alpha: 0.3)),
+          ),
           SafeArea(
             child: Center(
               child: FadeInAnimation(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _glassProfileCard(),
-                  ],
+                  children: [_glassProfileCard()],
                 ),
               ),
             ),
@@ -103,9 +126,9 @@ class ProfileView extends GetView<ProfileController> {
           width: Get.width * 0.85,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
           ),
           child: Column(
             children: [
@@ -114,19 +137,28 @@ class ProfileView extends GetView<ProfileController> {
                 backgroundImage: AssetImage('assets/images/profile.jpg'),
               ),
               const SizedBox(height: 16),
-              Obx(() => Text(
-                    controller.name.value,
-                    style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-                  )),
+              Obx(
+                () => Text(
+                  controller.name.value,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               const Text(
                 'Professional Plumber',
                 style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
               const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.8),
+                  color: AppColors.primaryColor.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Row(
@@ -134,10 +166,17 @@ class ProfileView extends GetView<ProfileController> {
                   children: [
                     Icon(Icons.star_rounded, color: Colors.white, size: 16),
                     SizedBox(width: 4),
-                    Text('4.9 Rating', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                    Text(
+                      '4.9 Rating',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -172,7 +211,10 @@ class _ProfileStatsRow extends GetView<ProfileController> {
   Widget _statItem(String value, String label) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
       ],
     );
@@ -193,16 +235,21 @@ class _ProfileMenu extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 12)),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+        ),
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(24),
           ),
-          child: Column(
-            children: items,
-          ),
+          child: Column(children: items),
         ),
       ],
     );
@@ -222,12 +269,22 @@ class _MenuItem extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: Icon(icon, color: Colors.black87, size: 22),
-      title: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+      title: Text(
+        label,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (trailing != null) ...[
-            Text(trailing!, style: const TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 12)),
+            Text(
+              trailing!,
+              style: const TextStyle(
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
             const SizedBox(width: 8),
           ],
           const Icon(Icons.chevron_right_rounded, color: Colors.grey),

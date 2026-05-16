@@ -23,10 +23,12 @@ class MainView extends GetView<MainController> {
     ];
 
     return Scaffold(
-      body: Obx(() => AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: pages[controller.currentIndex.value],
-          )),
+      body: Obx(
+        () => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: pages[controller.currentIndex.value],
+        ),
+      ),
       bottomNavigationBar: _buildBottomNav(),
     );
   }
@@ -39,13 +41,16 @@ class MainView extends GetView<MainController> {
           right: AppSpacing.lg,
           bottom: AppSpacing.lg,
         ),
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: AppSpacing.sm),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.sm,
+          horizontal: AppSpacing.sm,
+        ),
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withValues(alpha: 0.15),
               blurRadius: 24,
               offset: const Offset(0, 8),
             ),
@@ -88,9 +93,13 @@ class MainView extends GetView<MainController> {
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
-            ]
+            ],
           ],
         ),
       ),

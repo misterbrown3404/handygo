@@ -16,7 +16,10 @@ class ServiceTitleSection extends StatelessWidget {
             children: [
               Text(
                 service.name ?? "Unknown Service",
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
               Row(
@@ -48,7 +51,11 @@ class ServiceTitleSection extends StatelessWidget {
         color: Colors.white,
         shape: BoxShape.circle,
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, spreadRadius: 2),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            spreadRadius: 2,
+          ),
         ],
       ),
       child: Icon(

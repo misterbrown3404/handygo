@@ -34,7 +34,8 @@ class PopularServicesList extends GetView<MainController> {
             return FadeInAnimation(
               delay: Duration(milliseconds: index * 100),
               child: ScaleOnTap(
-                onTap: () => Get.toNamed(Routes.SERVICE_DETAILS, arguments: service),
+                onTap: () =>
+                    Get.toNamed(Routes.SERVICE_DETAILS, arguments: service),
                 child: GlassContainer(
                   width: 200,
                   borderRadius: BorderRadius.circular(24),
@@ -43,26 +44,36 @@ class PopularServicesList extends GetView<MainController> {
                     children: [
                       Expanded(
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
                           child: Stack(
                             children: [
                               Image.network(
-                                service.icon ?? "https://via.placeholder.com/200",
+                                service.icon ??
+                                    "https://via.placeholder.com/200",
                                 width: double.infinity,
                                 height: double.infinity,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) => Container(
-                                  color: Colors.grey[200],
-                                  child: const Icon(Icons.broken_image, color: Colors.grey),
-                                ),
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                      color: Colors.grey[200],
+                                      child: const Icon(
+                                        Icons.broken_image,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                               ),
                               Positioned(
                                 top: 12,
                                 right: 12,
                                 child: GlassContainer(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.white.withOpacity(0.5),
+                                  color: Colors.white.withValues(alpha: 0.5),
                                   child: Text(
                                     service.category ?? "General",
                                     style: const TextStyle(
@@ -84,7 +95,10 @@ class PopularServicesList extends GetView<MainController> {
                           children: [
                             Text(
                               service.name ?? "Unknown Service",
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -92,7 +106,7 @@ class PopularServicesList extends GetView<MainController> {
                             Text(
                               "Tap to Book",
                               style: TextStyle(
-                                color: AppColors.primaryColor.withOpacity(0.8),
+                                color: AppColors.primaryColor.withValues(alpha: 0.8),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),

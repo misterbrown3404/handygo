@@ -45,7 +45,7 @@ class HomeSearchBar extends StatelessWidget {
           child: GlassContainer(
             height: 55,
             width: 55,
-            color: AppColors.primaryColor.withOpacity(0.5),
+            color: AppColors.primaryColor.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(15),
             child: const Icon(Icons.tune, color: Colors.white),
           ),

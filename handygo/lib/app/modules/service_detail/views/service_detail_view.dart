@@ -25,10 +25,7 @@ class ServiceDetailView extends GetView<ServiceDetailController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFE0EAFC),
-              Color(0xFFCFDEF3),
-            ],
+            colors: [Color(0xFFE0EAFC), Color(0xFFCFDEF3)],
           ),
         ),
         child: Obx(() {

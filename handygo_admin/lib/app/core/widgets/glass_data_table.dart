@@ -29,7 +29,14 @@ class GlassDataTable extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(title!, style: const TextStyle(color: AdminColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    title!,
+                    style: const TextStyle(
+                      color: AdminColors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   if (trailing != null) trailing!,
                 ],
               ),
@@ -39,10 +46,20 @@ class GlassDataTable extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                headingRowColor: WidgetStateProperty.all(Colors.black.withOpacity(0.02)),
+                headingRowColor: WidgetStateProperty.all(
+                  Colors.black.withValues(alpha: 0.02),
+                ),
                 dataRowColor: WidgetStateProperty.all(Colors.transparent),
-                headingTextStyle: const TextStyle(color: AdminColors.textSecondary, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5),
-                dataTextStyle: const TextStyle(color: AdminColors.textPrimary, fontSize: 13),
+                headingTextStyle: const TextStyle(
+                  color: AdminColors.textSecondary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  letterSpacing: 0.5,
+                ),
+                dataTextStyle: const TextStyle(
+                  color: AdminColors.textPrimary,
+                  fontSize: 13,
+                ),
                 columnSpacing: 28,
                 columns: columns,
                 rows: rows,

@@ -32,18 +32,25 @@ class AdminAuthController extends GetxController {
 
   Future<void> login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      Get.snackbar('Error', 'Please fill in all fields',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Please fill in all fields',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
       return;
     }
 
     try {
       isLoading.value = true;
 
-      final response = await _api.post(AdminApiConstants.login, data: {
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
-      });
+      final response = await _api.post(
+        AdminApiConstants.login,
+        data: {
+          'email': emailController.text.trim(),
+          'password': passwordController.text,
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -52,8 +59,12 @@ class AdminAuthController extends GetxController {
 
         // Verify this user is an admin
         if (user['role'] != 'admin') {
-          Get.snackbar('Access Denied', 'Only admin accounts can access this panel',
-              backgroundColor: Colors.redAccent, colorText: Colors.white);
+          Get.snackbar(
+            'Access Denied',
+            'Only admin accounts can access this panel',
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+          );
           return;
         }
 
@@ -65,8 +76,12 @@ class AdminAuthController extends GetxController {
         Get.offAllNamed('/dashboard');
       }
     } catch (e) {
-      Get.snackbar('Login Failed', 'Invalid email or password',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Login Failed',
+        'Invalid email or password',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }

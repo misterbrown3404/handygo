@@ -20,19 +20,37 @@ class ServiceReviewsSection extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {},
-              child: const Text("View All", style: TextStyle(color: AppColors.primaryColor)),
+              child: const Text(
+                "View All",
+                style: TextStyle(color: AppColors.primaryColor),
+              ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        _buildReviewItem("Gray Huge", "1 Day Ago", 4.5, "Lorem ipsum is simply dummy text of the printing and typesetting industry."),
+        _buildReviewItem(
+          "Gray Huge",
+          "1 Day Ago",
+          4.5,
+          "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
+        ),
         const SizedBox(height: 16),
-        _buildReviewItem("Phill Mike", "1 Day Ago", 5.0, "Lorem ipsum is simply dummy text of the printing and typesetting industry."),
+        _buildReviewItem(
+          "Phill Mike",
+          "1 Day Ago",
+          5.0,
+          "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
+        ),
       ],
     );
   }
 
-  Widget _buildReviewItem(String name, String date, double rating, String text) {
+  Widget _buildReviewItem(
+    String name,
+    String date,
+    double rating,
+    String text,
+  ) {
     return GlassContainer(
       padding: const EdgeInsets.all(16),
       borderRadius: BorderRadius.circular(16),
@@ -47,15 +65,30 @@ class ServiceReviewsSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                    Text(date, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      date,
+                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    ),
                   ],
                 ),
               ),
               Row(
                 children: [
                   const Icon(Icons.star, color: Colors.amber, size: 16),
-                  Text(" $rating", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  Text(
+                    " $rating",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -63,7 +96,11 @@ class ServiceReviewsSection extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             text,
-            style: TextStyle(color: Colors.grey[600], fontSize: 12, height: 1.4),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+              height: 1.4,
+            ),
           ),
         ],
       ),

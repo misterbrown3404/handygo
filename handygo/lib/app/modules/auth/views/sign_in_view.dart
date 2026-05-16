@@ -50,37 +50,45 @@ class SignInView extends GetView<AuthController> {
                   controller: controller.emailController,
                 ),
                 const SizedBox(height: 20),
-                Obx(() => AuthTextField(
-                      label: "Password",
-                      hint: "Enter Password",
-                      controller: controller.passwordController,
-                      obscureText: controller.obscurePassword.value,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.obscurePassword.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.white70,
-                        ),
-                        onPressed: controller.togglePasswordVisibility,
+                Obx(
+                  () => AuthTextField(
+                    label: "Password",
+                    hint: "Enter Password",
+                    controller: controller.passwordController,
+                    obscureText: controller.obscurePassword.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        controller.obscurePassword.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: Colors.white70,
                       ),
-                    )),
+                      onPressed: controller.togglePasswordVisibility,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Obx(() => Checkbox(
-                              value: controller.isRememberMe.value,
-                              onChanged: (val) => controller.isRememberMe.value = val!,
-                              activeColor: AppColors.primaryColor,
-                              side: const BorderSide(color: Colors.white70),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            )),
-                        const Text("Remember Me", style: TextStyle(color: Colors.white70)),
+                        Obx(
+                          () => Checkbox(
+                            value: controller.isRememberMe.value,
+                            onChanged: (val) =>
+                                controller.isRememberMe.value = val!,
+                            activeColor: AppColors.primaryColor,
+                            side: const BorderSide(color: Colors.white70),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Remember Me",
+                          style: TextStyle(color: Colors.white70),
+                        ),
                       ],
                     ),
                     TextButton(
@@ -120,7 +128,10 @@ class SignInView extends GetView<AuthController> {
                     const Expanded(child: Divider(color: Colors.white24)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text("Or", style: TextStyle(color: Colors.white.withOpacity(0.6))),
+                      child: Text(
+                        "Or",
+                        style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+                      ),
                     ),
                     const Expanded(child: Divider(color: Colors.white24)),
                   ],
@@ -147,7 +158,10 @@ class SignInView extends GetView<AuthController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account? ", style: TextStyle(color: Colors.white70)),
+                    const Text(
+                      "Don't have an account? ",
+                      style: TextStyle(color: Colors.white70),
+                    ),
                     GestureDetector(
                       onTap: controller.goToSignUp,
                       child: const Text(

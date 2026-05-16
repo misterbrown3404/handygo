@@ -17,12 +17,17 @@ class _OnboardingViewState extends State<OnboardingView> {
   int currentStep = 0;
 
   final List<Map<String, String>> steps = [
-    {'title': 'Professional Profile', 'subtitle': 'Tell us about your expertise'},
+    {
+      'title': 'Professional Profile',
+      'subtitle': 'Tell us about your expertise',
+    },
     {'title': 'Service Selection', 'subtitle': 'Choose categories you offer'},
     {'title': 'Verify Identity', 'subtitle': 'Upload ID & certificates'},
   ];
 
-  void _nextStep() => currentStep < steps.length - 1 ? setState(() => currentStep++) : Get.offAllNamed(Routes.MAIN);
+  void _nextStep() => currentStep < steps.length - 1
+      ? setState(() => currentStep++)
+      : Get.offAllNamed(Routes.MAIN);
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +36,13 @@ class _OnboardingViewState extends State<OnboardingView> {
         children: [
           // Background Asset
           Positioned.fill(
-            child: Image.asset('assets/images/onboarding.jpg', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/onboarding.jpg',
+              fit: BoxFit.cover,
+            ),
           ),
-          Container(color: Colors.black.withOpacity(0.4)),
-          
+          Container(color: Colors.black.withValues(alpha: 0.4)),
+
           SafeArea(
             child: Column(
               children: [
@@ -66,20 +74,32 @@ class _OnboardingViewState extends State<OnboardingView> {
           child: Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.12),
+              color: Colors.white.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(32),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(steps[currentStep]['title']!, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+                Text(
+                  steps[currentStep]['title']!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text(steps[currentStep]['subtitle']!, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+                Text(
+                  steps[currentStep]['subtitle']!,
+                  style: const TextStyle(color: Colors.white70, fontSize: 16),
+                ),
                 const SizedBox(height: AppSpacing.xl),
                 PrimaryButton(
-                  text: currentStep == steps.length - 1 ? 'Get Started' : 'Continue',
+                  text: currentStep == steps.length - 1
+                      ? 'Get Started'
+                      : 'Continue',
                   onPressed: _nextStep,
                 ),
               ],
@@ -99,7 +119,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             margin: const EdgeInsets.symmetric(horizontal: 4),
             height: 4,
             decoration: BoxDecoration(
-              color: index <= currentStep ? Colors.white : Colors.white.withOpacity(0.2),
+              color: index <= currentStep
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(2),
             ),
           ),

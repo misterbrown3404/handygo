@@ -24,10 +24,7 @@ class ForgotPasswordView extends GetView<AuthController> {
           children: [
             const Text(
               "Forgot Password",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
             AuthTextField(

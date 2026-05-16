@@ -11,11 +11,10 @@ class ProfileRepository {
     required String phone,
     String? address,
   }) async {
-    final response = await apiClient.post('/profile/update', data: {
-      'name': name,
-      'phone': phone,
-      'address': address,
-    });
+    final response = await apiClient.post(
+      '/profile/update',
+      data: {'name': name, 'phone': phone, 'address': address},
+    );
 
     if (response.statusCode == 200) {
       return UserModel.fromJson(response.data['data']);

@@ -18,8 +18,22 @@ class AdminLoginView extends StatelessWidget {
       body: Stack(
         children: [
           // Background ambient blobs
-          Positioned(top: -200, right: -100, child: _ambientBlob(AdminColors.primary.withValues(alpha: 0.06), 500)),
-          Positioned(bottom: -150, left: 100, child: _ambientBlob(AdminColors.accent.withValues(alpha: 0.04), 400)),
+          Positioned(
+            top: -200,
+            right: -100,
+            child: _ambientBlob(
+              AdminColors.primary.withValues(alpha: 0.06),
+              500,
+            ),
+          ),
+          Positioned(
+            bottom: -150,
+            left: 100,
+            child: _ambientBlob(
+              AdminColors.accent.withValues(alpha: 0.04),
+              400,
+            ),
+          ),
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(32),
@@ -33,7 +47,9 @@ class AdminLoginView extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.85),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: AdminColors.borderDark.withValues(alpha: 0.5)),
+                      border: Border.all(
+                        color: AdminColors.borderDark.withValues(alpha: 0.5),
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: AdminColors.primary.withValues(alpha: 0.08),
@@ -50,18 +66,27 @@ class AdminLoginView extends StatelessWidget {
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [AdminColors.primary, AdminColors.primary.withValues(alpha: 0.7)],
+                              colors: [
+                                AdminColors.primary,
+                                AdminColors.primary.withValues(alpha: 0.7),
+                              ],
                             ),
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: AdminColors.primary.withValues(alpha: 0.3),
+                                color: AdminColors.primary.withValues(
+                                  alpha: 0.3,
+                                ),
                                 blurRadius: 16,
                                 offset: const Offset(0, 6),
                               ),
                             ],
                           ),
-                          child: const Icon(Icons.handyman_rounded, color: Colors.white, size: 32),
+                          child: const Icon(
+                            Icons.handyman_rounded,
+                            color: Colors.white,
+                            size: 32,
+                          ),
                         ),
                         const SizedBox(height: 24),
                         const Text(
@@ -75,7 +100,10 @@ class AdminLoginView extends StatelessWidget {
                         const SizedBox(height: 8),
                         const Text(
                           'Sign in to your admin dashboard',
-                          style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+                          style: TextStyle(
+                            color: AdminColors.textSecondary,
+                            fontSize: 14,
+                          ),
                         ),
                         const SizedBox(height: 40),
 
@@ -98,39 +126,53 @@ class AdminLoginView extends StatelessWidget {
                         const SizedBox(height: 32),
 
                         // Login button
-                        Obx(() => SizedBox(
-                              width: double.infinity,
-                              height: 52,
-                              child: ElevatedButton(
-                                onPressed: controller.isLoading.value ? null : controller.login,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AdminColors.primary,
-                                  foregroundColor: Colors.white,
-                                  elevation: 4,
-                                  shadowColor: AdminColors.primary.withValues(alpha: 0.4),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
+                        Obx(
+                          () => SizedBox(
+                            width: double.infinity,
+                            height: 52,
+                            child: ElevatedButton(
+                              onPressed: controller.isLoading.value
+                                  ? null
+                                  : controller.login,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AdminColors.primary,
+                                foregroundColor: Colors.white,
+                                elevation: 4,
+                                shadowColor: AdminColors.primary.withValues(
+                                  alpha: 0.4,
                                 ),
-                                child: controller.isLoading.value
-                                    ? const SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2.5,
-                                        ),
-                                      )
-                                    : const Text(
-                                        'Sign In',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                                      ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                               ),
-                            )),
+                              child: controller.isLoading.value
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.5,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Sign In',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 24),
                         Text(
                           'Admin access only. Contact support if locked out.',
-                          style: TextStyle(color: AdminColors.textSecondary.withValues(alpha: 0.7), fontSize: 12),
+                          style: TextStyle(
+                            color: AdminColors.textSecondary.withValues(
+                              alpha: 0.7,
+                            ),
+                            fontSize: 12,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -159,7 +201,10 @@ class AdminLoginView extends StatelessWidget {
       style: const TextStyle(color: AdminColors.textPrimary),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+        labelStyle: const TextStyle(
+          color: AdminColors.textSecondary,
+          fontSize: 14,
+        ),
         prefixIcon: Icon(icon, color: AdminColors.textSecondary, size: 20),
         filled: true,
         fillColor: AdminColors.background,
@@ -175,7 +220,10 @@ class AdminLoginView extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AdminColors.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
     );
   }

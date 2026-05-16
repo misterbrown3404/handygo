@@ -33,8 +33,14 @@ class BookingsView extends GetView<BookingsController> {
             indicatorColor: AppColors.primaryColor,
             indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.tab,
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
             tabs: const [
               Tab(text: "Ongoing"),
               Tab(text: "Completed"),

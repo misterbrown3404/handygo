@@ -18,7 +18,10 @@ class IndividualChatView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(chat.senderName, style: const TextStyle(fontSize: 16)),
-                const Text('Online', style: TextStyle(fontSize: 12, color: Color(0xFF55B436))),
+                const Text(
+                  'Online',
+                  style: TextStyle(fontSize: 12, color: Color(0xFF55B436)),
+                ),
               ],
             ),
           ],
@@ -71,7 +74,9 @@ class IndividualChatView extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10),
+        ],
       ),
       child: Row(
         children: [
@@ -93,8 +98,15 @@ class IndividualChatView extends StatelessWidget {
           const SizedBox(width: 12),
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(color: Color(0xFF55B436), shape: BoxShape.circle),
-            child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+            decoration: const BoxDecoration(
+              color: Color(0xFF55B436),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.send_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
           ),
         ],
       ),

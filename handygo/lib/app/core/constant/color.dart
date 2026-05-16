@@ -4,7 +4,7 @@ class AppColors {
   static const Color primaryColor = Color(0xFF55B436); // Vibrant Green
   static const Color secondaryColor = Color(0xFF34A853);
   static const Color accentColor = Color(0xFFFF9E01);
-  
+
   static const Color backgroundColor = Color(0xFFF3F4F8);
   static const Color textColor = Color(0xFF1A1A1A);
   static const Color textSecondaryColor = Color(0xFF666666);

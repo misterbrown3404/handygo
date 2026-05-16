@@ -63,49 +63,56 @@ class SignUpView extends GetView<AuthController> {
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 20),
-                Obx(() => AuthTextField(
-                      label: "Password",
-                      hint: "Enter Password",
-                      controller: controller.passwordController,
-                      obscureText: controller.obscurePassword.value,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.obscurePassword.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.white70,
-                        ),
-                        onPressed: controller.togglePasswordVisibility,
+                Obx(
+                  () => AuthTextField(
+                    label: "Password",
+                    hint: "Enter Password",
+                    controller: controller.passwordController,
+                    obscureText: controller.obscurePassword.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        controller.obscurePassword.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: Colors.white70,
                       ),
-                    )),
+                      onPressed: controller.togglePasswordVisibility,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                Obx(() => AuthTextField(
-                      label: "Confirm Password",
-                      hint: "Enter Password",
-                      controller: controller.confirmPasswordController,
-                      obscureText: controller.obscureConfirmPassword.value,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.obscureConfirmPassword.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.white70,
-                        ),
-                        onPressed: controller.toggleConfirmPasswordVisibility,
+                Obx(
+                  () => AuthTextField(
+                    label: "Confirm Password",
+                    hint: "Enter Password",
+                    controller: controller.confirmPasswordController,
+                    obscureText: controller.obscureConfirmPassword.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        controller.obscureConfirmPassword.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: Colors.white70,
                       ),
-                    )),
+                      onPressed: controller.toggleConfirmPasswordVisibility,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Obx(() => Checkbox(
-                          value: controller.isAgreeTerms.value,
-                          onChanged: (val) => controller.isAgreeTerms.value = val!,
-                          activeColor: AppColors.primaryColor,
-                          side: const BorderSide(color: Colors.white70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        )),
+                    Obx(
+                      () => Checkbox(
+                        value: controller.isAgreeTerms.value,
+                        onChanged: (val) =>
+                            controller.isAgreeTerms.value = val!,
+                        activeColor: AppColors.primaryColor,
+                        side: const BorderSide(color: Colors.white70),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
                     const Expanded(
                       child: Text.rich(
                         TextSpan(
@@ -153,7 +160,10 @@ class SignUpView extends GetView<AuthController> {
                     const Expanded(child: Divider(color: Colors.white24)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text("Or", style: TextStyle(color: Colors.white.withOpacity(0.6))),
+                      child: Text(
+                        "Or",
+                        style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+                      ),
                     ),
                     const Expanded(child: Divider(color: Colors.white24)),
                   ],
@@ -180,7 +190,10 @@ class SignUpView extends GetView<AuthController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account? ", style: TextStyle(color: Colors.white70)),
+                    const Text(
+                      "Already have an account? ",
+                      style: TextStyle(color: Colors.white70),
+                    ),
                     GestureDetector(
                       onTap: controller.goToSignIn,
                       child: const Text(

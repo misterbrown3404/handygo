@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class FadeInAnimation extends StatefulWidget {
   final Widget child;
   final Duration delay;
@@ -15,7 +14,8 @@ class FadeInAnimation extends StatefulWidget {
   State<FadeInAnimation> createState() => _FadeInAnimationState();
 }
 
-class _FadeInAnimationState extends State<FadeInAnimation> with SingleTickerProviderStateMixin {
+class _FadeInAnimationState extends State<FadeInAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacity;
   late Animation<double> _scale;
@@ -28,13 +28,15 @@ class _FadeInAnimationState extends State<FadeInAnimation> with SingleTickerProv
       duration: const Duration(milliseconds: 600),
     );
 
-    _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _opacity = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    _scale = Tween<double>(begin: 0.9, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
+    _scale = Tween<double>(
+      begin: 0.9,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     Future.delayed(widget.delay, () {
       if (mounted) _controller.forward();
@@ -54,10 +56,7 @@ class _FadeInAnimationState extends State<FadeInAnimation> with SingleTickerProv
       builder: (context, child) {
         return Opacity(
           opacity: _opacity.value,
-          child: Transform.scale(
-            scale: _scale.value,
-            child: widget.child,
-          ),
+          child: Transform.scale(scale: _scale.value, child: widget.child),
         );
       },
     );

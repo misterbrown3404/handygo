@@ -1,5 +1,6 @@
 class ApiConstants {
-  static const String baseUrl = 'http://172.20.10.4:8000/api/v1'; // Real IP for Physical Device
+  static const String baseUrl =
+      'http://172.20.10.4:8000/api/v1'; // Real IP for Physical Device
   // '0.0.0.0' is for the server, the client must use the IP address.
 
   // Auth Endpoints

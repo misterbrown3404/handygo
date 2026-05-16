@@ -7,14 +7,14 @@ class ChatController extends GetxController {
       'lastMsg': 'Thanks for the quick AC fix!',
       'time': '2m ago',
       'unread': '1',
-      'image': 'assets/images/user1.png'
+      'image': 'assets/images/user1.png',
     },
     {
       'name': 'Michael Chen',
       'lastMsg': 'Are you available for plumbing tomorrow?',
       'time': '1h ago',
       'unread': '0',
-      'image': 'assets/images/user2.png'
+      'image': 'assets/images/user2.png',
     },
   ].obs;
 }

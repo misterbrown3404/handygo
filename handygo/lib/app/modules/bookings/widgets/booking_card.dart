@@ -36,14 +36,18 @@ class BookingCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   color: Colors.grey[100],
-                  child: booking.service?.icon != null && booking.service!.icon!.startsWith('http')
+                  child:
+                      booking.service?.icon != null &&
+                          booking.service!.icon!.startsWith('http')
                       ? Image.network(
                           booking.service!.icon!,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.broken_image),
                         )
                       : Image.asset(
-                          booking.service?.icon ?? 'assets/images/home_image.jpg',
+                          booking.service?.icon ??
+                              'assets/images/home_image.jpg',
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -55,7 +59,10 @@ class BookingCard extends StatelessWidget {
                   children: [
                     Text(
                       booking.service?.name ?? "Unknown Service",
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -75,10 +82,15 @@ class BookingCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    booking.scheduledAt != null 
-                        ? DateFormat('EEE, dd MMM, yyyy').format(booking.scheduledAt!)
+                    booking.scheduledAt != null
+                        ? DateFormat(
+                            'EEE, dd MMM, yyyy',
+                          ).format(booking.scheduledAt!)
                         : "No Date",
-                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   const Text(
@@ -89,7 +101,8 @@ class BookingCard extends StatelessWidget {
               ),
               RichText(
                 text: TextSpan(
-                  text: "\$${(booking.amount ?? booking.service?.basePrice ?? 0).toStringAsFixed(0)}",
+                  text:
+                      "\$${(booking.amount ?? booking.service?.basePrice ?? 0).toStringAsFixed(0)}",
                   style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
@@ -113,7 +126,6 @@ class BookingCard extends StatelessWidget {
           const Divider(height: 1, thickness: 1),
           const SizedBox(height: 20),
           _buildActionButtons(context),
-          
         ],
       ),
     );
@@ -195,26 +207,40 @@ class BookingCard extends StatelessWidget {
           ? OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                side: BorderSide(color: AppColors.primaryColor.withOpacity(0.1)),
-                backgroundColor: AppColors.primaryColor.withOpacity(0.05),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                side: BorderSide(
+                  color: AppColors.primaryColor.withValues(alpha: 0.1),
+                ),
+                backgroundColor: AppColors.primaryColor.withValues(alpha: 0.05),
                 elevation: 0,
               ),
               child: Text(
                 label,
-                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             )
           : ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
                 elevation: 0,
               ),
               child: Text(
                 label,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             ),
     );

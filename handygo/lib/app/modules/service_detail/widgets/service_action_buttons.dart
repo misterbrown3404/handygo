@@ -25,7 +25,7 @@ class ServiceActionButtons extends StatelessWidget {
           width: 50,
           height: 50,
           borderRadius: BorderRadius.circular(25),
-          color: AppColors.primaryColor.withOpacity(0.15),
+          color: AppColors.primaryColor.withValues(alpha: 0.15),
           child: Icon(icon, color: AppColors.primaryColor, size: 24),
         ),
         const SizedBox(height: 8),

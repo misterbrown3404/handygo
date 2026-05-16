@@ -21,14 +21,28 @@ class JobAlertOverlay extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2))),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
           const SizedBox(height: AppSpacing.lg),
-          const Icon(Icons.flash_on_rounded, color: AppColors.accentColor, size: 48),
+          const Icon(
+            Icons.flash_on_rounded,
+            color: AppColors.accentColor,
+            size: 48,
+          ),
           const SizedBox(height: AppSpacing.md),
           const Text(
             'New Job Nearby!',
@@ -48,7 +62,9 @@ class JobAlertOverlay extends StatelessWidget {
                   onPressed: () => Get.back(),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 56),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   child: const Text('Decline'),
                 ),
@@ -80,13 +96,22 @@ class JobAlertOverlay extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(radius: 24, child: Icon(Icons.engineering_rounded)),
+          const CircleAvatar(
+            radius: 24,
+            child: Icon(Icons.engineering_rounded),
+          ),
           const SizedBox(width: AppSpacing.md),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Kitchen Plumbing', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              Text('2.1 km away • N12,000', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text(
+                'Kitchen Plumbing',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              Text(
+                '2.1 km away • N12,000',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
             ],
           ),
           const Spacer(),
@@ -99,7 +124,7 @@ class JobAlertOverlay extends StatelessWidget {
               color: AppColors.primaryColor,
               backgroundColor: Colors.grey[200],
             ),
-          )
+          ),
         ],
       ),
     );

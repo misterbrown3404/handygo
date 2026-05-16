@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 
 class BookingsController extends GetxController {
   final _bookingsRepo = BookingsRepository();
-  
+
   final ongoingBookings = <BookingModel>[].obs;
   final completedBookings = <BookingModel>[].obs;
   final cancelledBookings = <BookingModel>[].obs;
-  
+
   final isLoading = false.obs;
 
   @override
@@ -21,10 +21,22 @@ class BookingsController extends GetxController {
     try {
       isLoading(true);
       final all = await _bookingsRepo.getBookings();
-      
-      ongoingBookings.assignAll(all.where((b) => b.status?.toLowerCase() == 'ongoing' || b.status?.toLowerCase() == 'pending').toList());
-      completedBookings.assignAll(all.where((b) => b.status?.toLowerCase() == 'completed').toList());
-      cancelledBookings.assignAll(all.where((b) => b.status?.toLowerCase() == 'cancelled').toList());
+
+      ongoingBookings.assignAll(
+        all
+            .where(
+              (b) =>
+                  b.status?.toLowerCase() == 'ongoing' ||
+                  b.status?.toLowerCase() == 'pending',
+            )
+            .toList(),
+      );
+      completedBookings.assignAll(
+        all.where((b) => b.status?.toLowerCase() == 'completed').toList(),
+      );
+      cancelledBookings.assignAll(
+        all.where((b) => b.status?.toLowerCase() == 'cancelled').toList(),
+      );
     } catch (e) {
       print("Error fetching bookings: $e");
     } finally {

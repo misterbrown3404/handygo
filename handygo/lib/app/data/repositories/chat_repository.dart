@@ -83,10 +83,10 @@ class ChatRepository {
   }
 
   Future<MessageModel> sendMessage(int receiverId, String message) async {
-    final response = await apiClient.post('/chat/message', data: {
-      'receiver_id': receiverId,
-      'message': message,
-    });
+    final response = await apiClient.post(
+      '/chat/message',
+      data: {'receiver_id': receiverId, 'message': message},
+    );
     if (response.statusCode == 201 || response.statusCode == 200) {
       return MessageModel.fromJson(response.data['data']);
     } else {

@@ -18,16 +18,18 @@ class HomeView extends GetView<MainController> {
       extendBody: true,
       body: SafeArea(
         bottom: false,
-        child: Obx(() => IndexedStack(
-              index: controller.selectedIndex.value,
-              children: const [
-                HomeTabView(),
-                BookingsView(),
-                FavoritesView(),
-                ChatView(),
-                ProfileView(),
-              ],
-            )),
+        child: Obx(
+          () => IndexedStack(
+            index: controller.selectedIndex.value,
+            children: const [
+              HomeTabView(),
+              BookingsView(),
+              FavoritesView(),
+              ChatView(),
+              ProfileView(),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: const CustomBottomNav(),
     );

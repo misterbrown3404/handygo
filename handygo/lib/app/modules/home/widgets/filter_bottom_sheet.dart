@@ -92,9 +92,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         child: DropdownButton<String>(
           value: selectedLocation,
           isExpanded: true,
-          items: ["Any Location", "London, UK", "New York, USA", "Paris, France", "Lagos, Nigeria", "Abuja, Nigeria"]
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
+          items: [
+            "Any Location",
+            "London, UK",
+            "New York, USA",
+            "Paris, France",
+            "Lagos, Nigeria",
+            "Abuja, Nigeria",
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (val) {
             if (val != null) {
               setState(() => selectedLocation = val);
@@ -121,7 +126,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       width: (Get.width - 72) / 3,
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : Colors.white,
+        color: isSelected
+            ? AppColors.primaryColor.withValues(alpha: 0.1)
+            : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isSelected ? AppColors.primaryColor : Colors.grey[100]!,
@@ -129,7 +136,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       ),
       child: Column(
         children: [
-          Icon(icon, color: isSelected ? AppColors.primaryColor : Colors.grey, size: 28),
+          Icon(
+            icon,
+            color: isSelected ? AppColors.primaryColor : Colors.grey,
+            size: 28,
+          ),
           const SizedBox(height: 12),
           Text(
             label,
@@ -148,7 +159,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     return Column(
       children: [
         // Dummy histogram placeholder
-        Container(
+        SizedBox(
           height: 40,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,7 +170,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 width: 4,
                 height: 10 + (index % 5) * 6.0,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.3),
+                  color: AppColors.primaryColor.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -186,8 +197,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildPriceBox("Minimum Price", "\$${_currentRangeValues.start.round()}.00"),
-            _buildPriceBox("Maximum Price", "\$${_currentRangeValues.end.round()}.00"),
+            _buildPriceBox(
+              "Minimum Price",
+              "\$${_currentRangeValues.start.round()}.00",
+            ),
+            _buildPriceBox(
+              "Maximum Price",
+              "\$${_currentRangeValues.end.round()}.00",
+            ),
           ],
         ),
       ],
@@ -206,7 +223,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             color: Colors.grey[50],
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
@@ -222,8 +242,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Wed, 18 Apr, 2025", style: TextStyle(fontWeight: FontWeight.w500)),
-          Icon(Icons.calendar_month_outlined, color: Colors.grey[400], size: 20),
+          const Text(
+            "Wed, 18 Apr, 2025",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          Icon(
+            Icons.calendar_month_outlined,
+            color: Colors.grey[400],
+            size: 20,
+          ),
         ],
       ),
     );
@@ -250,11 +277,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       decoration: BoxDecoration(
         color: isSelected ? AppColors.primaryColor : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isSelected ? AppColors.primaryColor : Colors.grey[100]!),
+        border: Border.all(
+          color: isSelected ? AppColors.primaryColor : Colors.grey[100]!,
+        ),
       ),
       child: Row(
         children: [
-          Icon(Icons.star, color: isSelected ? Colors.white : Colors.amber, size: 16),
+          Icon(
+            Icons.star,
+            color: isSelected ? Colors.white : Colors.amber,
+            size: 16,
+          ),
           const SizedBox(width: 4),
           Text(
             rating.toString(),
@@ -267,7 +300,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             Text(
               "-4.9",
               style: TextStyle(
-                color: isSelected ? Colors.white.withOpacity(0.8) : Colors.grey,
+                color: isSelected ? Colors.white.withValues(alpha: 0.8) : Colors.grey,
                 fontSize: 12,
               ),
             ),
@@ -290,7 +323,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             },
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(0, 56),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               side: BorderSide(color: Colors.grey[100]!),
             ),
             child: const Text("Reset", style: TextStyle(color: Colors.black)),
@@ -300,14 +335,18 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-              final loc = selectedLocation == "Any Location" ? null : selectedLocation.split(",").first;
+              final loc = selectedLocation == "Any Location"
+                  ? null
+                  : selectedLocation.split(",").first;
               Get.find<MainController>().fetchWorkers(location: loc);
               Get.back();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryColor,
               minimumSize: const Size(0, 56),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
             child: const Text("Apply", style: TextStyle(color: Colors.white)),
           ),

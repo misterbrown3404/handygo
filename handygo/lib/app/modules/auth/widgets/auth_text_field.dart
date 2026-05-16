@@ -4,19 +4,19 @@ class AuthTextField extends StatelessWidget {
   final String label;
   final String hint;
   final TextEditingController controller;
-   final bool obscureText;
-   final Widget? suffixIcon;
-   final TextInputType? keyboardType;
- 
-   const AuthTextField({
-     super.key,
-     required this.label,
-     required this.hint,
-     required this.controller,
-     this.obscureText = false,
-     this.suffixIcon,
-     this.keyboardType,
-   });
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+
+  const AuthTextField({
+    super.key,
+    required this.label,
+    required this.hint,
+    required this.controller,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.keyboardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +39,17 @@ class AuthTextField extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: Colors.white.withOpacity(0.2),
+            fillColor: Colors.white.withValues(alpha: 0.2),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

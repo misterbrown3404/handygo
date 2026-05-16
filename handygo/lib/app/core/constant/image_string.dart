@@ -5,7 +5,6 @@ class ImageStrings {
   // Onboarding Screen
   static const String onb1 = 'assets/images/onboarding.jpg';
   static const String onb2 = 'assets/images/onboarding_2.jpg';
-  
 
   // Auth Screen
   static const String google = 'assets/images/google.jpg';
@@ -21,12 +20,10 @@ class ImageStrings {
   static const String homeBanner3 = 'assets/images/home_image_3.jpg';
   static const String profilePic = 'assets/images/profile.jpg';
 
-
   //Booking
   static const String favourite = 'assets/images/favourite.jpg';
   static const String favorite2 = 'assets/images/favourite_2.jpg';
   static const String favorite3 = 'assets/images/favourite_3.jpg';
-
 
   // Categories Icons
   static const String carWash = 'assets/category/car-wash.png';

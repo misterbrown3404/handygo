@@ -20,15 +20,12 @@ class ProfileView extends GetView<ProfileController> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          "Profile",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        title: Text("Profile", style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
       ),
       body: Obx(() {
         final user = authController.user.value;
-        
+
         return SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(

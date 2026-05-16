@@ -10,11 +10,7 @@ class ChatItem extends StatelessWidget {
   final ChatThreadModel thread;
   final VoidCallback onTap;
 
-  const ChatItem({
-    super.key,
-    required this.thread,
-    required this.onTap,
-  });
+  const ChatItem({super.key, required this.thread, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +19,18 @@ class ChatItem extends StatelessWidget {
       child: GlassContainer(
         borderRadius: BorderRadius.circular(20),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
           leading: Stack(
             children: [
               CircleAvatar(
                 radius: 28,
                 backgroundColor: Colors.grey[200],
-                backgroundImage: thread.userAvatar != null && thread.userAvatar!.startsWith('http')
+                backgroundImage:
+                    thread.userAvatar != null &&
+                        thread.userAvatar!.startsWith('http')
                     ? NetworkImage(thread.userAvatar!) as ImageProvider
                     : const AssetImage(ImageStrings.profilePic),
               ),
@@ -64,7 +65,11 @@ class ChatItem extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "${thread.unreadCount}",
-                      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

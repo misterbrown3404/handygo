@@ -29,10 +29,7 @@ class ServiceStatsSection extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(color: Colors.grey[600], fontSize: 12),
-          ),
+          Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
         ],
       ),
     );

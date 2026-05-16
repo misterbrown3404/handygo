@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 class IndividualChatController extends GetxController {
   final _chatRepo = ChatRepository();
   final messageController = TextEditingController();
-  
+
   final messages = <MessageModel>[].obs;
   final isLoading = false.obs;
-  
+
   late ChatThreadModel thread;
 
   @override
@@ -34,7 +34,7 @@ class IndividualChatController extends GetxController {
 
   Future<void> sendMessage() async {
     if (messageController.text.trim().isEmpty) return;
-    
+
     final content = messageController.text.trim();
     messageController.clear();
 

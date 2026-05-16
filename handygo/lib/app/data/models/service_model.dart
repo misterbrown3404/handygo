@@ -34,7 +34,9 @@ class ServiceModel {
           ? double.tryParse(json['base_price'].toString())
           : null,
       isActive: json['is_active'] == 1 || json['is_active'] == true,
-      rating: json['rating'] != null ? double.tryParse(json['rating'].toString()) : 4.5, // Default for now
+      rating: json['rating'] != null
+          ? double.tryParse(json['rating'].toString())
+          : 4.5, // Default for now
       reviewsCount: json['reviews_count'] ?? 0,
       isFavorite: json['is_favorite'] == true,
     );

@@ -17,13 +17,14 @@ class HomeHeader extends StatelessWidget {
 
     return Obx(() {
       final user = authController.user.value;
-      
+
       return Row(
         children: [
           CircleAvatar(
             radius: 25,
             backgroundColor: Colors.grey[300],
-            backgroundImage: user?.avatar != null && user!.avatar!.startsWith('http')
+            backgroundImage:
+                user?.avatar != null && user!.avatar!.startsWith('http')
                 ? NetworkImage(user.avatar!) as ImageProvider
                 : const AssetImage(ImageStrings.profilePic),
           ),
@@ -49,9 +50,7 @@ class HomeHeader extends StatelessWidget {
               height: 45,
               borderRadius: BorderRadius.circular(22.5),
               child: const Center(
-                child: Badge(
-                  child: Icon(Icons.notifications_outlined),
-                ),
+                child: Badge(child: Icon(Icons.notifications_outlined)),
               ),
             ),
           ),

@@ -34,17 +34,31 @@ class BookingModel {
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     return BookingModel(
       id: json['id'],
-      customer: json['customer'] != null ? CustomerModel.fromJson(json['customer']) : null,
-      worker: json['worker'] != null ? WorkerModel.fromJson(json['worker']) : null,
-      service: json['service'] != null ? ServiceModel.fromJson(json['service']) : null,
-      scheduledAt: json['scheduled_at'] != null ? DateTime.tryParse(json['scheduled_at']) : null,
+      customer: json['customer'] != null
+          ? CustomerModel.fromJson(json['customer'])
+          : null,
+      worker: json['worker'] != null
+          ? WorkerModel.fromJson(json['worker'])
+          : null,
+      service: json['service'] != null
+          ? ServiceModel.fromJson(json['service'])
+          : null,
+      scheduledAt: json['scheduled_at'] != null
+          ? DateTime.tryParse(json['scheduled_at'])
+          : null,
       status: json['status'],
       notes: json['notes'],
       address: json['address'],
-      amount: json['amount'] != null ? double.tryParse(json['amount'].toString()) : null,
-      rating: json['rating'] != null ? double.tryParse(json['rating'].toString()) : null,
+      amount: json['amount'] != null
+          ? double.tryParse(json['amount'].toString())
+          : null,
+      rating: json['rating'] != null
+          ? double.tryParse(json['rating'].toString())
+          : null,
       review: json['review'],
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'])
+          : null,
     );
   }
 

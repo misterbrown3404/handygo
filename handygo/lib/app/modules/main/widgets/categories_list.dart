@@ -14,7 +14,7 @@ class CategoriesList extends GetView<MainController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final categories = controller.categories.take(3).toList();
-      
+
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -36,14 +36,14 @@ class CategoriesList extends GetView<MainController> {
             width: 60,
             height: 60,
             borderRadius: BorderRadius.circular(30),
-            child: Center(
-              child: Icon(icon, color: AppColors.primaryColor),
-            ),
+            child: Center(child: Icon(icon, color: AppColors.primaryColor)),
           ),
           const SizedBox(height: 8),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
           ),
         ],
       ),

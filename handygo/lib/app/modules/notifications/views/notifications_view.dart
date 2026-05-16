@@ -34,51 +34,56 @@ class NotificationsView extends StatelessWidget {
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.all(24),
-        children: [
-          _buildSectionHeader("Today", "Mark All As Read"),
-          const SizedBox(height: 16),
-          const NotificationItem(
-            icon: Icons.calendar_today,
-            title: "Booking Updated!",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-            time: "4:00 PM",
-            iconColor: AppColors.primaryColor,
+            children: [
+              _buildSectionHeader("Today", "Mark All As Read"),
+              const SizedBox(height: 16),
+              const NotificationItem(
+                icon: Icons.calendar_today,
+                title: "Booking Updated!",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
+                time: "4:00 PM",
+                iconColor: AppColors.primaryColor,
+              ),
+              const NotificationItem(
+                icon: Icons.check_circle_outline,
+                title: "Booking Received!",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
+                time: "3:39 PM",
+                iconColor: AppColors.primaryColor,
+              ),
+              const NotificationItem(
+                icon: Icons.star_border,
+                title: "Rate Your Recent Service!",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
+                time: "2:10 PM",
+                iconColor: AppColors.primaryColor,
+              ),
+              const NotificationItem(
+                icon: Icons.local_offer_outlined,
+                title: "Get 70% Off on AC Serv...",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
+                time: "9:00 AM",
+                iconColor: AppColors.primaryColor,
+              ),
+              const SizedBox(height: 16),
+              _buildSectionHeader("Yesterday", ""),
+              const SizedBox(height: 16),
+              const NotificationItem(
+                icon: Icons.check_circle_outline,
+                title: "Booking Received!",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
+                time: "1D",
+                iconColor: AppColors.primaryColor,
+              ),
+            ],
           ),
-          const NotificationItem(
-            icon: Icons.check_circle_outline,
-            title: "Booking Received!",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-            time: "3:39 PM",
-            iconColor: AppColors.primaryColor,
-          ),
-          const NotificationItem(
-            icon: Icons.star_border,
-            title: "Rate Your Recent Service!",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-            time: "2:10 PM",
-            iconColor: AppColors.primaryColor,
-          ),
-          const NotificationItem(
-            icon: Icons.local_offer_outlined,
-            title: "Get 70% Off on AC Serv...",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-            time: "9:00 AM",
-            iconColor: AppColors.primaryColor,
-          ),
-          const SizedBox(height: 16),
-          _buildSectionHeader("Yesterday", ""),
-          const SizedBox(height: 16),
-          const NotificationItem(
-            icon: Icons.check_circle_outline,
-            title: "Booking Received!",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-            time: "1D",
-            iconColor: AppColors.primaryColor,
-          ),
-        ],
+        ),
       ),
-    ),
-      )
     );
   }
 
@@ -95,7 +100,11 @@ class NotificationsView extends StatelessWidget {
             onPressed: () {},
             child: Text(
               action,
-              style: const TextStyle(color: AppColors.primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.primaryColor,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
       ],

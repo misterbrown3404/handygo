@@ -33,7 +33,7 @@ class NotificationItem extends StatelessWidget {
               width: 40,
               height: 40,
               borderRadius: BorderRadius.circular(20),
-              color: iconColor.withOpacity(0.15),
+              color: iconColor.withValues(alpha: 0.15),
               child: Center(child: Icon(icon, color: iconColor, size: 20)),
             ),
             const SizedBox(width: 16),
@@ -46,7 +46,10 @@ class NotificationItem extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                       Text(
                         time,
@@ -57,7 +60,11 @@ class NotificationItem extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12, height: 1.4),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12,
+                      height: 1.4,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

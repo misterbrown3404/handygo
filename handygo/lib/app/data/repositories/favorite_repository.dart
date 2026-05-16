@@ -16,8 +16,6 @@ class FavoriteRepository {
   }
 
   Future<void> toggleFavorite(int serviceId) async {
-    await apiClient.post('/favorites/toggle', data: {
-      'service_id': serviceId,
-    });
+    await apiClient.post('/favorites/toggle', data: {'service_id': serviceId});
   }
 }

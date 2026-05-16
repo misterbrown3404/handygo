@@ -15,7 +15,9 @@ class MessagesSearchBar extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             hintText: "Search Messages..",
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
+            hintStyle: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
             prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 22),
             border: InputBorder.none,
             enabledBorder: InputBorder.none,

@@ -37,14 +37,20 @@ class _JobsViewState extends State<JobsView> {
     try {
       final queryParams = <String, dynamic>{};
       if (_selectedFilter != 'All Jobs') {
-        queryParams['status'] = _selectedFilter.toLowerCase().replaceAll(' ', '_');
+        queryParams['status'] = _selectedFilter.toLowerCase().replaceAll(
+          ' ',
+          '_',
+        );
       }
 
-      final response = await _api.get(AdminApiConstants.jobs, queryParameters: queryParams);
+      final response = await _api.get(
+        AdminApiConstants.jobs,
+        queryParameters: queryParams,
+      );
       if (response.statusCode == 200) {
         var rawData = response.data['data'];
         List dataList = [];
-        
+
         if (rawData is Map && rawData.containsKey('data')) {
           dataList = rawData['data'];
         } else if (rawData is List) {
@@ -69,88 +75,165 @@ class _JobsViewState extends State<JobsView> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.error_outline, color: AdminColors.error, size: 48),
-                      const SizedBox(height: 16),
-                      Text(_error!, style: const TextStyle(color: AdminColors.textSecondary)),
-                      const SizedBox(height: 16),
-                      ElevatedButton(onPressed: _fetchJobs, child: const Text('Retry')),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: AdminColors.error,
+                    size: 48,
                   ),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _header(),
-                      const SizedBox(height: 24),
-                      _searchAndFilterRow(context),
-                      const SizedBox(height: 24),
-                      GlassDataTable(
-                        title: 'Service Jobs Log',
-                        trailing: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: AdminColors.primary.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            '${_jobs.length} Records',
-                            style: const TextStyle(color: AdminColors.primary, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _error!,
+                    style: const TextStyle(color: AdminColors.textSecondary),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _fetchJobs,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _header(),
+                  const SizedBox(height: 24),
+                  _searchAndFilterRow(context),
+                  const SizedBox(height: 24),
+                  GlassDataTable(
+                    title: 'Service Jobs Log',
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AdminColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${_jobs.length} Records',
+                        style: const TextStyle(
+                          color: AdminColors.primary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
                         ),
-                        columns: const [
-                          DataColumn(label: Text('JOB ID')),
-                          DataColumn(label: Text('CUSTOMER')),
-                          DataColumn(label: Text('WORKER')),
-                          DataColumn(label: Text('SERVICE')),
-                          DataColumn(label: Text('AMOUNT')),
-                          DataColumn(label: Text('DATE')),
-                          DataColumn(label: Text('STATUS')),
-                          DataColumn(label: Text('ACTIONS')),
-                        ],
-                        rows: _jobs.map((j) {
-                          final jobId = j['job_id'] ?? '#0000';
-                          final customerName = j['customer']?['name'] ?? 'N/A';
-                          final workerName = j['worker']?['name'] ?? 'Unassigned';
-                          final serviceName = j['service']?['name'] ?? 'N/A';
-                          final amount = j['amount']?.toString() ?? '0';
-                          final date = _formatDate(j['date'] ?? '');
-                          final status = _capitalize(j['status'] ?? 'pending');
+                      ),
+                    ),
+                    columns: const [
+                      DataColumn(label: Text('JOB ID')),
+                      DataColumn(label: Text('CUSTOMER')),
+                      DataColumn(label: Text('WORKER')),
+                      DataColumn(label: Text('SERVICE')),
+                      DataColumn(label: Text('AMOUNT')),
+                      DataColumn(label: Text('DATE')),
+                      DataColumn(label: Text('STATUS')),
+                      DataColumn(label: Text('ACTIONS')),
+                    ],
+                    rows: _jobs.map((j) {
+                      final jobId = j['job_id'] ?? '#0000';
+                      final customerName = j['customer']?['name'] ?? 'N/A';
+                      final workerName = j['worker']?['name'] ?? 'Unassigned';
+                      final serviceName = j['service']?['name'] ?? 'N/A';
+                      final amount = j['amount']?.toString() ?? '0';
+                      final date = _formatDate(j['date'] ?? '');
+                      final status = _capitalize(j['status'] ?? 'pending');
 
-                          return DataRow(cells: [
-                            DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: AdminColors.primary.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(6),
+                      return DataRow(
+                        cells: [
+                          DataCell(
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AdminColors.primary.withValues(
+                                  alpha: 0.1,
                                 ),
-                                child: Text(jobId, style: const TextStyle(fontWeight: FontWeight.bold, color: AdminColors.primary, fontSize: 12)),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                jobId,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AdminColors.primary,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                            DataCell(Text(customerName, style: const TextStyle(fontWeight: FontWeight.w600))),
-                            DataCell(Text(workerName,
-                                style: TextStyle(
-                                    color: workerName == 'Unassigned' ? AdminColors.warning : AdminColors.textPrimary,
-                                    fontStyle: workerName == 'Unassigned' ? FontStyle.italic : FontStyle.normal))),
-                            DataCell(Text(serviceName, style: const TextStyle(color: AdminColors.textSecondary))),
-                            DataCell(Text('₦$amount', style: const TextStyle(fontWeight: FontWeight.bold))),
-                            DataCell(Text(date, style: const TextStyle(color: AdminColors.textSecondary, fontSize: 13))),
-                            DataCell(StatusChip(label: status)),
-                            DataCell(Row(children: [
-                              _actionIcon(Icons.visibility_rounded, AdminColors.textSecondary, 'View Details'),
-                            ])),
-                          ]);
-                        }).toList(),
-                      ),
-                    ],
+                          ),
+                          DataCell(
+                            Text(
+                              customerName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              workerName,
+                              style: TextStyle(
+                                color: workerName == 'Unassigned'
+                                    ? AdminColors.warning
+                                    : AdminColors.textPrimary,
+                                fontStyle: workerName == 'Unassigned'
+                                    ? FontStyle.italic
+                                    : FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              serviceName,
+                              style: const TextStyle(
+                                color: AdminColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              '₦$amount',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              date,
+                              style: const TextStyle(
+                                color: AdminColors.textSecondary,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                          DataCell(StatusChip(label: status)),
+                          DataCell(
+                            Row(
+                              children: [
+                                _actionIcon(
+                                  Icons.visibility_rounded,
+                                  AdminColors.textSecondary,
+                                  'View Details',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
-                ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -164,7 +247,8 @@ class _JobsViewState extends State<JobsView> {
     }
   }
 
-  String _capitalize(String s) => s.isEmpty ? s : s[0].toUpperCase() + s.substring(1).replaceAll('_', ' ');
+  String _capitalize(String s) =>
+      s.isEmpty ? s : s[0].toUpperCase() + s.substring(1).replaceAll('_', ' ');
 
   Widget _header() {
     return Wrap(
@@ -176,9 +260,19 @@ class _JobsViewState extends State<JobsView> {
         const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Job Management', style: TextStyle(color: AdminColors.textPrimary, fontSize: 28, fontWeight: FontWeight.bold)),
+            Text(
+              'Job Management',
+              style: TextStyle(
+                color: AdminColors.textPrimary,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: 4),
-            Text('Track and manage all service jobs across the platform', style: TextStyle(color: AdminColors.textSecondary, fontSize: 14)),
+            Text(
+              'Track and manage all service jobs across the platform',
+              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+            ),
           ],
         ),
         ElevatedButton.icon(
@@ -191,7 +285,9 @@ class _JobsViewState extends State<JobsView> {
             elevation: 4,
             shadowColor: AdminColors.primary.withValues(alpha: 0.4),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
       ],
@@ -212,7 +308,7 @@ class _JobsViewState extends State<JobsView> {
           Expanded(flex: 2, child: _buildSearchBox()),
           const SizedBox(width: 24),
           Expanded(flex: 3, child: _buildFilterTabs()),
-        ]
+        ],
       ],
     );
   }
@@ -229,7 +325,10 @@ class _JobsViewState extends State<JobsView> {
               style: TextStyle(color: AdminColors.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Search by Job ID, Customer, or Worker...',
-                hintStyle: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+                hintStyle: TextStyle(
+                  color: AdminColors.textSecondary,
+                  fontSize: 14,
+                ),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -237,7 +336,11 @@ class _JobsViewState extends State<JobsView> {
           ),
           Container(width: 1, height: 24, color: AdminColors.borderDark),
           const SizedBox(width: 12),
-          const Icon(Icons.tune_rounded, color: AdminColors.textSecondary, size: 20),
+          const Icon(
+            Icons.tune_rounded,
+            color: AdminColors.textSecondary,
+            size: 20,
+          ),
         ],
       ),
     );
@@ -276,9 +379,15 @@ class _JobsViewState extends State<JobsView> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AdminColors.primary.withValues(alpha: 0.1) : Colors.white,
+          color: isSelected
+              ? AdminColors.primary.withValues(alpha: 0.1)
+              : Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: isSelected ? AdminColors.primary.withValues(alpha: 0.5) : AdminColors.borderDark),
+          border: Border.all(
+            color: isSelected
+                ? AdminColors.primary.withValues(alpha: 0.5)
+                : AdminColors.borderDark,
+          ),
         ),
         child: Text(
           label,

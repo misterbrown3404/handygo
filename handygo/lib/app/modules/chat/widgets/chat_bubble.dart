@@ -21,7 +21,9 @@ class ChatBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Column(
-        crossAxisAlignment: isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isSender
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           GlassContainer(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -31,22 +33,26 @@ class ChatBubble extends StatelessWidget {
               bottomLeft: Radius.circular(isSender ? 16 : 0),
               bottomRight: Radius.circular(isSender ? 0 : 16),
             ),
-            color: isSender ? AppColors.primaryColor.withOpacity(0.8) : Colors.white.withOpacity(0.4),
+            color: isSender
+                ? AppColors.primaryColor.withValues(alpha: 0.8)
+                : Colors.white.withValues(alpha: 0.4),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: Get.width * 0.65),
               child: Text(
                 text,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: isSender ? Colors.white : Colors.black,
-                      height: 1.4,
-                    ),
+                  color: isSender ? Colors.white : Colors.black,
+                  height: 1.4,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             time,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(fontSize: 10),
           ),
         ],
       ),

@@ -8,7 +8,10 @@ class ApiExceptions {
       case DioExceptionType.receiveTimeout:
         return 'Connection timed out. Please check your internet.';
       case DioExceptionType.badResponse:
-        return _handleStatusCode(error.response?.statusCode, error.response?.data);
+        return _handleStatusCode(
+          error.response?.statusCode,
+          error.response?.data,
+        );
       case DioExceptionType.cancel:
         return 'Request was cancelled.';
       case DioExceptionType.connectionError:

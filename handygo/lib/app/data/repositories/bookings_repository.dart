@@ -7,8 +7,11 @@ class BookingsRepository {
 
   Future<List<BookingModel>> getBookings({String? status}) async {
     final queryParams = status != null ? {'status': status} : null;
-    final response = await apiClient.get('/bookings', queryParameters: queryParams);
-    
+    final response = await apiClient.get(
+      '/bookings',
+      queryParameters: queryParams,
+    );
+
     if (response.statusCode == 200) {
       final List data = response.data['data'];
       return data.map((e) => BookingModel.fromJson(e)).toList();
@@ -24,13 +27,16 @@ class BookingsRepository {
     String? address,
     double? amount,
   }) async {
-    final response = await apiClient.post('/bookings', data: {
-      'service_id': serviceId,
-      'scheduled_at': scheduledAt.toIso8601String(),
-      'notes': notes,
-      'address': address,
-      'amount': amount,
-    });
+    final response = await apiClient.post(
+      '/bookings',
+      data: {
+        'service_id': serviceId,
+        'scheduled_at': scheduledAt.toIso8601String(),
+        'notes': notes,
+        'address': address,
+        'amount': amount,
+      },
+    );
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       return BookingModel.fromJson(response.data['data']);

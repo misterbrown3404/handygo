@@ -24,43 +24,44 @@ class NewPasswordView extends GetView<AuthController> {
           children: [
             const Text(
               "New Password",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
-            Obx(() => AuthTextField(
-                  label: "Password",
-                  hint: "••••••••",
-                  controller: controller.passwordController,
-                  obscureText: controller.obscurePassword.value,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      controller.obscurePassword.value
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: Colors.grey,
-                    ),
-                    onPressed: controller.togglePasswordVisibility,
+            Obx(
+              () => AuthTextField(
+                label: "Password",
+                hint: "••••••••",
+                controller: controller.passwordController,
+                obscureText: controller.obscurePassword.value,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    controller.obscurePassword.value
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: Colors.grey,
                   ),
-                )),
+                  onPressed: controller.togglePasswordVisibility,
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
-            Obx(() => AuthTextField(
-                  label: "Confirm Password",
-                  hint: "••••••••",
-                  controller: controller.confirmPasswordController,
-                  obscureText: controller.obscureConfirmPassword.value,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      controller.obscureConfirmPassword.value
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: Colors.grey,
-                    ),
-                    onPressed: controller.toggleConfirmPasswordVisibility,
+            Obx(
+              () => AuthTextField(
+                label: "Confirm Password",
+                hint: "••••••••",
+                controller: controller.confirmPasswordController,
+                obscureText: controller.obscureConfirmPassword.value,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    controller.obscureConfirmPassword.value
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: Colors.grey,
                   ),
-                )),
+                  onPressed: controller.toggleConfirmPasswordVisibility,
+                ),
+              ),
+            ),
             const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,

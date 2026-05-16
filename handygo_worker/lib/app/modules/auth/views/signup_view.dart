@@ -22,14 +22,12 @@ class SignupView extends GetView<AuthController> {
               ),
             ),
           ),
-          Container(color: Colors.black.withOpacity(0.5)),
+          Container(color: Colors.black.withValues(alpha: 0.5)),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                child: FadeInAnimation(
-                  child: _buildGlassSignupCard(),
-                ),
+                child: FadeInAnimation(child: _buildGlassSignupCard()),
               ),
             ),
           ),
@@ -46,9 +44,12 @@ class SignupView extends GetView<AuthController> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
+            color: Colors.white.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -56,7 +57,11 @@ class SignupView extends GetView<AuthController> {
             children: [
               const Text(
                 'Join HandyGo',
-                style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const Text(
                 'Earn more on your own schedule',
@@ -113,7 +118,7 @@ class SignupView extends GetView<AuthController> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: TextField(
@@ -125,7 +130,10 @@ class SignupView extends GetView<AuthController> {
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.white38),
           prefixIcon: Icon(icon, color: Colors.white70, size: 20),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
           contentPadding: const EdgeInsets.symmetric(vertical: 18),
         ),
       ),

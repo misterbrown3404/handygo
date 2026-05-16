@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/modules/address/widgets/address_item.dart';
 import 'package:handygo/app/modules/auth/widgets/circular_back_button.dart';
-import 'package:handygo/app/routes/app_pages.dart';
 import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class AddressSelectionView extends GetView<BookingFlowController> {
@@ -30,10 +29,7 @@ class AddressSelectionView extends GetView<BookingFlowController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFE0EAFC),
-              Color(0xFFCFDEF3),
-            ],
+            colors: [Color(0xFFE0EAFC), Color(0xFFCFDEF3)],
           ),
         ),
         child: SafeArea(
@@ -43,20 +39,28 @@ class AddressSelectionView extends GetView<BookingFlowController> {
                 child: ListView(
                   padding: const EdgeInsets.all(24),
                   children: [
-                    Obx(() => AddressItem(
-                      icon: Icons.home_work_outlined,
-                      title: "Home",
-                      address: "7421 Pacific Horizon Blvd, Honolulu, Hawaii 96825, USA",
-                      isSelected: controller.selectedAddress.value == "Home",
-                      onTap: () => controller.selectedAddress.value = "Home",
-                    )),
-                    Obx(() => AddressItem(
-                      icon: Icons.home_outlined,
-                      title: "Parents House",
-                      address: "123 Ocean View Lane, Honolulu, Hawaii 96825, USA",
-                      isSelected: controller.selectedAddress.value == "Parents House",
-                      onTap: () => controller.selectedAddress.value = "Parents House",
-                    )),
+                    Obx(
+                      () => AddressItem(
+                        icon: Icons.home_work_outlined,
+                        title: "Home",
+                        address:
+                            "7421 Pacific Horizon Blvd, Honolulu, Hawaii 96825, USA",
+                        isSelected: controller.selectedAddress.value == "Home",
+                        onTap: () => controller.selectedAddress.value = "Home",
+                      ),
+                    ),
+                    Obx(
+                      () => AddressItem(
+                        icon: Icons.home_outlined,
+                        title: "Parents House",
+                        address:
+                            "123 Ocean View Lane, Honolulu, Hawaii 96825, USA",
+                        isSelected:
+                            controller.selectedAddress.value == "Parents House",
+                        onTap: () =>
+                            controller.selectedAddress.value = "Parents House",
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     _buildAddNewAddressButton(),
                   ],
@@ -67,7 +71,11 @@ class AddressSelectionView extends GetView<BookingFlowController> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (controller.selectedAddress.isEmpty) {
-                      Get.snackbar("Required", "Please select an address", backgroundColor: Colors.orangeAccent);
+                      Get.snackbar(
+                        "Required",
+                        "Please select an address",
+                        backgroundColor: Colors.orangeAccent,
+                      );
                       return;
                     }
                     // No payment step, submit directly
@@ -76,11 +84,16 @@ class AddressSelectionView extends GetView<BookingFlowController> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     minimumSize: const Size(double.infinity, 56),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
                   child: const Text(
                     "Continue",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -96,7 +109,7 @@ class AddressSelectionView extends GetView<BookingFlowController> {
       width: double.infinity,
       height: 64,
       borderRadius: BorderRadius.circular(32),
-      color: AppColors.primaryColor.withOpacity(0.1),
+      color: AppColors.primaryColor.withValues(alpha: 0.1),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

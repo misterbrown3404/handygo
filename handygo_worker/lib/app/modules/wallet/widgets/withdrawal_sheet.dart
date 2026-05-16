@@ -35,20 +35,41 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
       ),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)))),
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
           const SizedBox(height: AppSpacing.lg),
-          const Text('Withdraw Funds', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          const Text(
+            'Withdraw Funds',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
-          Text('Available Balance: ${widget.balance}', style: const TextStyle(color: Colors.grey)),
+          Text(
+            'Available Balance: ${widget.balance}',
+            style: const TextStyle(color: Colors.grey),
+          ),
           const SizedBox(height: AppSpacing.xl),
-          
-          const Text('Enter Amount', style: TextStyle(fontWeight: FontWeight.bold)),
+
+          const Text(
+            'Enter Amount',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           TextField(
             controller: amountController,
@@ -59,12 +80,18 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
               hintText: '0.00',
               filled: true,
               fillColor: Colors.grey[100],
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          
-          const Text('Select Bank Account', style: TextStyle(fontWeight: FontWeight.bold)),
+
+          const Text(
+            'Select Bank Account',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(16),
@@ -74,21 +101,29 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.account_balance_rounded, color: AppColors.primaryColor),
+                const Icon(
+                  Icons.account_balance_rounded,
+                  color: AppColors.primaryColor,
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: Text(selectedBank, style: const TextStyle(fontWeight: FontWeight.w600))),
+                Expanded(
+                  child: Text(
+                    selectedBank,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
                 const Icon(Icons.keyboard_arrow_down_rounded),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
-          
+
           PrimaryButton(
             text: 'Withdraw Now',
             onPressed: () {
               Get.back();
               Get.snackbar(
-                'Success', 
+                'Success',
                 'Withdrawal of N${amountController.text} initiated.',
                 backgroundColor: AppColors.primaryColor,
                 colorText: Colors.white,

@@ -43,24 +43,36 @@ class EditProfileView extends GetView<ProfileController> {
                 const SizedBox(height: 40),
                 _buildEditForm(),
                 const SizedBox(height: 40),
-                Obx(() => ElevatedButton(
-                  onPressed: controller.isLoading.value ? null : () => controller.updateProfile(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    minimumSize: const Size(double.infinity, 56),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                Obx(
+                  () => ElevatedButton(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () => controller.updateProfile(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      minimumSize: const Size(double.infinity, 56),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: controller.isLoading.value
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            "Update Profile",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
-                  child: controller.isLoading.value
-                      ? const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                        )
-                      : const Text(
-                          "Update Profile",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                )),
+                ),
               ],
             ),
           ),
@@ -75,25 +87,28 @@ class EditProfileView extends GetView<ProfileController> {
         Obx(() {
           final user = controller.authController.user.value;
           final localImage = controller.selectedImagePath.value;
-          
+
           return Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.5),
+                width: 2,
+              ),
             ),
             child: CircleAvatar(
               radius: 60,
-              backgroundColor: Colors.white.withOpacity(0.1),
+              backgroundColor: Colors.white.withValues(alpha: 0.1),
               backgroundImage: localImage.isNotEmpty
                   ? FileImage(File(localImage)) as ImageProvider
                   : (user?.avatar != null && user!.avatar!.startsWith('http')
-                      ? NetworkImage(user.avatar!) as ImageProvider
-                      : const AssetImage(ImageStrings.profilePic)),
+                        ? NetworkImage(user.avatar!) as ImageProvider
+                        : const AssetImage(ImageStrings.profilePic)),
             ),
-          );  
+          );
         }),
-        Positioned( 
+        Positioned(
           bottom: 4,
           right: 4,
           child: InkWell(
@@ -104,7 +119,11 @@ class EditProfileView extends GetView<ProfileController> {
                 color: AppColors.primaryColor,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+              child: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
         ),
@@ -115,18 +134,40 @@ class EditProfileView extends GetView<ProfileController> {
   Widget _buildEditForm() {
     return Column(
       children: [
-        _buildTextField("Full Name", controller.nameController, Icons.person_outline),
+        _buildTextField(
+          "Full Name",
+          controller.nameController,
+          Icons.person_outline,
+        ),
         const SizedBox(height: 20),
-        _buildTextField("Email Address", controller.emailController, Icons.email_outlined, enabled: false),
+        _buildTextField(
+          "Email Address",
+          controller.emailController,
+          Icons.email_outlined,
+          enabled: false,
+        ),
         const SizedBox(height: 20),
-        _buildTextField("Phone Number", controller.phoneController, Icons.phone_outlined),
+        _buildTextField(
+          "Phone Number",
+          controller.phoneController,
+          Icons.phone_outlined,
+        ),
         const SizedBox(height: 20),
-        _buildTextField("Address", controller.addressController, Icons.location_on_outlined),
+        _buildTextField(
+          "Address",
+          controller.addressController,
+          Icons.location_on_outlined,
+        ),
       ],
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController textController, IconData icon, {bool enabled = true}) {
+  Widget _buildTextField(
+    String label,
+    TextEditingController textController,
+    IconData icon, {
+    bool enabled = true,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -139,16 +180,19 @@ class EditProfileView extends GetView<ProfileController> {
           controller: textController,
           enabled: enabled,
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: AppColors.primaryColor.withOpacity(0.7)),
+            prefixIcon: Icon(
+              icon,
+              color: AppColors.primaryColor.withValues(alpha: 0.7),
+            ),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.4),
+            fillColor: Colors.white.withValues(alpha: 0.4),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
             ),
             hintText: "Enter your $label",
             hintStyle: TextStyle(color: Colors.grey[600]),
@@ -157,5 +201,4 @@ class EditProfileView extends GetView<ProfileController> {
       ],
     );
   }
-
 }

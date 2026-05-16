@@ -11,45 +11,51 @@ class ApiClient extends getx.GetxService {
   final _storage = GetStorage();
 
   ApiClient() {
-    _dio = Dio(BaseOptions(
-      baseUrl: ApiConstants.baseUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
     // 1. Auth Interceptor
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        final token = _storage.read('token');
-        if (token != null) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(options);
-      },
-      onError: (DioException e, handler) {
-        if (e.response?.statusCode == 401) {
-          _storage.remove('token');
-          _storage.remove('user');
-          getx.Get.offAllNamed(Routes.SIGN_IN);
-        }
-        return handler.next(e);
-      },
-    ));
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          final token = _storage.read('token');
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+        onError: (DioException e, handler) {
+          if (e.response?.statusCode == 401) {
+            _storage.remove('token');
+            _storage.remove('user');
+            getx.Get.offAllNamed(Routes.SIGN_IN);
+          }
+          return handler.next(e);
+        },
+      ),
+    );
 
     // 2. Logger Interceptor (Development Only)
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      error: true,
-      compact: true,
-      maxWidth: 90,
-    ));
+    _dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+      ),
+    );
   }
 
   // Generic Request Wrapper with Error Handling
@@ -64,7 +70,10 @@ class ApiClient extends getx.GetxService {
     }
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     return request(() => _dio.get(path, queryParameters: queryParameters));
   }
 

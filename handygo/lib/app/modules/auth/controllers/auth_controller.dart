@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:handygo/app/routes/app_pages.dart';
 import 'package:handygo/app/data/repositories/auth_repository.dart';
 
-
 class AuthController extends GetxController {
   final AuthRepository _authRepo = AuthRepository();
   final _storage = GetStorage();
@@ -18,7 +17,7 @@ class AuthController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final otpController = TextEditingController();
-  
+
   // Observables
   final user = Rxn<UserModel>();
   var isRememberMe = false.obs;
@@ -51,27 +50,37 @@ class AuthController extends GetxController {
     _storage.write('seenOnboarding', false);
   }
 
-  void togglePasswordVisibility() => obscurePassword.value = !obscurePassword.value;
-  void toggleConfirmPasswordVisibility() => obscureConfirmPassword.value = !obscureConfirmPassword.value;
+  void togglePasswordVisibility() =>
+      obscurePassword.value = !obscurePassword.value;
+  void toggleConfirmPasswordVisibility() =>
+      obscureConfirmPassword.value = !obscureConfirmPassword.value;
 
   Future<void> signIn() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      Get.snackbar('Input Error', 'Please enter both email and password',
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Input Error',
+        'Please enter both email and password',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
       return;
     }
 
     try {
       isLoading.value = true;
       final AuthResponse response = await _authRepo.login(
-        emailController.text.trim(), 
-        passwordController.text.trim()
+        emailController.text.trim(),
+        passwordController.text.trim(),
       );
-      
+
       await _handleAuthSuccess(response);
     } catch (e) {
-      Get.snackbar('Login Failed', e.toString(),
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Login Failed',
+        e.toString(),
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -84,8 +93,12 @@ class AuthController extends GetxController {
       await _handleAuthSuccess(response);
     } catch (e) {
       if (e.toString().contains('cancelled')) return; // Ignore cancellations
-      Get.snackbar('Google Login Failed', e.toString(),
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Google Login Failed',
+        e.toString(),
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -97,8 +110,12 @@ class AuthController extends GetxController {
       final response = await _authRepo.signInWithApple();
       await _handleAuthSuccess(response);
     } catch (e) {
-      Get.snackbar('Apple Login Failed', e.toString(),
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Apple Login Failed',
+        e.toString(),
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -120,14 +137,17 @@ class AuthController extends GetxController {
     } catch (e) {
       debugPrint("FCM token sync failed: $e");
     }
-    
+
     Get.offAllNamed(Routes.MAIN);
   }
 
   Future<void> signUp() async {
     if (!isAgreeTerms.value) {
-      Get.snackbar('Agreement Required', 'Please accept the Terms and Conditions to continue',
-          backgroundColor: Colors.orangeAccent);
+      Get.snackbar(
+        'Agreement Required',
+        'Please accept the Terms and Conditions to continue',
+        backgroundColor: Colors.orangeAccent,
+      );
       return;
     }
 
@@ -140,12 +160,20 @@ class AuthController extends GetxController {
         phone: phoneController.text.trim(),
       );
 
-      Get.snackbar('Registration Successful', 'Welcome to HandyGo! Please login to continue.',
-          backgroundColor: Colors.green, colorText: Colors.white);
+      Get.snackbar(
+        'Registration Successful',
+        'Welcome to HandyGo! Please login to continue.',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
       Get.offAllNamed(Routes.SIGN_IN);
     } catch (e) {
-      Get.snackbar('Registration Failed', e.toString(),
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Registration Failed',
+        e.toString(),
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -158,7 +186,7 @@ class AuthController extends GetxController {
   void goToSignIn() => Get.toNamed(Routes.SIGN_IN);
   void goToSignUp() => Get.toNamed(Routes.SIGN_UP);
   void goToForgotPassword() => Get.toNamed(Routes.FORGOT_PASSWORD);
-  
-  // No manual dispose needed for GetX controllers using TextEditingControllers 
+
+  // No manual dispose needed for GetX controllers using TextEditingControllers
   // to avoid "used after being disposed" errors during route transitions.
 }

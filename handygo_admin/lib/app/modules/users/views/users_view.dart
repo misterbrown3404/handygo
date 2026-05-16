@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:handygo_admin/app/core/constants/colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/core/widgets/glass_data_table.dart';
-import 'package:handygo_admin/app/core/widgets/status_chip.dart';
 import 'package:handygo_admin/app/data/providers/admin_api_client.dart';
 import 'package:handygo_admin/app/core/constant/api_constants.dart';
 
@@ -37,7 +36,7 @@ class _UsersViewState extends State<UsersView> {
       if (response.statusCode == 200) {
         var rawData = response.data['data'];
         List dataList = [];
-        
+
         if (rawData is Map && rawData.containsKey('data')) {
           dataList = rawData['data'];
         } else if (rawData is List) {
@@ -59,80 +58,148 @@ class _UsersViewState extends State<UsersView> {
   Widget build(BuildContext context) {
     final filteredCustomers = _selectedFilter == 'All'
         ? _customers
-        : _customers.where((u) => (u['status'] ?? '').toString().toLowerCase() == _selectedFilter.toLowerCase()).toList();
+        : _customers
+              .where(
+                (u) =>
+                    (u['status'] ?? '').toString().toLowerCase() ==
+                    _selectedFilter.toLowerCase(),
+              )
+              .toList();
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.error_outline, color: AdminColors.error, size: 48),
-                      const SizedBox(height: 16),
-                      Text(_error!, style: const TextStyle(color: AdminColors.textSecondary)),
-                      const SizedBox(height: 16),
-                      ElevatedButton(onPressed: _fetchCustomers, child: const Text('Retry')),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: AdminColors.error,
+                    size: 48,
                   ),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _header(),
-                      const SizedBox(height: 24),
-                      _searchAndFilterRow(context),
-                      const SizedBox(height: 24),
-                      GlassDataTable(
-                        title: 'Customer Directory',
-                        trailing: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: AdminColors.primary.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            '${filteredCustomers.length} Customers',
-                            style: const TextStyle(color: AdminColors.primary, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        columns: const [
-                          DataColumn(label: Text('CUSTOMER')),
-                          DataColumn(label: Text('PHONE')),
-                          DataColumn(label: Text('EMAIL')),
-                          DataColumn(label: Text('JOINED')),
-                          DataColumn(label: Text('ACTIONS')),
-                        ],
-                        rows: filteredCustomers.map((u) {
-                          final name = u['name'] ?? 'Unknown';
-                          final email = u['email'] ?? '';
-                          final phone = u['phone'] ?? '';
-                          final joined = u['created_at'] ?? '';
-
-                          return DataRow(cells: [
-                            DataCell(Row(children: [
-                              _buildAvatar(name),
-                              const SizedBox(width: 12),
-                              Flexible(
-                                child: Text(name, style: const TextStyle(color: AdminColors.textPrimary, fontWeight: FontWeight.w600, fontSize: 13)),
-                              ),
-                            ])),
-                            DataCell(Text(phone, style: const TextStyle(color: AdminColors.textSecondary, fontSize: 13))),
-                            DataCell(Text(email, style: const TextStyle(color: AdminColors.textSecondary, fontSize: 13))),
-                            DataCell(Text(_formatDate(joined), style: const TextStyle(color: AdminColors.textSecondary, fontSize: 13))),
-                            DataCell(Row(children: [
-                              _actionIcon(Icons.visibility_rounded, AdminColors.textSecondary, 'View Profile'),
-                            ])),
-                          ]);
-                        }).toList(),
+                  const SizedBox(height: 16),
+                  Text(
+                    _error!,
+                    style: const TextStyle(color: AdminColors.textSecondary),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _fetchCustomers,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _header(),
+                  const SizedBox(height: 24),
+                  _searchAndFilterRow(context),
+                  const SizedBox(height: 24),
+                  GlassDataTable(
+                    title: 'Customer Directory',
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
                       ),
+                      decoration: BoxDecoration(
+                        color: AdminColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${filteredCustomers.length} Customers',
+                        style: const TextStyle(
+                          color: AdminColors.primary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    columns: const [
+                      DataColumn(label: Text('CUSTOMER')),
+                      DataColumn(label: Text('PHONE')),
+                      DataColumn(label: Text('EMAIL')),
+                      DataColumn(label: Text('JOINED')),
+                      DataColumn(label: Text('ACTIONS')),
                     ],
+                    rows: filteredCustomers.map((u) {
+                      final name = u['name'] ?? 'Unknown';
+                      final email = u['email'] ?? '';
+                      final phone = u['phone'] ?? '';
+                      final joined = u['created_at'] ?? '';
+
+                      return DataRow(
+                        cells: [
+                          DataCell(
+                            Row(
+                              children: [
+                                _buildAvatar(name),
+                                const SizedBox(width: 12),
+                                Flexible(
+                                  child: Text(
+                                    name,
+                                    style: const TextStyle(
+                                      color: AdminColors.textPrimary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              phone,
+                              style: const TextStyle(
+                                color: AdminColors.textSecondary,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              email,
+                              style: const TextStyle(
+                                color: AdminColors.textSecondary,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              _formatDate(joined),
+                              style: const TextStyle(
+                                color: AdminColors.textSecondary,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Row(
+                              children: [
+                                _actionIcon(
+                                  Icons.visibility_rounded,
+                                  AdminColors.textSecondary,
+                                  'View Profile',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
-                ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -156,9 +223,19 @@ class _UsersViewState extends State<UsersView> {
         const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Customer Management', style: TextStyle(color: AdminColors.textPrimary, fontSize: 28, fontWeight: FontWeight.bold)),
+            Text(
+              'Customer Management',
+              style: TextStyle(
+                color: AdminColors.textPrimary,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: 4),
-            Text('Manage, monitor, and support registered customers', style: TextStyle(color: AdminColors.textSecondary, fontSize: 14)),
+            Text(
+              'Manage, monitor, and support registered customers',
+              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+            ),
           ],
         ),
         ElevatedButton.icon(
@@ -171,7 +248,9 @@ class _UsersViewState extends State<UsersView> {
             elevation: 4,
             shadowColor: AdminColors.primary.withValues(alpha: 0.4),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
       ],
@@ -192,7 +271,7 @@ class _UsersViewState extends State<UsersView> {
           Expanded(flex: 2, child: _buildSearchBox()),
           const SizedBox(width: 24),
           Expanded(flex: 3, child: _buildFilterTabs()),
-        ]
+        ],
       ],
     );
   }
@@ -209,7 +288,10 @@ class _UsersViewState extends State<UsersView> {
               style: TextStyle(color: AdminColors.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Search customers by name or email...',
-                hintStyle: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+                hintStyle: TextStyle(
+                  color: AdminColors.textSecondary,
+                  fontSize: 14,
+                ),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -217,7 +299,11 @@ class _UsersViewState extends State<UsersView> {
           ),
           Container(width: 1, height: 24, color: AdminColors.borderDark),
           const SizedBox(width: 12),
-          const Icon(Icons.tune_rounded, color: AdminColors.textSecondary, size: 20),
+          const Icon(
+            Icons.tune_rounded,
+            color: AdminColors.textSecondary,
+            size: 20,
+          ),
         ],
       ),
     );
@@ -228,10 +314,12 @@ class _UsersViewState extends State<UsersView> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: ['All', 'Active', 'Pending', 'Suspended']
-            .map((label) => Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: _filterChip(label),
-                ))
+            .map(
+              (label) => Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: _filterChip(label),
+              ),
+            )
             .toList(),
       ),
     );
@@ -246,9 +334,15 @@ class _UsersViewState extends State<UsersView> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AdminColors.primary.withValues(alpha: 0.1) : Colors.white,
+          color: isSelected
+              ? AdminColors.primary.withValues(alpha: 0.1)
+              : Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: isSelected ? AdminColors.primary.withValues(alpha: 0.5) : AdminColors.borderDark),
+          border: Border.all(
+            color: isSelected
+                ? AdminColors.primary.withValues(alpha: 0.5)
+                : AdminColors.borderDark,
+          ),
         ),
         child: Text(
           label,
@@ -263,7 +357,12 @@ class _UsersViewState extends State<UsersView> {
   }
 
   Widget _buildAvatar(String name) {
-    final colors = [AdminColors.primary, AdminColors.accent, AdminColors.warning, AdminColors.chart4];
+    final colors = [
+      AdminColors.primary,
+      AdminColors.accent,
+      AdminColors.warning,
+      AdminColors.chart4,
+    ];
     final color = colors[name.length % colors.length];
     return Container(
       width: 36,
@@ -274,7 +373,14 @@ class _UsersViewState extends State<UsersView> {
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Center(
-        child: Text(name[0].toUpperCase(), style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold)),
+        child: Text(
+          name[0].toUpperCase(),
+          style: TextStyle(
+            color: color,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

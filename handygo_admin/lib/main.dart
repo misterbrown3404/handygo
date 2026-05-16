@@ -23,8 +23,6 @@ class HandyGoAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = Get.find<AdminAuthController>();
-
     return GetMaterialApp(
       title: 'HandyGo Admin',
       debugShowCheckedModeBanner: false,

@@ -4,8 +4,6 @@ import 'package:handygo/app/modules/onboarding/controllers/onboarding_controller
 class OnboardingBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<OnboardingController>(
-      () => OnboardingController(),
-    );
+    Get.lazyPut<OnboardingController>(() => OnboardingController());
   }
 }

@@ -20,12 +20,13 @@ class ServiceBottomBar extends StatelessWidget {
       child: GlassContainer(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        color: Colors.white.withOpacity(0.5),
+        color: Colors.white.withValues(alpha: 0.5),
         child: Row(
           children: [
             Expanded(
               child: ScaleOnTap(
-                onTap: () => Get.toNamed(Routes.BOOKING_FORM, arguments: service),
+                onTap: () =>
+                    Get.toNamed(Routes.BOOKING_FORM, arguments: service),
                 child: ElevatedButton(
                   onPressed: null, // Tap handled by ScaleOnTap
                   style: ElevatedButton.styleFrom(
@@ -33,9 +34,7 @@ class ServiceBottomBar extends StatelessWidget {
                     disabledBackgroundColor: AppColors.primaryColor,
                     disabledForegroundColor: Colors.white,
                   ),
-                  child: const Text(
-                    "Book Now",
-                  ),
+                  child: const Text("Book Now"),
                 ),
               ),
             ),

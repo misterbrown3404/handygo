@@ -25,12 +25,16 @@ class ProfileHeader extends StatelessWidget {
             GlassContainer(
               padding: const EdgeInsets.all(4),
               borderRadius: BorderRadius.circular(54),
-              color: Colors.white.withOpacity(0.3),
-              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 1.5),
+              color: Colors.white.withValues(alpha: 0.3),
+              border: Border.all(
+                color: AppColors.primaryColor.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
               child: CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.grey[200],
-                backgroundImage: imageUrl != null && imageUrl!.startsWith('http')
+                backgroundImage:
+                    imageUrl != null && imageUrl!.startsWith('http')
                     ? NetworkImage(imageUrl!) as ImageProvider
                     : const AssetImage(ImageStrings.profilePic),
               ),
@@ -38,15 +42,9 @@ class ProfileHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        Text(name, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 4),
-        Text(
-          email,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(email, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }

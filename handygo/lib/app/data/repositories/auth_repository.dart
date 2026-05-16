@@ -24,10 +24,10 @@ class AuthRepository {
   final ApiClient apiClient = Get.find<ApiClient>();
 
   Future<AuthResponse> login(String email, String password) async {
-    final response = await apiClient.post(ApiConstants.login, data: {
-      'email': email,
-      'password': password,
-    });
+    final response = await apiClient.post(
+      ApiConstants.login,
+      data: {'email': email, 'password': password},
+    );
     return AuthResponse.fromJson(response.data);
   }
 
@@ -37,14 +37,17 @@ class AuthRepository {
     required String password,
     required String phone,
   }) async {
-    await apiClient.post(ApiConstants.register, data: {
-      'name': name,
-      'email': email,
-      'password': password,
-      'password_confirmation': password,
-      'phone': phone,
-      'role': 'customer',
-    });
+    await apiClient.post(
+      ApiConstants.register,
+      data: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'password_confirmation': password,
+        'phone': phone,
+        'role': 'customer',
+      },
+    );
   }
 
   Future<UserModel> getMe() async {
@@ -57,16 +60,14 @@ class AuthRepository {
   }
 
   Future<void> updateFcmToken(String token) async {
-    await apiClient.post(ApiConstants.fcmToken, data: {
-      'fcm_token': token,
-    });
+    await apiClient.post(ApiConstants.fcmToken, data: {'fcm_token': token});
   }
 
   // --- Social Sign-In ---
 
   Future<AuthResponse> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn.instance;
-    final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+    final googleUser = await googleSignIn.signIn();
     if (googleUser == null) throw Exception('Google sign-in cancelled');
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
@@ -75,16 +76,17 @@ class AuthRepository {
     );
 
     // Sign in to Firebase to get the idToken for our backend
-    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
     final String? idToken = await userCredential.user?.getIdToken();
 
     if (idToken == null) throw Exception('Failed to get Firebase ID Token');
 
     // Send the token to our Laravel backend
-    final response = await apiClient.post('/auth/social', data: {
-      'provider': 'google',
-      'token': idToken,
-    });
+    final response = await apiClient.post(
+      '/auth/social',
+      data: {'provider': 'google', 'token': idToken},
+    );
 
     return AuthResponse.fromJson(response.data);
   }
@@ -98,12 +100,17 @@ class AuthRepository {
     );
 
     // For Apple, we send the identityToken to the backend
-    final response = await apiClient.post('/auth/social', data: {
-      'provider': 'apple',
-      'token': credential.identityToken,
-      'name': credential.givenName != null ? "${credential.givenName} ${credential.familyName}" : null,
-      'email': credential.email,
-    });
+    final response = await apiClient.post(
+      '/auth/social',
+      data: {
+        'provider': 'apple',
+        'token': credential.identityToken,
+        'name': credential.givenName != null
+            ? "${credential.givenName} ${credential.familyName}"
+            : null,
+        'email': credential.email,
+      },
+    );
 
     return AuthResponse.fromJson(response.data);
   }

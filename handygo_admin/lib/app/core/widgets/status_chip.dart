@@ -13,13 +13,17 @@ class StatusChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: chipColor.withOpacity(0.12),
+        color: chipColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: chipColor.withOpacity(0.2)),
+        border: Border.all(color: chipColor.withValues(alpha: 0.2)),
       ),
       child: Text(
         label,
-        style: TextStyle(color: chipColor, fontSize: 12, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: chipColor,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

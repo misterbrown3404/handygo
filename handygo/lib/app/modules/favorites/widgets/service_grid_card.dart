@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/data/models/service_model.dart';
 
-
 import 'package:handygo/app/core/widgets/glass_container.dart';
 
 class ServiceGridCard extends StatelessWidget {
@@ -26,9 +25,7 @@ class ServiceGridCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: _buildImageSection(),
-            ),
+            Expanded(child: _buildImageSection()),
             _buildDetailsSection(),
           ],
         ),
@@ -46,7 +43,8 @@ class ServiceGridCard extends StatelessWidget {
                 ? Image.network(
                     service.icon!,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image),
                   )
                 : Image.asset(
                     service.icon ?? 'assets/images/favourite_3.jpg',
@@ -62,11 +60,11 @@ class ServiceGridCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 4,
                   ),
                 ],
@@ -95,7 +93,10 @@ class ServiceGridCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   service.name ?? "No Name",
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -121,7 +122,7 @@ class ServiceGridCard extends StatelessWidget {
           Text(
             "Tap to Book",
             style: TextStyle(
-              color: AppColors.primaryColor.withOpacity(0.8),
+              color: AppColors.primaryColor.withValues(alpha: 0.8),
               fontWeight: FontWeight.bold,
               fontSize: 12,
             ),

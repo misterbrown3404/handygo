@@ -7,10 +7,7 @@ import 'package:handygo/app/core/widgets/scale_on_tap.dart';
 class CircularBackButton extends StatelessWidget {
   final VoidCallback? onTap;
 
-  const CircularBackButton({
-    super.key,
-    this.onTap,
-  });
+  const CircularBackButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +19,7 @@ class CircularBackButton extends StatelessWidget {
           width: 40,
           height: 40,
           borderRadius: BorderRadius.circular(20),
-          child: const Center(
-            child: Icon(Icons.arrow_back, size: 20),
-          ),
+          child: const Center(child: Icon(Icons.arrow_back, size: 20)),
         ),
       ),
     );

@@ -14,10 +14,7 @@ class EReceiptView extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: const CircularBackButton(),
-        title: Text(
-          "E-Receipt",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        title: Text("E-Receipt", style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -31,11 +28,17 @@ class EReceiptView extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 minimumSize: const Size(double.infinity, 56),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               child: const Text(
                 "Download",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

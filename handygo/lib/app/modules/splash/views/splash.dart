@@ -23,9 +23,9 @@ class SplashScreen extends StatelessWidget {
         child: Center(
           child: RichText(
             text: TextSpan(
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 const TextSpan(
                   text: "Handy",
@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget {
                 ),
                 TextSpan(
                   text: "Go",
-                  style: TextStyle(color: Colors.white.withOpacity(0.8)),
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
                 ),
               ],
             ),

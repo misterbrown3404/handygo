@@ -22,7 +22,10 @@ class _JobStatusViewState extends State<JobStatusView> {
       appBar: AppBar(
         title: const Text('Job In Progress'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.help_outline_rounded)),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.help_outline_rounded),
+          ),
         ],
       ),
       body: Column(
@@ -53,7 +56,9 @@ class _JobStatusViewState extends State<JobStatusView> {
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=2066&auto=format&fit=crop'),
+          image: NetworkImage(
+            'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=2066&auto=format&fit=crop',
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -63,14 +68,19 @@ class _JobStatusViewState extends State<JobStatusView> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)],
+            boxShadow: [
+              BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10),
+            ],
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.location_on_rounded, color: Colors.red, size: 16),
               SizedBox(width: 8),
-              Text('2.1 km to Destination', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                '2.1 km to Destination',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ),
@@ -81,14 +91,36 @@ class _JobStatusViewState extends State<JobStatusView> {
   Widget _buildTimeline() {
     return Column(
       children: [
-        _timelineStep(0, 'To Destination', 'Navigating to Lekki Phase 1', isDone: currentStep > 0),
-        _timelineStep(1, 'Arrived', 'Provider has arrived at location', isDone: currentStep > 1, isActive: currentStep == 1),
-        _timelineStep(2, 'Job Completion', 'Finalizing the service', isActive: currentStep == 2),
+        _timelineStep(
+          0,
+          'To Destination',
+          'Navigating to Lekki Phase 1',
+          isDone: currentStep > 0,
+        ),
+        _timelineStep(
+          1,
+          'Arrived',
+          'Provider has arrived at location',
+          isDone: currentStep > 1,
+          isActive: currentStep == 1,
+        ),
+        _timelineStep(
+          2,
+          'Job Completion',
+          'Finalizing the service',
+          isActive: currentStep == 2,
+        ),
       ],
     );
   }
 
-  Widget _timelineStep(int index, String title, String subtitle, {bool isDone = false, bool isActive = false}) {
+  Widget _timelineStep(
+    int index,
+    String title,
+    String subtitle, {
+    bool isDone = false,
+    bool isActive = false,
+  }) {
     return FadeInAnimation(
       delay: index * 100,
       child: IntrinsicHeight(
@@ -100,15 +132,26 @@ class _JobStatusViewState extends State<JobStatusView> {
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
-                    color: isDone ? AppColors.primaryColor : (isActive ? AppColors.primaryColor.withOpacity(0.2) : Colors.grey[300]),
+                    color: isDone
+                        ? AppColors.primaryColor
+                        : (isActive
+                              ? AppColors.primaryColor.withValues(alpha: 0.2)
+                              : Colors.grey[300]),
                     shape: BoxShape.circle,
-                    border: isActive ? Border.all(color: AppColors.primaryColor, width: 2) : null,
+                    border: isActive
+                        ? Border.all(color: AppColors.primaryColor, width: 2)
+                        : null,
                   ),
-                  child: isDone ? const Icon(Icons.check, color: Colors.white, size: 14) : null,
+                  child: isDone
+                      ? const Icon(Icons.check, color: Colors.white, size: 14)
+                      : null,
                 ),
                 Expanded(
-                  child: Container(width: 2, color: index == 2 ? Colors.transparent : Colors.grey[300]),
-                )
+                  child: Container(
+                    width: 2,
+                    color: index == 2 ? Colors.transparent : Colors.grey[300],
+                  ),
+                ),
               ],
             ),
             const SizedBox(width: 16),
@@ -116,12 +159,21 @@ class _JobStatusViewState extends State<JobStatusView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: isActive || isDone ? Colors.black : Colors.grey)),
-                  Text(subtitle, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isActive || isDone ? Colors.black : Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                   const SizedBox(height: 24),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -133,11 +185,19 @@ class _JobStatusViewState extends State<JobStatusView> {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -5))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
       ),
       child: SafeArea(
         child: PrimaryButton(
-          text: currentStep == 1 ? 'Start Service' : (currentStep == 2 ? 'Complete Job' : 'I have Arrived'),
+          text: currentStep == 1
+              ? 'Start Service'
+              : (currentStep == 2 ? 'Complete Job' : 'I have Arrived'),
           onPressed: () {
             if (currentStep < 2) {
               setState(() => currentStep++);
@@ -159,10 +219,20 @@ class _JobStatusViewState extends State<JobStatusView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.check_circle_rounded, color: AppColors.primaryColor, size: 64),
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.primaryColor,
+                size: 64,
+              ),
               const SizedBox(height: 16),
-              const Text('Job Complete!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              const Text('Are you sure you want to finish?', style: TextStyle(color: Colors.grey)),
+              const Text(
+                'Job Complete!',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const Text(
+                'Are you sure you want to finish?',
+                style: TextStyle(color: Colors.grey),
+              ),
               const SizedBox(height: 24),
               _uploadBox('Take Completion Photo'),
               const SizedBox(height: 24),
@@ -171,7 +241,12 @@ class _JobStatusViewState extends State<JobStatusView> {
                 onPressed: () {
                   Get.back();
                   Get.back();
-                  Get.snackbar('Success', 'Job completed and funds added to wallet!', backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+                  Get.snackbar(
+                    'Success',
+                    'Job completed and funds added to wallet!',
+                    backgroundColor: AppColors.primaryColor,
+                    colorText: Colors.white,
+                  );
                 },
               ),
             ],
@@ -194,7 +269,10 @@ class _JobStatusViewState extends State<JobStatusView> {
         children: [
           const Icon(Icons.camera_alt_rounded, color: AppColors.primaryColor),
           const SizedBox(height: 8),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+          ),
         ],
       ),
     );
@@ -218,12 +296,21 @@ class _JobDetailHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Sarah Williams', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              Text('Kitchen Plumbing Service', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text(
+                'Sarah Williams',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              Text(
+                'Kitchen Plumbing Service',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
             ],
           ),
           Spacer(),
-          Icon(Icons.chat_bubble_outline_rounded, color: AppColors.primaryColor),
+          Icon(
+            Icons.chat_bubble_outline_rounded,
+            color: AppColors.primaryColor,
+          ),
         ],
       ),
     );

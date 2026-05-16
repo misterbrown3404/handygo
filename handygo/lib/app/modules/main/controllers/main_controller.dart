@@ -47,7 +47,10 @@ class MainController extends GetxController {
   Future<void> fetchWorkers({String? location, String? search}) async {
     try {
       isLoadingWorkers(true);
-      final data = await _workerRepo.getWorkers(location: location, search: search);
+      final data = await _workerRepo.getWorkers(
+        location: location,
+        search: search,
+      );
       workers.assignAll(data);
     } catch (e) {
       print("Error fetching workers: $e");

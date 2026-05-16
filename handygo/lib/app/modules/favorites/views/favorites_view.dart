@@ -35,14 +35,23 @@ class FavoritesView extends GetView<FavoritesController> {
             indicatorColor: AppColors.primaryColor,
             indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.tab,
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            onTap: (index) => controller.selectCategory(controller.categories[index]),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+            onTap: (index) =>
+                controller.selectCategory(controller.categories[index]),
             tabs: controller.categories.map((cat) => Tab(text: cat)).toList(),
           ),
         ),
         body: TabBarView(
-          children: controller.categories.map((_) => _buildFavoritesGrid()).toList(),
+          children: controller.categories
+              .map((_) => _buildFavoritesGrid())
+              .toList(),
         ),
       ),
     );
@@ -55,7 +64,12 @@ class FavoritesView extends GetView<FavoritesController> {
         return const Center(child: Text("No favorites found"));
       }
       return GridView.builder(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 100),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 100,
+        ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.75,

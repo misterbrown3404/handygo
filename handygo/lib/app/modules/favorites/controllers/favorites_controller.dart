@@ -2,10 +2,9 @@ import 'package:get/get.dart';
 import 'package:handygo/app/data/repositories/favorite_repository.dart';
 import 'package:handygo/app/data/models/service_model.dart';
 
-
 class FavoritesController extends GetxController {
   final _favoriteRepo = FavoriteRepository();
-  
+
   final favoriteServices = <ServiceModel>[].obs;
   final categories = <String>["All"].obs;
   final selectedCategory = "All".obs;
@@ -46,7 +45,9 @@ class FavoritesController extends GetxController {
 
   List<ServiceModel> get filteredServices {
     if (selectedCategory.value == "All") return favoriteServices;
-    return favoriteServices.where((s) => s.category == selectedCategory.value).toList();
+    return favoriteServices
+        .where((s) => s.category == selectedCategory.value)
+        .toList();
   }
 
   Future<void> toggleFavorite(ServiceModel service) async {

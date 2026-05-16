@@ -6,7 +6,8 @@ ThemeData adminTheme() {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    textTheme: GoogleFonts.interTextTheme(), // Inter for a more professional feel
+    textTheme:
+        GoogleFonts.interTextTheme(), // Inter for a more professional feel
     primaryColor: AppColors.adminPrimary,
     colorScheme: const ColorScheme.light(
       primary: AppColors.adminPrimary,

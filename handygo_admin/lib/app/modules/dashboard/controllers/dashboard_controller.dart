@@ -53,20 +53,26 @@ class DashboardController extends GetxController {
         pendingKyc.value = data['pending_kyc'] ?? 0;
 
         if (data['recent_activity'] != null) {
-          recentActivity.assignAll(List<Map<String, dynamic>>.from(data['recent_activity']));
+          recentActivity.assignAll(
+            List<Map<String, dynamic>>.from(data['recent_activity']),
+          );
         }
       }
 
       // Fetch revenue chart
       final revResp = await _api.get(AdminApiConstants.dashboardRevenue);
       if (revResp.statusCode == 200 && revResp.data['success'] == true) {
-        revenueChart.assignAll(List<Map<String, dynamic>>.from(revResp.data['data']));
+        revenueChart.assignAll(
+          List<Map<String, dynamic>>.from(revResp.data['data']),
+        );
       }
 
       // Fetch workers by category
       final catResp = await _api.get(AdminApiConstants.workersByCategory);
       if (catResp.statusCode == 200 && catResp.data['success'] == true) {
-        workersByCategory.assignAll(List<Map<String, dynamic>>.from(catResp.data['data']));
+        workersByCategory.assignAll(
+          List<Map<String, dynamic>>.from(catResp.data['data']),
+        );
       }
     } catch (e) {
       error.value = 'Failed to load dashboard data';

@@ -16,16 +16,18 @@ class JobRequestsView extends GetView<BookingsController> {
         title: const Text('Incoming Requests'),
         centerTitle: false,
       ),
-      body: Obx(() => ListView.builder(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            itemCount: controller.requests.length,
-            itemBuilder: (context, index) {
-              return FadeInAnimation(
-                delay: index * 100,
-                child: JobRequestCard(request: controller.requests[index]),
-              );
-            },
-          )),
+      body: Obx(
+        () => ListView.builder(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          itemCount: controller.requests.length,
+          itemBuilder: (context, index) {
+            return FadeInAnimation(
+              delay: index * 100,
+              child: JobRequestCard(request: controller.requests[index]),
+            );
+          },
+        ),
+      ),
     );
   }
 }

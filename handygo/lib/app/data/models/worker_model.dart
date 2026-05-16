@@ -42,7 +42,9 @@ class WorkerModel {
       specialty: json['specialty'],
       status: json['status'],
       isAvailable: json['is_available'] == 1 || json['is_available'] == true,
-      rating: json['rating'] != null ? double.tryParse(json['rating'].toString()) : null,
+      rating: json['rating'] != null
+          ? double.tryParse(json['rating'].toString())
+          : null,
       totalJobs: json['total_jobs'],
     );
   }

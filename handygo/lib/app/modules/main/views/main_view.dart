@@ -27,16 +27,18 @@ class MainView extends GetView<MainController> {
         ),
         child: SafeArea(
           bottom: false,
-          child: Obx(() => IndexedStack(
-                index: controller.selectedIndex.value,
-                children: const [
-                  HomeTabView(),
-                  BookingsView(),
-                  FavoritesView(),
-                  ChatView(),
-                  ProfileView(),
-                ],
-              )),
+          child: Obx(
+            () => IndexedStack(
+              index: controller.selectedIndex.value,
+              children: const [
+                HomeTabView(),
+                BookingsView(),
+                FavoritesView(),
+                ChatView(),
+                ProfileView(),
+              ],
+            ),
+          ),
         ),
       ),
       bottomNavigationBar: const CustomBottomNav(),

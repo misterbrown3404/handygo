@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/constant/color.dart';
 
-
 class IndividualChatView extends GetView<IndividualChatController> {
   const IndividualChatView({super.key});
 
@@ -28,7 +27,9 @@ class IndividualChatView extends GetView<IndividualChatController> {
             CircleAvatar(
               radius: 20,
               backgroundColor: Colors.grey[200],
-              backgroundImage: controller.thread.userAvatar != null && controller.thread.userAvatar!.startsWith('http')
+              backgroundImage:
+                  controller.thread.userAvatar != null &&
+                      controller.thread.userAvatar!.startsWith('http')
                   ? NetworkImage(controller.thread.userAvatar!) as ImageProvider
                   : const AssetImage(ImageStrings.profilePic),
             ),
@@ -42,7 +43,9 @@ class IndividualChatView extends GetView<IndividualChatController> {
                 ),
                 Text(
                   "Online", // This could be dynamic if supported
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.primaryColor),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ],
             ),
@@ -54,10 +57,7 @@ class IndividualChatView extends GetView<IndividualChatController> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFE0EAFC),
-              Color(0xFFCFDEF3),
-            ],
+            colors: [Color(0xFFE0EAFC), Color(0xFFCFDEF3)],
           ),
         ),
         child: Column(
@@ -67,14 +67,19 @@ class IndividualChatView extends GetView<IndividualChatController> {
                 if (controller.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                
+
                 return ListView.builder(
-                  padding: const EdgeInsets.only(left: 24, right: 24, top: 100, bottom: 24),
+                  padding: const EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    top: 100,
+                    bottom: 24,
+                  ),
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final msg = controller.messages[index];
                     final isSender = msg.senderId != controller.thread.userId;
-                    
+
                     return ChatBubble(
                       text: msg.message,
                       isSender: isSender,

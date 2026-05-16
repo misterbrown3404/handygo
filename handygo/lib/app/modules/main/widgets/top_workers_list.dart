@@ -43,14 +43,19 @@ class TopWorkersList extends GetView<MainController> {
                     children: [
                       CircleAvatar(
                         radius: 35,
-                        backgroundImage: worker.avatar != null && worker.avatar!.startsWith('http')
+                        backgroundImage:
+                            worker.avatar != null &&
+                                worker.avatar!.startsWith('http')
                             ? NetworkImage(worker.avatar!) as ImageProvider
                             : const AssetImage(ImageStrings.profilePic),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         worker.name ?? "Worker",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -63,7 +68,10 @@ class TopWorkersList extends GetView<MainController> {
                           const SizedBox(width: 4),
                           Text(
                             "${worker.rating ?? 4.8}",
-                            style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),

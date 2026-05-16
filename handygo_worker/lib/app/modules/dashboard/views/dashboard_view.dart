@@ -21,7 +21,10 @@ class DashboardView extends GetView<DashboardController> {
           Positioned(
             top: -100,
             right: -50,
-            child: CircleAvatar(radius: 150, backgroundColor: AppColors.primaryColor.withOpacity(0.1)),
+            child: CircleAvatar(
+              radius: 150,
+              backgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
+            ),
           ),
           SafeArea(
             child: SingleChildScrollView(
@@ -35,14 +38,26 @@ class DashboardView extends GetView<DashboardController> {
                   const SizedBox(height: AppSpacing.lg),
                   const FadeInAnimation(
                     delay: 200,
-                    child: Text('Performance', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Performance',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   const FadeInAnimation(delay: 300, child: _StatsGrid()),
                   const SizedBox(height: AppSpacing.lg),
                   const FadeInAnimation(
                     delay: 350,
-                    child: Text('Active Schedule', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Active Schedule',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   const FadeInAnimation(delay: 400, child: ActiveJobCard()),
@@ -67,15 +82,24 @@ class _HeaderSection extends GetView<DashboardController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Welcome back,', style: TextStyle(color: Colors.grey)),
-            Text('John Provider', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(
+              'John Provider',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         Stack(
           children: [
             Container(
               padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppColors.primaryColor, width: 2)),
-              child: const CircleAvatar(radius: 22, backgroundImage: AssetImage('assets/images/profile.jpg')),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.primaryColor, width: 2),
+              ),
+              child: const CircleAvatar(
+                radius: 22,
+                backgroundImage: AssetImage('assets/images/profile.jpg'),
+              ),
             ),
             Positioned(
               right: 0,
@@ -83,11 +107,15 @@ class _HeaderSection extends GetView<DashboardController> {
               child: Container(
                 width: 14,
                 height: 14,
-                decoration: BoxDecoration(color: const Color(0xFF55B436), shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF55B436),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }
@@ -105,13 +133,28 @@ class _StatsGrid extends GetView<DashboardController> {
       mainAxisSpacing: 16,
       childAspectRatio: 1.2,
       children: [
-        _glassStatCard('Earnings', controller.totalEarnings.value, Icons.payments_rounded, Colors.blue),
-        _glassStatCard('Jobs Done', controller.jobsDone.value, Icons.task_alt_rounded, Colors.orange),
+        _glassStatCard(
+          'Earnings',
+          controller.totalEarnings.value,
+          Icons.payments_rounded,
+          Colors.blue,
+        ),
+        _glassStatCard(
+          'Jobs Done',
+          controller.jobsDone.value,
+          Icons.task_alt_rounded,
+          Colors.orange,
+        ),
       ],
     );
   }
 
-  Widget _glassStatCard(String label, String value, IconData icon, Color color) {
+  Widget _glassStatCard(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(24),
       child: BackdropFilter(
@@ -119,17 +162,26 @@ class _StatsGrid extends GetView<DashboardController> {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(icon, color: color, size: 20),
               const Spacer(),
-              Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                label,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ),

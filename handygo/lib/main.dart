@@ -13,27 +13,29 @@ import 'package:handygo/app/core/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Firebase
   try {
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     await Get.putAsync(() => NotificationService().init());
-    
+
     // Initialize Google Sign In (Requirement for 7.x)
     await GoogleSignIn.instance.initialize();
   } catch (e) {
     debugPrint("Firebase initialization failed: $e");
-    debugPrint("Please ensure google-services.json/GoogleService-Info.plist are added.");
+    debugPrint(
+      "Please ensure google-services.json/GoogleService-Info.plist are added.",
+    );
   }
-  
+
   // Initialize Storage
   await GetStorage.init();
-  
+
   // Dependency Injection
   Get.put(ApiClient());
   Get.put(AuthController());
-  
+
   runApp(const MyApp());
 }
 

@@ -39,25 +39,33 @@ class AnalyticsController extends GetxController {
       // Revenue
       final revResp = await _api.get(AdminApiConstants.analyticsRevenue);
       if (revResp.statusCode == 200 && revResp.data['success'] == true) {
-        revenueData.assignAll(List<Map<String, dynamic>>.from(revResp.data['data']));
+        revenueData.assignAll(
+          List<Map<String, dynamic>>.from(revResp.data['data']),
+        );
       }
 
       // Jobs by category
       final catResp = await _api.get(AdminApiConstants.analyticsJobsByCategory);
       if (catResp.statusCode == 200 && catResp.data['success'] == true) {
-        jobsByCategory.assignAll(List<Map<String, dynamic>>.from(catResp.data['data']));
+        jobsByCategory.assignAll(
+          List<Map<String, dynamic>>.from(catResp.data['data']),
+        );
       }
 
       // Weekly volume
       final volResp = await _api.get(AdminApiConstants.analyticsWeeklyVolume);
       if (volResp.statusCode == 200 && volResp.data['success'] == true) {
-        weeklyVolume.assignAll(List<Map<String, dynamic>>.from(volResp.data['data']));
+        weeklyVolume.assignAll(
+          List<Map<String, dynamic>>.from(volResp.data['data']),
+        );
       }
 
       // Top workers
       final topResp = await _api.get(AdminApiConstants.analyticsTopWorkers);
       if (topResp.statusCode == 200 && topResp.data['success'] == true) {
-        topWorkers.assignAll(List<Map<String, dynamic>>.from(topResp.data['data']));
+        topWorkers.assignAll(
+          List<Map<String, dynamic>>.from(topResp.data['data']),
+        );
       }
     } catch (e) {
       error.value = 'Failed to load analytics data';

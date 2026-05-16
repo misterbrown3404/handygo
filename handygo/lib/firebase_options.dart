@@ -70,9 +70,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '93446101103',
     projectId: 'we-chats-46946',
     storageBucket: 'we-chats-46946.appspot.com',
-    androidClientId: '93446101103-itc5a19bfbu734qvb79ba6qgqbr9mhvf.apps.googleusercontent.com',
-    iosClientId: '93446101103-q8pc64kjngq1961f7ah2963ij1pp92q3.apps.googleusercontent.com',
+    androidClientId:
+        '93446101103-itc5a19bfbu734qvb79ba6qgqbr9mhvf.apps.googleusercontent.com',
+    iosClientId:
+        '93446101103-q8pc64kjngq1961f7ah2963ij1pp92q3.apps.googleusercontent.com',
     iosBundleId: 'com.nurehub.handygo',
   );
-
 }

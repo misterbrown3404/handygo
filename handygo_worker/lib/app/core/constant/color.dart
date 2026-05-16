@@ -12,5 +12,7 @@ class AppColors {
   static const Color textColor = Color(0xFF212121);
   static const Color textSecondaryColor = Color(0xFF757575);
   static const Color borderColor = Color(0xFFE0E0E0);
-  static const Color workerPrimary = Color(0xFF2E7D32); // Darker green for worker
+  static const Color workerPrimary = Color(
+    0xFF2E7D32,
+  ); // Darker green for worker
 }

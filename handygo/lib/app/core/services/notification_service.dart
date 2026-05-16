@@ -9,7 +9,8 @@ class NotificationService extends GetxService {
   static NotificationService get to => Get.find();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
 
   Future<NotificationService> init() async {
     await _initializeLocalNotifications();
@@ -21,11 +22,12 @@ class NotificationService extends GetxService {
   Future<void> _initializeLocalNotifications() async {
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+    const DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
 
     const InitializationSettings settings = InitializationSettings(
       android: androidSettings,
@@ -41,7 +43,9 @@ class NotificationService extends GetxService {
     );
 
     await _localNotifications
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
 
     await _localNotifications.initialize(
@@ -97,20 +101,24 @@ class NotificationService extends GetxService {
     });
 
     // Initial token fetch
-    _fcm.getToken().then((token) {
-      if (token != null) {
-        log("Initial FCM Token: $token");
-        _syncTokenWithBackend(token);
-      }
-    }).catchError((e) {
-      log("Failed to fetch FCM Token (APNs might not be configured): $e");
-    });
+    _fcm
+        .getToken()
+        .then((token) {
+          if (token != null) {
+            log("Initial FCM Token: $token");
+            _syncTokenWithBackend(token);
+          }
+        })
+        .catchError((e) {
+          log("Failed to fetch FCM Token (APNs might not be configured): $e");
+        });
   }
 
   Future<void> _syncTokenWithBackend(String token) async {
     try {
       // Only sync if user is authenticated
-      if (Get.isRegistered<AuthController>() && Get.find<AuthController>().user.value != null) {
+      if (Get.isRegistered<AuthController>() &&
+          Get.find<AuthController>().user.value != null) {
         final authRepo = AuthRepository();
         await authRepo.updateFcmToken(token);
         log("FCM Token synced with backend");
@@ -124,18 +132,24 @@ class NotificationService extends GetxService {
     // Don't show if notification is null
     if (message.notification == null) return;
 
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'high_importance_channel',
-      'High Importance Notifications',
-      channelDescription: 'This channel is used for important notifications.',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: true,
-    );
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'high_importance_channel',
+          'High Importance Notifications',
+          channelDescription:
+              'This channel is used for important notifications.',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+        );
 
     const NotificationDetails details = NotificationDetails(
       android: androidDetails,
-      iOS: DarwinNotificationDetails(presentAlert: true, presentBadge: true, presentSound: true),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
     );
 
     await _localNotifications.show(
@@ -151,9 +165,7 @@ class NotificationService extends GetxService {
 // Global background handler must be a top-level function
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, 
+  // If you're going to use other Firebase services in the background,
   // you must call Firebase.initializeApp() first.
   log("Handling a background message: ${message.messageId}");
 }
-
-

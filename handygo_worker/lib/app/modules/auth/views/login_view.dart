@@ -26,16 +26,14 @@ class LoginView extends GetView<AuthController> {
             ),
           ),
           // 2. Dark Overlay
-          Container(color: Colors.black.withOpacity(0.4)),
-          
+          Container(color: Colors.black.withValues(alpha: 0.4)),
+
           // 3. Glass Login Card
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                child: FadeInAnimation(
-                  child: _buildGlassLoginCard(),
-                ),
+                child: FadeInAnimation(child: _buildGlassLoginCard()),
               ),
             ),
           ),
@@ -52,9 +50,12 @@ class LoginView extends GetView<AuthController> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
+            color: Colors.white.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -62,7 +63,11 @@ class LoginView extends GetView<AuthController> {
             children: [
               const Text(
                 'Worker Login',
-                style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const Text(
                 'Welcome back to HandyGo',
@@ -87,25 +92,36 @@ class LoginView extends GetView<AuthController> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: const Text('Forgot Password?', style: TextStyle(color: Colors.white70)),
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: Colors.white70),
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
-              Obx(() => PrimaryButton(
-                    text: 'Login',
-                    isLoading: controller.isLoading.value,
-                    onPressed: () => controller.login(),
-                  )),
+              Obx(
+                () => PrimaryButton(
+                  text: 'Login',
+                  isLoading: controller.isLoading.value,
+                  onPressed: () => controller.login(),
+                ),
+              ),
               const SizedBox(height: AppSpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('New here? ', style: TextStyle(color: Colors.white70)),
+                  const Text(
+                    'New here? ',
+                    style: TextStyle(color: Colors.white70),
+                  ),
                   GestureDetector(
                     onTap: () => Get.toNamed(Routes.SIGNUP),
                     child: const Text(
                       'Join as Worker',
-                      style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -126,7 +142,7 @@ class LoginView extends GetView<AuthController> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: TextField(
@@ -138,7 +154,10 @@ class LoginView extends GetView<AuthController> {
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.white38),
           prefixIcon: Icon(icon, color: Colors.white70, size: 20),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
           contentPadding: const EdgeInsets.symmetric(vertical: 18),
         ),
       ),

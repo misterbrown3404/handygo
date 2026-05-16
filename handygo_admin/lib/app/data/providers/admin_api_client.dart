@@ -9,48 +9,57 @@ class AdminApiClient extends getx.GetxService {
   final _storage = GetStorage();
 
   AdminApiClient() {
-    _dio = Dio(BaseOptions(
-      baseUrl: AdminApiConstants.baseUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: AdminApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
     // Auth Interceptor
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        final token = _storage.read('admin_token');
-        if (token != null) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(options);
-      },
-      onError: (DioException e, handler) {
-        if (e.response?.statusCode == 401) {
-          _storage.remove('admin_token');
-          _storage.remove('admin_user');
-          // Navigate to login
-          getx.Get.offAllNamed('/login');
-        }
-        return handler.next(e);
-      },
-    ));
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          final token = _storage.read('admin_token');
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+        onError: (DioException e, handler) {
+          if (e.response?.statusCode == 401) {
+            _storage.remove('admin_token');
+            _storage.remove('admin_user');
+            // Navigate to login
+            getx.Get.offAllNamed('/login');
+          }
+          return handler.next(e);
+        },
+      ),
+    );
 
     // Logger
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      error: true,
-      compact: true,
-    ));
+    _dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+      ),
+    );
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     return _dio.get(path, queryParameters: queryParameters);
   }
 

@@ -4,11 +4,7 @@ class SocialButton extends StatelessWidget {
   final String assetPath;
   final VoidCallback? onTap;
 
-  const SocialButton({
-    super.key,
-    required this.assetPath,
-    this.onTap,
-  });
+  const SocialButton({super.key, required this.assetPath, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +15,8 @@ class SocialButton extends StatelessWidget {
         height: 55,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
-          border: Border.all(color: Colors.white.withOpacity(0.3)),
+          color: Colors.white.withValues(alpha: 0.2),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Image.asset(assetPath, fit: BoxFit.contain),

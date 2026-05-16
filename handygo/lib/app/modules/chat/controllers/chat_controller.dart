@@ -3,7 +3,7 @@ import '../../../data/repositories/chat_repository.dart';
 
 class ChatController extends GetxController {
   final _chatRepo = ChatRepository();
-  
+
   final threads = <ChatThreadModel>[].obs;
   final isLoading = false.obs;
 

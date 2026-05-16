@@ -23,16 +23,26 @@ class ActiveJobCard extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Next Scheduled Job', style: TextStyle(color: Colors.white70)),
+              Text(
+                'Next Scheduled Job',
+                style: TextStyle(color: Colors.white70),
+              ),
               Icon(Icons.more_horiz, color: Colors.white),
             ],
           ),
           const SizedBox(height: 12),
           const Text(
             'Full House Cleaning',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const Text('12:30 PM • 12, Lagos Street', style: TextStyle(color: Colors.white)),
+          const Text(
+            '12:30 PM • 12, Lagos Street',
+            style: TextStyle(color: Colors.white),
+          ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => Get.to(() => const JobStatusView()),
@@ -42,7 +52,7 @@ class ActiveJobCard extends StatelessWidget {
               minimumSize: const Size(double.infinity, 45),
             ),
             child: const Text('View Details'),
-          )
+          ),
         ],
       ),
     );

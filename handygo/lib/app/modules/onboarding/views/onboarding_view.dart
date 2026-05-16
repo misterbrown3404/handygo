@@ -36,7 +36,7 @@ class OnboardingView extends GetView<OnboardingController> {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                Colors.white.withOpacity(0.8),
+                                Colors.white.withValues(alpha: 0.8),
                                 Colors.white,
                               ],
                               stops: const [0.6, 0.9, 1.0],
@@ -58,7 +58,8 @@ class OnboardingView extends GetView<OnboardingController> {
                           Text(
                             content.title,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black,
                                   fontSize: 24,
@@ -68,7 +69,8 @@ class OnboardingView extends GetView<OnboardingController> {
                           Text(
                             content.description,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
                                   color: Colors.grey[600],
                                   fontSize: 14,
                                 ),
@@ -87,27 +89,30 @@ class OnboardingView extends GetView<OnboardingController> {
             right: 0,
             child: Column(
               children: [
-                Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        controller.contents.length,
-                        (index) => Container(
-                          height: 8,
-                          width: controller.currentPage.value == index ? 24 : 8,
-                          margin: const EdgeInsets.only(right: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: controller.currentPage.value == index
-                                ? AppColors.primaryColor
-                                : Colors.grey[300],
-                          ),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      controller.contents.length,
+                      (index) => Container(
+                        height: 8,
+                        width: controller.currentPage.value == index ? 24 : 8,
+                        margin: const EdgeInsets.only(right: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: controller.currentPage.value == index
+                              ? AppColors.primaryColor
+                              : Colors.grey[300],
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 40),
                 Obx(() {
                   final isLastPage =
-                      controller.currentPage.value == controller.contents.length - 1;
+                      controller.currentPage.value ==
+                      controller.contents.length - 1;
                   if (isLastPage) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),

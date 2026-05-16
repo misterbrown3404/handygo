@@ -7,7 +7,9 @@ class AppColors {
   static const Color titleColor = Color(0xFF000000);
   static const Color accentColor = Color(0xFFF7931E);
   static const Color errorColor = Color(0xFFFF1744);
-  static const Color backgroundColor = Color(0xFFF5F5F5); // Slightly grey background for admin dashboard
+  static const Color backgroundColor = Color(
+    0xFFF5F5F5,
+  ); // Slightly grey background for admin dashboard
   static const Color surfaceColor = Color(0xFFFFFFFF);
   static const Color textColor = Color(0xFF212121);
   static const Color textSecondaryColor = Color(0xFF757575);

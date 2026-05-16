@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:handygo/app/core/widgets/glass_container.dart';
 
-
 class ChatInput extends GetView<IndividualChatController> {
   const ChatInput({super.key});
 
@@ -13,17 +12,20 @@ class ChatInput extends GetView<IndividualChatController> {
     return GlassContainer(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-      color: Colors.white.withOpacity(0.5),
+      color: Colors.white.withValues(alpha: 0.5),
       child: Row(
         children: [
           Expanded(
             child: GlassContainer(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               borderRadius: BorderRadius.circular(30),
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
               child: Row(
                 children: [
-                  Icon(Icons.sentiment_satisfied_alt_outlined, color: Colors.grey[400]),
+                  Icon(
+                    Icons.sentiment_satisfied_alt_outlined,
+                    color: Colors.grey[400],
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
@@ -48,7 +50,9 @@ class ChatInput extends GetView<IndividualChatController> {
               width: 48,
               borderRadius: BorderRadius.circular(24),
               color: AppColors.primaryColor,
-              child: const Center(child: Icon(Icons.send, color: Colors.white, size: 20)),
+              child: const Center(
+                child: Icon(Icons.send, color: Colors.white, size: 20),
+              ),
             ),
           ),
         ],

@@ -14,7 +14,7 @@ class ReceiptCard extends StatelessWidget {
         border: Border.all(color: Colors.grey[200]!),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -28,7 +28,9 @@ class ReceiptCard extends StatelessWidget {
             width: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('https://static.vecteezy.com/system/resources/previews/001/199/360/original/barcode-png.png'),
+                image: NetworkImage(
+                  'https://static.vecteezy.com/system/resources/previews/001/199/360/original/barcode-png.png',
+                ),
                 fit: BoxFit.contain,
               ),
             ),
@@ -53,16 +55,18 @@ class ReceiptCard extends StatelessWidget {
     );
   }
 
-  Widget _buildReceiptRow(String label, String value, {bool isBold = false, bool isGreen = false}) {
+  Widget _buildReceiptRow(
+    String label,
+    String value, {
+    bool isBold = false,
+    bool isGreen = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.grey, fontSize: 14),
-          ),
+          Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
           Text(
             value,
             style: TextStyle(

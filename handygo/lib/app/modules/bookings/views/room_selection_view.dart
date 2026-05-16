@@ -29,17 +29,19 @@ class RoomSelectionView extends GetView<BookingFlowController> {
             child: ListView(
               padding: const EdgeInsets.all(24),
               children: [
-                Obx(() => RoomSelectionItem(
-                  icon: Icons.weekend_outlined,
-                  title: "Rooms",
-                  count: controller.selectedRooms.value,
-                  onAdd: () => controller.selectedRooms.value++,
-                  onRemove: () {
-                    if (controller.selectedRooms.value > 1) {
-                      controller.selectedRooms.value--;
-                    }
-                  },
-                )),
+                Obx(
+                  () => RoomSelectionItem(
+                    icon: Icons.weekend_outlined,
+                    title: "Rooms",
+                    count: controller.selectedRooms.value,
+                    onAdd: () => controller.selectedRooms.value++,
+                    onRemove: () {
+                      if (controller.selectedRooms.value > 1) {
+                        controller.selectedRooms.value--;
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -50,11 +52,16 @@ class RoomSelectionView extends GetView<BookingFlowController> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 minimumSize: const Size(double.infinity, 56),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               child: const Text(
                 "Continue",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

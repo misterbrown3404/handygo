@@ -10,7 +10,8 @@ class AdminApiConstants {
   // Dashboard
   static const String dashboardStats = '/admin/dashboard/stats';
   static const String dashboardRevenue = '/admin/dashboard/revenue';
-  static const String workersByCategory = '/admin/dashboard/workers-by-category';
+  static const String workersByCategory =
+      '/admin/dashboard/workers-by-category';
 
   // Services / Categories
   static const String services = '/services';
@@ -40,7 +41,8 @@ class AdminApiConstants {
   // Analytics
   static const String analyticsOverview = '/admin/analytics/overview';
   static const String analyticsRevenue = '/admin/analytics/revenue';
-  static const String analyticsJobsByCategory = '/admin/analytics/jobs-by-category';
+  static const String analyticsJobsByCategory =
+      '/admin/analytics/jobs-by-category';
   static const String analyticsWeeklyVolume = '/admin/analytics/weekly-volume';
   static const String analyticsTopWorkers = '/admin/analytics/top-workers';
 }

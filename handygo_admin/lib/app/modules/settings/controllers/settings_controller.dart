@@ -6,7 +6,7 @@ import 'package:handygo_admin/app/core/constants/colors.dart';
 
 class SettingsController extends GetxController {
   final AdminApiClient _api = Get.find<AdminApiClient>();
-  
+
   var isLoading = true.obs;
   var settings = <String, List<Map<String, dynamic>>>{}.obs;
 
@@ -28,7 +28,12 @@ class SettingsController extends GetxController {
         });
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load settings', backgroundColor: AdminColors.error, colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Failed to load settings',
+        backgroundColor: AdminColors.error,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -36,19 +41,36 @@ class SettingsController extends GetxController {
 
   Future<void> updateSettings(List<Map<String, dynamic>> updatedItems) async {
     try {
-      final response = await _api.post(AdminApiConstants.adminSettings, data: {
-        'settings': updatedItems.map((item) => {
-          'key': item['key'],
-          'value': item['value'].toString(),
-        }).toList(),
-      });
+      final response = await _api.post(
+        AdminApiConstants.adminSettings,
+        data: {
+          'settings': updatedItems
+              .map(
+                (item) => {
+                  'key': item['key'],
+                  'value': item['value'].toString(),
+                },
+              )
+              .toList(),
+        },
+      );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
-        Get.snackbar('Success', 'Settings updated successfully', backgroundColor: AdminColors.success, colorText: Colors.white);
+        Get.snackbar(
+          'Success',
+          'Settings updated successfully',
+          backgroundColor: AdminColors.success,
+          colorText: Colors.white,
+        );
         fetchSettings();
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update settings', backgroundColor: AdminColors.error, colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Failed to update settings',
+        backgroundColor: AdminColors.error,
+        colorText: Colors.white,
+      );
     }
   }
 }

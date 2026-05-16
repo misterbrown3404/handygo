@@ -26,10 +26,7 @@ class VerifyOtpView extends GetView<AuthController> {
                 children: [
                   const Text(
                     "Verify Account",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 40),
                   Row(

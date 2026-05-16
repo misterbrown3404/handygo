@@ -12,33 +12,45 @@ class StatusCard extends GetView<DashboardController> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Obx(() => Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: controller.isOnline.value ? const Color(0xFF55B436) : Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                  )),
+              Obx(
+                () => Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: controller.isOnline.value
+                        ? const Color(0xFF55B436)
+                        : Colors.grey,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
-              Obx(() => Text(
-                    controller.isOnline.value ? 'Active & Online' : 'Currently Offline',
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  )),
+              Obx(
+                () => Text(
+                  controller.isOnline.value
+                      ? 'Active & Online'
+                      : 'Currently Offline',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
             ],
           ),
-          Obx(() => Switch.adaptive(
-                value: controller.isOnline.value,
-                activeColor: const Color(0xFF55B436),
-                onChanged: (val) => controller.toggleOnline(val),
-              ))
+          Obx(
+            () => Switch.adaptive(
+              value: controller.isOnline.value,
+              activeThumbColor: const Color(0xFF55B436),
+              onChanged: (val) => controller.toggleOnline(val),
+            ),
+          ),
         ],
       ),
     );

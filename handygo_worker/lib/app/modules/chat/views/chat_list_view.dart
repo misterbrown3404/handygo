@@ -23,18 +23,27 @@ class ChatListView extends GetView<ChatController> {
       body: Stack(
         children: [
           // Background blobs for depth
-          Positioned(top: 200, left: -50, child: CircleAvatar(radius: 100, backgroundColor: Colors.blue.withOpacity(0.05))),
-          Obx(() => ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                itemCount: controller.chats.length,
-                itemBuilder: (context, index) {
-                  final chat = controller.chats[index];
-                  return FadeInAnimation(
-                    delay: index * 100,
-                    child: _ChatListItem(chat: chat),
-                  );
-                },
-              )),
+          Positioned(
+            top: 200,
+            left: -50,
+            child: CircleAvatar(
+              radius: 100,
+              backgroundColor: Colors.blue.withValues(alpha: 0.05),
+            ),
+          ),
+          Obx(
+            () => ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              itemCount: controller.chats.length,
+              itemBuilder: (context, index) {
+                final chat = controller.chats[index];
+                return FadeInAnimation(
+                  delay: index * 100,
+                  child: _ChatListItem(chat: chat),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -48,7 +57,10 @@ class _ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 6,
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
@@ -56,9 +68,9 @@ class _ChatListItem extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.5)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
             ),
             child: ListTile(
               onTap: () => Get.to(() => const IndividualChatView()),
@@ -75,29 +87,54 @@ class _ChatListItem extends StatelessWidget {
                     child: Container(
                       width: 14,
                       height: 14,
-                      decoration: BoxDecoration(color: AppColors.primaryColor, shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
-              title: Text(chat['name']!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              title: Text(
+                chat['name']!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
               subtitle: Text(
                 chat['lastMsg']!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: chat['unread'] == '1' ? Colors.black : Colors.grey),
+                style: TextStyle(
+                  color: chat['unread'] == '1' ? Colors.black : Colors.grey,
+                ),
               ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(chat['time']!, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text(
+                    chat['time']!,
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                   const SizedBox(height: 4),
                   if (chat['unread'] == '1')
                     Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(color: AppColors.primaryColor, shape: BoxShape.circle),
-                      child: const Text('1', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Text(
+                        '1',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                 ],
               ),
@@ -119,15 +156,28 @@ class IndividualChatView extends StatelessWidget {
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Sarah Williams', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text('Online', style: TextStyle(fontSize: 12, color: AppColors.primaryColor)),
+            Text(
+              'Sarah Williams',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Online',
+              style: TextStyle(fontSize: 12, color: AppColors.primaryColor),
+            ),
           ],
         ),
       ),
       body: Stack(
         children: [
           // Background Imagery/Blobs
-          Positioned(bottom: 100, right: -50, child: CircleAvatar(radius: 120, backgroundColor: AppColors.primaryColor.withOpacity(0.05))),
+          Positioned(
+            bottom: 100,
+            right: -50,
+            child: CircleAvatar(
+              radius: 120,
+              backgroundColor: AppColors.primaryColor.withValues(alpha: 0.05),
+            ),
+          ),
           Column(
             children: [
               _buildJobContext(),
@@ -142,7 +192,12 @@ class IndividualChatView extends StatelessWidget {
   }
 
   Widget _buildQuickReplies() {
-    final replies = ["I'm on my way", "I've arrived", "Almost done", "On my way back"];
+    final replies = [
+      "I'm on my way",
+      "I've arrived",
+      "Almost done",
+      "On my way back",
+    ];
     return SizedBox(
       height: 45,
       child: ListView.builder(
@@ -152,10 +207,18 @@ class IndividualChatView extends StatelessWidget {
         itemBuilder: (context, index) => Container(
           margin: const EdgeInsets.only(right: 8),
           child: ActionChip(
-            label: Text(replies[index], style: const TextStyle(fontSize: 12, color: AppColors.primaryColor)),
-            backgroundColor: AppColors.primaryColor.withOpacity(0.05),
+            label: Text(
+              replies[index],
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.primaryColor,
+              ),
+            ),
+            backgroundColor: AppColors.primaryColor.withValues(alpha: 0.05),
             side: BorderSide.none,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
             onPressed: () {},
           ),
         ),
@@ -173,15 +236,18 @@ class IndividualChatView extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.5)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
             ),
             child: const Row(
               children: [
                 Icon(Icons.engineering_rounded, size: 16, color: Colors.grey),
                 SizedBox(width: 8),
-                Text('Ongoing Job: Kitchen Plumbing', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                Text(
+                  'Ongoing Job: Kitchen Plumbing',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                ),
                 Spacer(),
                 Icon(Icons.chevron_right_rounded, size: 16, color: Colors.grey),
               ],
@@ -196,9 +262,22 @@ class IndividualChatView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.lg),
       children: const [
-        _MessageBubble(text: "Hello! Are you still coming for the plumbing fix?", isMe: false, time: "10:30 AM"),
-        _MessageBubble(text: "Yes, I'm just gathering my tools. I'll be there in 20 minutes.", isMe: true, time: "10:32 AM"),
-        _MessageBubble(text: "Perfect, see you then!", isMe: false, time: "10:33 AM"),
+        _MessageBubble(
+          text: "Hello! Are you still coming for the plumbing fix?",
+          isMe: false,
+          time: "10:30 AM",
+        ),
+        _MessageBubble(
+          text:
+              "Yes, I'm just gathering my tools. I'll be there in 20 minutes.",
+          isMe: true,
+          time: "10:32 AM",
+        ),
+        _MessageBubble(
+          text: "Perfect, see you then!",
+          isMe: false,
+          time: "10:33 AM",
+        ),
       ],
     );
   }
@@ -208,20 +287,38 @@ class IndividualChatView extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -5))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
       ),
       child: SafeArea(
         child: Row(
           children: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.add_circle_outline_rounded, color: AppColors.primaryColor)),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.add_circle_outline_rounded,
+                color: AppColors.primaryColor,
+              ),
+            ),
             Expanded(
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Type a message...',
                   filled: true,
                   fillColor: Colors.grey[100],
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
             ),
@@ -242,7 +339,11 @@ class _MessageBubble extends StatelessWidget {
   final bool isMe;
   final String time;
 
-  const _MessageBubble({required this.text, required this.isMe, required this.time});
+  const _MessageBubble({
+    required this.text,
+    required this.isMe,
+    required this.time,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -262,16 +363,24 @@ class _MessageBubble extends StatelessWidget {
           ),
         ),
         child: Column(
-          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment: isMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
           children: [
             Text(
               text,
-              style: TextStyle(color: isMe ? Colors.white : Colors.black, fontSize: 14),
+              style: TextStyle(
+                color: isMe ? Colors.white : Colors.black,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               time,
-              style: TextStyle(color: isMe ? Colors.white70 : Colors.grey, fontSize: 10),
+              style: TextStyle(
+                color: isMe ? Colors.white70 : Colors.grey,
+                fontSize: 10,
+              ),
             ),
           ],
         ),
