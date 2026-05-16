@@ -9,6 +9,8 @@ import 'package:handygo_admin/app/modules/jobs/views/jobs_view.dart';
 import 'package:handygo_admin/app/modules/analytics/views/analytics_view.dart';
 import 'package:handygo_admin/app/modules/kyc/views/kyc_view.dart';
 import 'package:handygo_admin/app/modules/settings/views/settings_view.dart';
+import 'package:handygo_admin/app/modules/services/views/services_view.dart';
+import 'package:handygo_admin/app/modules/notifications/views/notifications_view.dart';
 
 class AdminShell extends StatefulWidget {
   const AdminShell({super.key});
@@ -26,9 +28,11 @@ class _AdminShellState extends State<AdminShell> {
     DashboardView(),
     UsersView(),
     WorkersView(),
+    ServicesAdminView(),
     JobsView(),
     AnalyticsView(),
     KycView(),
+    NotificationsView(),
     SettingsView(),
   ];
 
@@ -36,9 +40,11 @@ class _AdminShellState extends State<AdminShell> {
     _NavItem(Icons.dashboard_rounded, 'Dashboard'),
     _NavItem(Icons.people_rounded, 'Customers'),
     _NavItem(Icons.engineering_rounded, 'Workers'),
+    _NavItem(Icons.category_rounded, 'Services'),
     _NavItem(Icons.work_rounded, 'Jobs'),
     _NavItem(Icons.analytics_rounded, 'Analytics'),
     _NavItem(Icons.verified_user_rounded, 'KYC Verification'),
+    _NavItem(Icons.notifications_rounded, 'Notifications'),
     _NavItem(Icons.settings_rounded, 'Settings'),
   ];
 
@@ -54,8 +60,8 @@ class _AdminShellState extends State<AdminShell> {
       body: Stack(
         children: [
           // Background ambient glow blobs
-          Positioned(top: -200, right: -100, child: _ambientBlob(AdminColors.primary.withOpacity(0.04), 400)),
-          Positioned(bottom: -150, left: 100, child: _ambientBlob(AdminColors.accent.withOpacity(0.03), 350)),
+          Positioned(top: -200, right: -100, child: _ambientBlob(AdminColors.primary.withValues(alpha: 0.04), 400)),
+          Positioned(bottom: -150, left: 100, child: _ambientBlob(AdminColors.accent.withValues(alpha: 0.03), 350)),
           Row(
             children: [
               if (isDesktop) _buildGlassSidebar(),
@@ -96,13 +102,13 @@ class _AdminShellState extends State<AdminShell> {
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
             decoration: BoxDecoration(
-              color: AdminColors.surface.withOpacity(0.8),
-              border: Border(right: BorderSide(color: AdminColors.borderDark.withOpacity(0.5))),
+              color: AdminColors.surface.withValues(alpha: 0.8),
+              border: Border(right: BorderSide(color: AdminColors.borderDark.withValues(alpha: 0.5))),
             ),
             child: Column(
               children: [
                 _buildLogo(),
-                Divider(color: AdminColors.borderDark.withOpacity(0.3), height: 1),
+                Divider(color: AdminColors.borderDark.withValues(alpha: 0.3), height: 1),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -110,7 +116,7 @@ class _AdminShellState extends State<AdminShell> {
                     itemBuilder: (context, index) => _buildNavItem(index),
                   ),
                 ),
-                Divider(color: AdminColors.borderDark.withOpacity(0.3), height: 1),
+                Divider(color: AdminColors.borderDark.withValues(alpha: 0.3), height: 1),
                 _buildCollapseBtn(),
                 const SizedBox(height: 16),
               ],
@@ -129,9 +135,9 @@ class _AdminShellState extends State<AdminShell> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [AdminColors.primary, AdminColors.primary.withOpacity(0.7)]),
+              gradient: LinearGradient(colors: [AdminColors.primary, AdminColors.primary.withValues(alpha: 0.7)]),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [BoxShadow(color: AdminColors.primary.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))],
+              boxShadow: [BoxShadow(color: AdminColors.primary.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))],
             ),
             child: const Icon(Icons.handyman_rounded, color: Colors.white, size: 24),
           ),
@@ -163,9 +169,9 @@ class _AdminShellState extends State<AdminShell> {
         margin: EdgeInsets.symmetric(horizontal: _isCollapsed ? 12 : 16, vertical: 2),
         padding: EdgeInsets.symmetric(horizontal: _isCollapsed ? 0 : 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AdminColors.primary.withOpacity(0.12) : Colors.transparent,
+          color: isSelected ? AdminColors.primary.withValues(alpha: 0.12) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: isSelected ? Border.all(color: AdminColors.primary.withOpacity(0.2)) : null,
+          border: isSelected ? Border.all(color: AdminColors.primary.withValues(alpha: 0.2)) : null,
         ),
         child: Row(
           mainAxisAlignment: _isCollapsed ? MainAxisAlignment.center : MainAxisAlignment.start,
@@ -179,13 +185,13 @@ class _AdminShellState extends State<AdminShell> {
                   style: TextStyle(color: isSelected ? AdminColors.primary : AdminColors.textSecondary, fontWeight: isSelected ? FontWeight.bold : FontWeight.w500, fontSize: 14),
                 ),
               ),
-              if (index == 5)
+              if (index == 6)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AdminColors.warning.withOpacity(0.15),
+                    color: AdminColors.warning.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: AdminColors.warning.withOpacity(0.3)),
+                    border: Border.all(color: AdminColors.warning.withValues(alpha: 0.3)),
                   ),
                   child: const Text('8', style: TextStyle(color: AdminColors.warning, fontSize: 11, fontWeight: FontWeight.bold)),
                 ),
@@ -214,8 +220,8 @@ class _AdminShellState extends State<AdminShell> {
           height: 64,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: AdminColors.surface.withOpacity(0.7),
-            border: Border(bottom: BorderSide(color: AdminColors.borderDark.withOpacity(0.4))),
+            color: AdminColors.surface.withValues(alpha: 0.7),
+            border: Border(bottom: BorderSide(color: AdminColors.borderDark.withValues(alpha: 0.4))),
           ),
           child: Row(
             children: [
@@ -226,9 +232,9 @@ class _AdminShellState extends State<AdminShell> {
                   height: 40,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AdminColors.borderDark.withOpacity(0.4)),
+                    border: Border.all(color: AdminColors.borderDark.withValues(alpha: 0.4)),
                   ),
                   child: Row(
                     children: [
@@ -244,7 +250,7 @@ class _AdminShellState extends State<AdminShell> {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: Colors.black.withOpacity(0.04), borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.04), borderRadius: BorderRadius.circular(10)),
                     child: const Icon(Icons.notifications_none_rounded, color: AdminColors.textSecondary, size: 20),
                   ),
                   Positioned(right: 6, top: 6, child: Container(width: 8, height: 8, decoration: const BoxDecoration(color: AdminColors.error, shape: BoxShape.circle))),
@@ -254,9 +260,9 @@ class _AdminShellState extends State<AdminShell> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: isDesktop ? 12 : 8, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.04),
+                  color: Colors.black.withValues(alpha: 0.04),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AdminColors.borderDark.withOpacity(0.4)),
+                  border: Border.all(color: AdminColors.borderDark.withValues(alpha: 0.4)),
                 ),
                 child: Row(
                   children: [

@@ -33,8 +33,11 @@ class WorkerRepository {
     }
   }
 
-  Future<List<WorkerModel>> getWorkers() async {
-    final response = await apiClient.get('/workers');
+  Future<List<WorkerModel>> getWorkers({String? location, String? search}) async {
+    final response = await apiClient.get('/workers', queryParameters: {
+      if (location != null && location.isNotEmpty) 'location': location,
+      if (search != null && search.isNotEmpty) 'search': search,
+    });
     if (response.statusCode == 200) {
       final List data = response.data['data'];
       return data.map((e) => WorkerModel.fromJson(e)).toList();

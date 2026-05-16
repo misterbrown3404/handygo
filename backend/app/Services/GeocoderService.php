@@ -10,9 +10,9 @@ class GeocoderService
     /**
      * Find workers nearby using Haversine formula.
      */
-    public function nearbyWorkers(float $lat, float $lng, int $radiusKm): Collection
+    public function nearbyWorkers(float $lat, float $lng, int $radiusKm, bool $isAdmin = false): Collection
     {
-        return Worker::selectRaw("
+        $query = Worker::selectRaw("
             *, (6371 * acos(
                 cos(radians(?)) *
                 cos(radians(lat)) *
@@ -22,8 +22,13 @@ class GeocoderService
             )) AS distance
         ", [$lat, $lng, $lat])
             ->where('status', 'active')
-            ->where('is_available', true)
-            ->having('distance', '<', $radiusKm)
+            ->where('is_available', true);
+
+        if (!$isAdmin) {
+            $query->subscribed();
+        }
+
+        return $query->having('distance', '<', $radiusKm)
             ->orderBy('distance')
             ->get();
     }

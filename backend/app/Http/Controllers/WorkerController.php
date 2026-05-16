@@ -11,18 +11,42 @@ class WorkerController extends Controller
 {
     public function index(Request $request)
     {
-        $workers = Worker::when($request->status, function($query, $status) {
+        $query = Worker::query();
+
+        // Only show subscribed workers to customers
+        if (!$request->user()?->hasRole('admin')) {
+            $query->subscribed();
+        }
+
+        $workers = $query->when($request->status, function($query, $status) {
             return $query->where('status', $status);
+        })
+        ->when($request->location, function($query, $location) {
+            return $query->where('address', 'like', '%' . $location . '%');
+        })
+        ->when($request->search, function($query, $search) {
+            return $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('specialty', 'like', '%' . $search . '%');
+            });
         })
         ->paginate(20);
         
-        return WorkerResource::collection($workers);
+        return response()->json([
+            'success' => true,
+            'message' => 'Workers retrieved',
+            'data' => WorkerResource::collection($workers)->response()->getData(true)
+        ]);
     }
 
     public function show($id)
     {
         $worker = Worker::findOrFail($id);
-        return new WorkerResource($worker);
+        return response()->json([
+            'success' => true,
+            'message' => 'Worker details retrieved',
+            'data' => new WorkerResource($worker)
+        ]);
     }
 
     public function nearby(Request $request)
@@ -36,9 +60,18 @@ class WorkerController extends Controller
         $radius = $request->radius ?? 10;
         
         $geocoder = new GeocoderService();
-        $workers = $geocoder->nearbyWorkers($request->lat, $request->lng, $radius);
+        $workers = $geocoder->nearbyWorkers(
+            $request->lat, 
+            $request->lng, 
+            $radius, 
+            $request->user()?->hasRole('admin') ?? false
+        );
 
-        return WorkerResource::collection($workers);
+        return response()->json([
+            'success' => true,
+            'message' => 'Nearby workers retrieved',
+            'data' => WorkerResource::collection($workers)
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -59,7 +92,11 @@ class WorkerController extends Controller
 
         $worker->update($validated);
 
-        return new WorkerResource($worker);
+        return response()->json([
+            'success' => true,
+            'message' => 'Worker updated successfully',
+            'data' => new WorkerResource($worker)
+        ]);
     }
 
     public function toggleStatus(Request $request, $id)
@@ -69,6 +106,10 @@ class WorkerController extends Controller
 
         $worker->update(['is_available' => !$worker->is_available]);
 
-        return new WorkerResource($worker);
+        return response()->json([
+            'success' => true,
+            'message' => 'Worker availability toggled',
+            'data' => new WorkerResource($worker)
+        ]);
     }
 }

@@ -8,22 +8,34 @@ use App\Http\Resources\ServiceResource;
 
 class ServiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::where('is_active', true)->get();
-        return ServiceResource::collection($services);
+        // Admin sees all services; customers see only active
+        $query = Service::query();
+        if (!$request->user()?->hasRole('admin')) {
+            $query->where('is_active', true);
+        }
+        $services = $query->get();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Services retrieved successfully',
+            'data' => ServiceResource::collection($services)
+        ]);
     }
 
     public function show($id)
     {
         $service = Service::findOrFail($id);
-        return new ServiceResource($service);
+        return response()->json([
+            'success' => true,
+            'message' => 'Service details retrieved',
+            'data' => new ServiceResource($service)
+        ]);
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Service::class);
-        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
@@ -34,13 +46,16 @@ class ServiceController extends Controller
 
         $service = Service::create($validated);
 
-        return new ServiceResource($service);
+        return response()->json([
+            'success' => true,
+            'message' => 'Service created successfully',
+            'data' => new ServiceResource($service)
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $service = Service::findOrFail($id);
-        $this->authorize('update', $service);
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
@@ -53,15 +68,21 @@ class ServiceController extends Controller
 
         $service->update($validated);
 
-        return new ServiceResource($service);
+        return response()->json([
+            'success' => true,
+            'message' => 'Service updated successfully',
+            'data' => new ServiceResource($service)
+        ]);
     }
 
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
-        $this->authorize('delete', $service);
         $service->delete();
 
-        return response()->json(['message' => 'Service deleted successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Service deleted successfully'
+        ]);
     }
 }

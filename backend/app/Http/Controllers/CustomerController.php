@@ -11,13 +11,21 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::paginate(20);
-        return CustomerResource::collection($customers);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved',
+            'data' => CustomerResource::collection($customers)->response()->getData(true)
+        ]);
     }
 
     public function show($id)
     {
         $customer = Customer::findOrFail($id);
-        return new CustomerResource($customer);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer details retrieved',
+            'data' => new CustomerResource($customer)
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -36,7 +44,11 @@ class CustomerController extends Controller
 
         $customer->update($validated);
 
-        return new CustomerResource($customer);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer updated successfully',
+            'data' => new CustomerResource($customer)
+        ]);
     }
 
     public function destroy($id)
@@ -45,6 +57,9 @@ class CustomerController extends Controller
         $this->authorize('delete', $customer);
         $customer->delete();
 
-        return response()->json(['message' => 'Customer deleted successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer deleted successfully'
+        ]);
     }
 }

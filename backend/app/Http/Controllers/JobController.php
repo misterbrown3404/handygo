@@ -31,7 +31,11 @@ class JobController extends Controller
             ->orderByDesc('date')
             ->paginate($perPage);
 
-        return JobResource::collection($jobs);
+        return response()->json([
+            'success' => true,
+            'message' => 'Jobs retrieved successfully',
+            'data' => JobResource::collection($jobs)->response()->getData(true)
+        ]);
     }
 
     /**
@@ -43,7 +47,12 @@ class JobController extends Controller
         $validated['id'] = (string) \Illuminate\Support\Str::uuid();
         $validated['job_id'] = '#'.rand(1000,9999);
         $job = Job::create($validated);
-        return new JobResource($job);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Job created successfully',
+            'data' => new JobResource($job)
+        ]);
     }
 
     /**
@@ -52,7 +61,11 @@ class JobController extends Controller
     public function show(string $id)
     {
         $job = Job::with(['customer', 'worker', 'service'])->findOrFail($id);
-        return new JobResource($job);
+        return response()->json([
+            'success' => true,
+            'message' => 'Job details retrieved',
+            'data' => new JobResource($job)
+        ]);
     }
 
     /**
@@ -62,7 +75,12 @@ class JobController extends Controller
     {
         $job = Job::findOrFail($id);
         $job->update($request->validated());
-        return new JobResource($job);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Job updated successfully',
+            'data' => new JobResource($job)
+        ]);
     }
 
     /**
@@ -72,7 +90,11 @@ class JobController extends Controller
     {
         $job = Job::findOrFail($id);
         $job->delete();
-        return response()->json(['message' => 'Job deleted'], 200);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Job deleted successfully'
+        ]);
     }
 
     /**
@@ -118,5 +140,3 @@ class JobController extends Controller
         ]);
     }
 }
-
-?>

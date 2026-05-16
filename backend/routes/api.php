@@ -25,6 +25,9 @@ use App\Http\Controllers\WalletController;
 */
 
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\SettingsController;
 
 Route::prefix('v1')->group(function () {
 
@@ -38,8 +41,9 @@ Route::prefix('v1')->group(function () {
         Route::post('verify-otp',      [AuthController::class, 'verifyOtp']);
     });
 
-    // ─── Payment Webhooks (no auth — Paystack signs the payload) ─────────
-    Route::post('payments/webhook', [PaymentController::class, 'webhook']);
+    // ─── Payment & Subscription Webhooks (no auth — Paystack signs the payload) ──
+    Route::post('payments/webhook',      [PaymentController::class, 'webhook']);
+    Route::post('subscriptions/webhook', [SubscriptionController::class, 'webhook']);
 
     // ─── Protected Routes (Bearer token via Sanctum) ─────────────────────
     Route::middleware('auth:sanctum')->group(function () {
@@ -54,6 +58,9 @@ Route::prefix('v1')->group(function () {
         Route::post('profile/avatar',       [\App\Http\Controllers\ProfileController::class, 'avatar']);
         Route::post('user/fcm-token',      [\App\Http\Controllers\Api\UserController::class, 'updateFcmToken']);
 
+        // ── Subscriptions (Worker) ────────────────────────────────────────
+        Route::post('subscriptions/initiate', [SubscriptionController::class, 'initiate']);
+        Route::get('subscriptions/status',    [SubscriptionController::class, 'status']);
 
         // ── Jobs ──────────────────────────────────────────────────────────
         Route::get('jobs/export',           [JobController::class, 'export']);
@@ -88,22 +95,13 @@ Route::prefix('v1')->group(function () {
         Route::post('chat/message',           [ChatController::class, 'send']);
         Route::post('chat/message/{id}/read', [ChatController::class, 'markRead']);
 
-        // ── Analytics (admin only) ────────────────────────────────────────
-        Route::middleware('role:admin|staff')->group(function () {
-            Route::get('analytics/overview',         [AnalyticsController::class, 'overview']);
-            Route::get('analytics/revenue',          [AnalyticsController::class, 'revenue']);
-            Route::get('analytics/jobs-by-category', [AnalyticsController::class, 'jobsByCategory']);
-            Route::get('analytics/weekly-volume',    [AnalyticsController::class, 'weeklyVolume']);
-            Route::get('analytics/top-workers',      [AnalyticsController::class, 'topWorkers']);
-        });
-
-        // ── KYC (NIN / BVN verification) ──────────────────────────────────
-        Route::get('kyc',                  [KycController::class, 'index']);
+        // ── KYC (Worker submission & Legacy Admin) ──────────────────────────────────
+        Route::get('kyc',                  [KycController::class, 'index']); // Legacy fallback
         Route::post('kyc/submit',          [KycController::class, 'submit']);
-        Route::post('kyc/{kyc}/approve',   [KycController::class, 'approve']);
-        Route::post('kyc/{kyc}/reject',    [KycController::class, 'reject']);
+        Route::post('kyc/{id}/approve',    [KycController::class, 'approve']); // Legacy fallback
+        Route::post('kyc/{id}/reject',     [KycController::class, 'reject']); // Legacy fallback
 
-        // ── Media (image upload — S3 or local) ────────────────────────────
+        // ── Media (image upload) ──────────────────────────────────────────
         Route::post('media/upload',        [MediaController::class, 'upload']);
         Route::delete('media/{id}',        [MediaController::class, 'destroy']);
 
@@ -126,5 +124,42 @@ Route::prefix('v1')->group(function () {
         Route::post('notifications/register-device',  [NotificationController::class, 'registerDevice']);
         Route::get('notifications',                   [NotificationController::class, 'index']);
         Route::post('notifications/{id}/read',        [NotificationController::class, 'markRead']);
+
+        // ══════════════════════════════════════════════════════════════════
+        // ── ADMIN ROUTES (role:admin only) ────────────────────────────────
+        // ══════════════════════════════════════════════════════════════════
+        Route::middleware('role:admin')->prefix('admin')->group(function () {
+            // Dashboard
+            Route::get('dashboard/stats',           [AdminDashboardController::class, 'stats']);
+            Route::get('dashboard/revenue',         [AdminDashboardController::class, 'revenue']);
+            Route::get('dashboard/workers-by-category', [AdminDashboardController::class, 'workersByCategory']);
+
+            // Subscriptions management
+            Route::get('subscriptions',             [SubscriptionController::class, 'adminIndex']);
+
+            // Services / Categories CRUD (admin only)
+            Route::post('services',                 [ServiceController::class, 'store']);
+            Route::put('services/{id}',             [ServiceController::class, 'update']);
+            Route::delete('services/{id}',          [ServiceController::class, 'destroy']);
+
+            // KYC Management (admin only)
+            Route::get('kyc',                       [KycController::class, 'index']);
+            Route::post('kyc/{id}/approve',         [KycController::class, 'approve']);
+            Route::post('kyc/{id}/reject',          [KycController::class, 'reject']);
+
+            // Notifications (admin only)
+            Route::post('notifications/broadcast',   [NotificationController::class, 'broadcast']);
+
+            // Settings (admin only)
+            Route::get('settings',                   [SettingsController::class, 'index']);
+            Route::post('settings',                  [SettingsController::class, 'update']);
+
+            // Analytics (admin only)
+            Route::get('analytics/overview',         [AnalyticsController::class, 'overview']);
+            Route::get('analytics/revenue',          [AnalyticsController::class, 'revenue']);
+            Route::get('analytics/jobs-by-category', [AnalyticsController::class, 'jobsByCategory']);
+            Route::get('analytics/weekly-volume',    [AnalyticsController::class, 'weeklyVolume']);
+            Route::get('analytics/top-workers',      [AnalyticsController::class, 'topWorkers']);
+        });
     });
 });

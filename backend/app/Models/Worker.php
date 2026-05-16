@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Subscription;
 
 class Worker extends Model
 {
@@ -53,4 +54,44 @@ class Worker extends Model
     {
         return $this->morphMany(Media::class, 'model');
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
+     * Get the latest active subscription.
+     */
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('expires_at', '>', now())
+            ->latest();
+    }
+
+    /**
+     * Scope: Only workers with an active subscription (visible to customers).
+     */
+    public function scopeSubscribed($query)
+    {
+        return $query->whereHas('subscriptions', function ($q) {
+            $q->where('status', 'active')
+              ->where('expires_at', '>', now());
+        });
+    }
+
+    /**
+     * Check if worker has an active subscription.
+     */
+    public function getHasActiveSubscriptionAttribute(): bool
+    {
+        return $this->subscriptions()
+            ->where('status', 'active')
+            ->where('expires_at', '>', now())
+            ->exists();
+    }
+
+    protected $appends = ['has_active_subscription'];
 }

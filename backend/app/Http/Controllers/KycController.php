@@ -14,8 +14,6 @@ class KycController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', KycSubmission::class);
-        
         $submissions = KycSubmission::with('user')
             ->when($request->status, function($q, $status) {
                 $q->where('status', $status);
@@ -23,7 +21,11 @@ class KycController extends Controller
             ->latest()
             ->paginate(20);
 
-        return KycSubmissionResource::collection($submissions);
+        return response()->json([
+            'success' => true,
+            'message' => 'KYC submissions retrieved',
+            'data' => KycSubmissionResource::collection($submissions)->response()->getData(true)
+        ]);
     }
 
     /**
@@ -40,6 +42,9 @@ class KycController extends Controller
             'selfie' => 'required|string',
         ]);
 
+        // Delete existing pending submissions for this user to avoid duplicates
+        KycSubmission::where('user_id', Auth::id())->where('status', 'pending')->delete();
+
         $submission = KycSubmission::create([
             'user_id' => Auth::id(),
             'nin' => $request->nin,
@@ -51,7 +56,11 @@ class KycController extends Controller
             'status' => 'pending',
         ]);
 
-        return new KycSubmissionResource($submission);
+        return response()->json([
+            'success' => true,
+            'message' => 'KYC submitted successfully',
+            'data' => new KycSubmissionResource($submission)
+        ]);
     }
 
     /**
@@ -59,8 +68,6 @@ class KycController extends Controller
      */
     public function approve(Request $request, $id)
     {
-        $this->authorize('update', KycSubmission::class);
-        
         $submission = KycSubmission::findOrFail($id);
         $submission->update([
             'status' => 'approved',
@@ -69,9 +76,15 @@ class KycController extends Controller
         ]);
 
         // Update worker status to active upon approval
-        $submission->user->worker()->update(['status' => 'active']);
+        if ($submission->user && $submission->user->worker) {
+            $submission->user->worker->update(['status' => 'active']);
+        }
 
-        return new KycSubmissionResource($submission);
+        return response()->json([
+            'success' => true,
+            'message' => 'KYC submission approved',
+            'data' => new KycSubmissionResource($submission)
+        ]);
     }
 
     /**
@@ -79,8 +92,6 @@ class KycController extends Controller
      */
     public function reject(Request $request, $id)
     {
-        $this->authorize('update', KycSubmission::class);
-        
         $request->validate(['rejection_reason' => 'required|string']);
 
         $submission = KycSubmission::findOrFail($id);
@@ -91,6 +102,10 @@ class KycController extends Controller
             'reviewed_at' => now(),
         ]);
 
-        return new KycSubmissionResource($submission);
+        return response()->json([
+            'success' => true,
+            'message' => 'KYC submission rejected',
+            'data' => new KycSubmissionResource($submission)
+        ]);
     }
 }

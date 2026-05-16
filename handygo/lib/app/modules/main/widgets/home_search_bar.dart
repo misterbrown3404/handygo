@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/color.dart';
 import 'package:handygo/app/modules/home/widgets/filter_bottom_sheet.dart';
 import 'package:handygo/app/core/widgets/glass_container.dart';
+import 'package:handygo/app/modules/main/controllers/main_controller.dart';
 
 import 'package:handygo/app/core/widgets/scale_on_tap.dart';
 
@@ -18,16 +19,17 @@ class HomeSearchBar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             height: 55,
             borderRadius: BorderRadius.circular(15),
-            child: const Row(
-              children: [
-                // ignore: deprecated_member_use
-                Icon(
-                  Icons.search,
-                  color: AppColors.primaryColor,
-                ),
-                const SizedBox(width: 10),
-                const Text("Search...", style: TextStyle(color: Colors.grey)),
-              ],
+            child: TextField(
+              onSubmitted: (value) {
+                Get.find<MainController>().fetchWorkers(search: value);
+              },
+              decoration: const InputDecoration(
+                hintText: "Search...",
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.search, color: AppColors.primaryColor),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
             ),
           ),
         ),

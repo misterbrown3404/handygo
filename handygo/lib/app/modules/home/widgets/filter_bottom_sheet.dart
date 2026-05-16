@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handygo/app/core/constant/color.dart';
+import 'package:handygo/app/modules/main/controllers/main_controller.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
@@ -13,6 +14,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   RangeValues _currentRangeValues = const RangeValues(120, 500);
   String selectedCategory = 'Cleaning';
   double selectedRating = 5.0;
+  String selectedLocation = "Any Location";
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +90,16 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: "London, UK",
+          value: selectedLocation,
           isExpanded: true,
-          items: ["London, UK", "New York, USA", "Paris, France"]
+          items: ["Any Location", "London, UK", "New York, USA", "Paris, France", "Lagos, Nigeria", "Abuja, Nigeria"]
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))
               .toList(),
-          onChanged: (val) {},
+          onChanged: (val) {
+            if (val != null) {
+              setState(() => selectedLocation = val);
+            }
+          },
         ),
       ),
     );
@@ -275,7 +281,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       children: [
         Expanded(
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                selectedLocation = "Any Location";
+              });
+              Get.find<MainController>().fetchWorkers();
+              Get.back();
+            },
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(0, 56),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -287,7 +299,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         const SizedBox(width: 16),
         Expanded(
           child: ElevatedButton(
-            onPressed: () => Get.back(),
+            onPressed: () {
+              final loc = selectedLocation == "Any Location" ? null : selectedLocation.split(",").first;
+              Get.find<MainController>().fetchWorkers(location: loc);
+              Get.back();
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryColor,
               minimumSize: const Size(0, 56),

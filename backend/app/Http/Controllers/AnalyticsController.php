@@ -18,7 +18,7 @@ class AnalyticsController extends Controller
      */
     public function overview()
     {
-        return response()->json([
+        $data = [
             'total_revenue' => Job::where('status', 'completed')->sum('amount'),
             'total_jobs' => Job::count(),
             'active_workers' => Worker::where('status', 'active')->count(),
@@ -26,6 +26,16 @@ class AnalyticsController extends Controller
             'pending_kyc' => User::whereHas('kycSubmissions', function($q) {
                 $q->where('status', 'pending');
             })->count(),
+            'avg_job_value' => round(Job::where('status', 'completed')->avg('amount') ?? 0, 2),
+            'worker_retention' => 95, // Placeholder
+            'active_subscriptions' => Worker::subscribed()->count(),
+            'jobs_this_month' => Job::whereMonth('date', now()->month)->count(),
+        ];
+
+        return response()->json([
+            'success' => true,
+            'message' => 'KPI overview retrieved',
+            'data' => $data
         ]);
     }
 
@@ -39,14 +49,18 @@ class AnalyticsController extends Controller
         $revenue = Job::where('status', 'completed')
             ->where('date', '>=', now()->subDays($days))
             ->select(
-                DB::raw('DATE(date) as day'),
-                DB::raw('SUM(amount) as total')
+                DB::raw('DATE(date) as period'),
+                DB::raw('SUM(amount) as revenue')
             )
-            ->groupBy('day')
-            ->orderBy('day')
+            ->groupBy('period')
+            ->orderBy('period')
             ->get();
 
-        return response()->json($revenue);
+        return response()->json([
+            'success' => true,
+            'message' => 'Revenue data retrieved',
+            'data' => $revenue
+        ]);
     }
 
     /**
@@ -58,32 +72,51 @@ class AnalyticsController extends Controller
             ->get()
             ->map(function($service) {
                 return [
-                    'category' => $service->category,
+                    'category' => $service->name,
                     'count' => $service->jobs_count,
                 ];
             });
 
-        return response()->json($distribution);
+        return response()->json([
+            'success' => true,
+            'message' => 'Jobs by category retrieved',
+            'data' => $distribution
+        ]);
     }
 
     /**
-     * Get weekly job volume (Completed vs Cancelled).
+     * Get weekly job volume (Completed vs Pending).
      */
     public function weeklyVolume()
     {
         $startOfWeek = now()->startOfWeek();
         
-        $data = Job::where('date', '>=', $startOfWeek)
-            ->select(
-                DB::raw('DAYNAME(date) as day'),
-                DB::raw('status'),
-                DB::raw('COUNT(*) as count')
-            )
-            ->groupBy('day', 'status')
-            ->get()
-            ->groupBy('day');
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $results = [];
 
-        return response()->json($data);
+        foreach ($days as $day) {
+            $completed = Job::where('status', 'completed')
+                ->where(DB::raw('DAYNAME(date)'), $day)
+                ->where('date', '>=', $startOfWeek)
+                ->count();
+            
+            $pending = Job::whereIn('status', ['pending', 'in_progress'])
+                ->where(DB::raw('DAYNAME(date)'), $day)
+                ->where('date', '>=', $startOfWeek)
+                ->count();
+
+            $results[] = [
+                'day' => substr($day, 0, 3),
+                'completed' => $completed,
+                'pending' => $pending
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Weekly volume retrieved',
+            'data' => $results
+        ]);
     }
 
     /**
@@ -91,11 +124,25 @@ class AnalyticsController extends Controller
      */
     public function topWorkers()
     {
-        $workers = Worker::orderBy('rating', 'desc')
+        $workers = Worker::with('user')
+            ->orderBy('rating', 'desc')
             ->orderBy('total_jobs', 'desc')
             ->take(5)
-            ->get();
+            ->get()
+            ->map(function($worker) {
+                return [
+                    'name' => $worker->user->name ?? 'Unknown',
+                    'specialty' => $worker->specialty,
+                    'jobs_count' => $worker->total_jobs,
+                    'rating' => $worker->rating,
+                    'earnings' => Job::where('worker_id', $worker->id)->where('status', 'completed')->sum('amount'),
+                ];
+            });
 
-        return response()->json($workers);
+        return response()->json([
+            'success' => true,
+            'message' => 'Top workers retrieved',
+            'data' => $workers
+        ]);
     }
 }

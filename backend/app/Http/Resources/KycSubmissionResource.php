@@ -11,7 +11,7 @@ class KycSubmissionResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'user_name' => $this->user->name,
+            'user_name' => $this->user?->name ?? 'Deleted User',
             'nin' => $this->nin,
             'bvn' => $this->bvn,
             'document_type' => $this->document_type,

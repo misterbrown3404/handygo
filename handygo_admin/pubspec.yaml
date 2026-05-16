@@ -39,6 +39,9 @@ dependencies:
   intl: ^0.20.2
   fl_chart: ^1.2.0
   data_table_2: ^2.7.2
+  dio: ^5.9.2
+  get_storage: ^2.1.1
+  pretty_dio_logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:
