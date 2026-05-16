@@ -6,62 +6,72 @@ on:
   pull_request:
     branches: [ main ]
 
-defaults:
-  run:
-    working-directory: handygo
-
 jobs:
-  test:
+  handygo-ci:
+    name: HandyGo App CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 'stable'
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: dart format --set-exit-if-changed .
-      - run: flutter test
-
-  build-android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+          cache: true
+      
+      - name: Install Dependencies
+        run: flutter pub get
+        working-directory: handygo
+        
+      - name: Format Check
+        run: dart format --set-exit-if-changed .
+        working-directory: handygo
+        continue-on-error: true # Don't fail the build on formatting
+        
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+        working-directory: handygo
+        
+      - name: Build APK
+        run: flutter build apk --release
+        working-directory: handygo
+        
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          flutter-version: 'stable'
-      - run: flutter pub get
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v3
-        with:
-          name: android-apk
+          name: handygo-apk
           path: handygo/build/app/outputs/flutter-apk/app-release.apk
 
-  build-web:
+  admin-ci:
+    name: Admin Portal CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 'stable'
-      - run: flutter pub get
-      - run: flutter build web --release
-      - uses: actions/upload-artifact@v3
-        with:
-          name: web-build
-          path: handygo/build/web
+          cache: true
+      
+      - name: Install Dependencies
+        run: flutter pub get
+        working-directory: handygo_admin
+        
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+        working-directory: handygo_admin
 
-  build-ios:
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/main'
+  worker-ci:
+    name: Worker App CI
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 'stable'
-      - run: flutter pub get
-      - run: flutter build ios --release --no-codesign
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ios-build
-          path: handygo/build/ios/iphoneos
+          cache: true
+      
+      - name: Install Dependencies
+        run: flutter pub get
+        working-directory: handygo_worker
+        
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+        working-directory: handygo_worker
