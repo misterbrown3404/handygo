@@ -97,12 +97,9 @@ class SocialAuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'success' => true,
-            'message' => 'Logged in successfully via ' . ucfirst($provider),
-            'data' => [
-                'token' => $token,
-                'user' => $user->load(['customer', 'worker']),
-            ]
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user->load(['customer', 'worker']),
         ]);
     }
 }

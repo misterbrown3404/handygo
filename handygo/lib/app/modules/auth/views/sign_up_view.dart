@@ -162,9 +162,18 @@ class SignUpView extends GetView<AuthController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SocialButton(assetPath: ImageStrings.google),
+                    SocialButton(
+                      assetPath: ImageStrings.google,
+                      onTap: controller.signInWithGoogle,
+                    ),
                     const SizedBox(width: 20),
-                    SocialButton(assetPath: ImageStrings.faceBook),
+                    if (Theme.of(context).platform == TargetPlatform.iOS) ...[
+                      const SizedBox(width: 20),
+                      SocialButton(
+                        assetPath: ImageStrings.appLogo, // Assuming this exists
+                        onTap: controller.signInWithApple,
+                      ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 40),

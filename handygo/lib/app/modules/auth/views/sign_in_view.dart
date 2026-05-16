@@ -134,10 +134,6 @@ class SignInView extends GetView<AuthController> {
                       onTap: controller.signInWithGoogle,
                     ),
                     const SizedBox(width: 20),
-                    SocialButton(
-                      assetPath: ImageStrings.faceBook, // Using Facebook asset for now
-                      onTap: () {}, // Facebook not yet implemented
-                    ),
                     if (Theme.of(context).platform == TargetPlatform.iOS) ...[
                       const SizedBox(width: 20),
                       SocialButton(

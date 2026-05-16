@@ -102,6 +102,8 @@ class NotificationService extends GetxService {
         log("Initial FCM Token: $token");
         _syncTokenWithBackend(token);
       }
+    }).catchError((e) {
+      log("Failed to fetch FCM Token (APNs might not be configured): $e");
     });
   }
 
