@@ -63,26 +63,24 @@ class AuthRepository {
     await apiClient.post(ApiConstants.fcmToken, data: {'fcm_token': token});
   }
 
-  // --- Social Sign-In ---
-
   Future<AuthResponse> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn.instance;
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) throw Exception('Google sign-in cancelled');
+    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+    final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+
+    if (googleUser == null) {
+      throw Exception('Google sign-in was cancelled');
+    }
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
     );
 
-    // Sign in to Firebase to get the idToken for our backend
-    final UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithCredential(credential);
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
     final String? idToken = await userCredential.user?.getIdToken();
 
     if (idToken == null) throw Exception('Failed to get Firebase ID Token');
 
-    // Send the token to our Laravel backend
     final response = await apiClient.post(
       '/auth/social',
       data: {'provider': 'google', 'token': idToken},
@@ -99,7 +97,6 @@ class AuthRepository {
       ],
     );
 
-    // For Apple, we send the identityToken to the backend
     final response = await apiClient.post(
       '/auth/social',
       data: {

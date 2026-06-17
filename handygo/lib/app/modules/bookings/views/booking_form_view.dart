@@ -146,26 +146,24 @@ class BookingFormView extends GetView<BookingFlowController> {
             borderRadius: BorderRadius.circular(16),
             color: Colors.white.withValues(alpha: 0.5),
             border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(
-                  () => Text(
-                    textController.text.isEmpty ? hint : textController.text,
-                    style: TextStyle(
-                      color: textController.text.isEmpty
-                          ? Colors.grey[400]
-                          : Colors.black,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        textController.text.isEmpty ? hint : textController.text,
+                        style: TextStyle(
+                          color: textController.text.isEmpty
+                              ? Colors.grey[400]
+                              : Colors.black,
+                        ),
+                      ),
+                      Icon(
+                        Icons.calendar_month_outlined,
+                        color: Colors.grey[400],
+                        size: 20,
+                      ),
+                    ],
                   ),
-                ),
-                Icon(
-                  Icons.calendar_month_outlined,
-                  color: Colors.grey[400],
-                  size: 20,
-                ),
-              ],
-            ),
           ),
         ),
       ],
@@ -205,17 +203,19 @@ class BookingFormView extends GetView<BookingFlowController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(
-                  () => Text(
-                    textController.text.isEmpty ? hint : textController.text,
-                    style: TextStyle(
-                      color: textController.text.isEmpty
-                          ? Colors.grey[400]
-                          : Colors.black,
-                    ),
+                Text(
+                  textController.text.isEmpty ? hint : textController.text,
+                  style: TextStyle(
+                    color: textController.text.isEmpty
+                        ? Colors.grey[400]
+                        : Colors.black,
                   ),
                 ),
-                Icon(Icons.access_time, color: Colors.grey[400], size: 20),
+                const Icon(
+                  Icons.access_time,
+                  color: Colors.grey,
+                  size: 20,
+                ),
               ],
             ),
           ),

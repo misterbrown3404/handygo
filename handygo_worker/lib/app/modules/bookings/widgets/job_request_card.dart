@@ -35,12 +35,14 @@ class JobRequestCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundImage: AssetImage(
-                        request.customerImage ?? 'assets/images/profile.jpg',
-                      ),
-                    ),
+CircleAvatar(
+                       radius: 24,
+                       backgroundImage: request.customerImage != null &&
+                               request.customerImage!.startsWith('http')
+                           ? NetworkImage(request.customerImage!)
+                           : const AssetImage('assets/images/profile.jpg')
+                               as ImageProvider,
+                     ),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

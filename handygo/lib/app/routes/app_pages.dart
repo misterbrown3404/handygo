@@ -14,6 +14,7 @@ import 'package:handygo/app/modules/service_detail/bindings/service_detail_bindi
 import 'package:handygo/app/modules/service_detail/views/service_detail_view.dart';
 import 'package:handygo/app/modules/onboarding/views/onboarding_view.dart';
 import 'package:handygo/app/modules/splash/views/splash.dart';
+import 'package:handygo/app/modules/bookings/bindings/booking_flow_binding.dart';
 import 'package:handygo/app/modules/bookings/views/booking_form_view.dart';
 import 'package:handygo/app/modules/chat/views/individual_chat_view.dart';
 import 'package:handygo/app/modules/notifications/views/notifications_view.dart';
@@ -69,16 +70,25 @@ class AppPages {
       page: () => const MainView(),
       binding: MainBinding(),
     ),
-    GetPage(name: _Paths.BOOKING_FORM, page: () => const BookingFormView()),
+    GetPage(
+      name: _Paths.BOOKING_FORM,
+      page: () => const BookingFormView(),
+      binding: BookingFlowBinding(),
+    ),
     GetPage(
       name: _Paths.INDIVIDUAL_CHAT,
       page: () => const IndividualChatView(),
     ),
     GetPage(name: _Paths.NOTIFICATIONS, page: () => const NotificationsView()),
-    GetPage(name: _Paths.SELECT_ROOMS, page: () => const RoomSelectionView()),
+    GetPage(
+      name: _Paths.SELECT_ROOMS,
+      page: () => const RoomSelectionView(),
+      binding: BookingFlowBinding(),
+    ),
     GetPage(
       name: _Paths.SELECT_ADDRESS,
       page: () => const AddressSelectionView(),
+      binding: BookingFlowBinding(),
     ),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfileView()),
     GetPage(name: _Paths.SETTINGS, page: () => const SettingsView()),
