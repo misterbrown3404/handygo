@@ -128,46 +128,44 @@ class BookingFormView extends GetView<BookingFlowController> {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 12),
-        InkWell(
-          onTap: () async {
-            final date = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now().add(const Duration(days: 1)),
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 365)),
-            );
-            if (date != null) {
-              textController.text =
-                  "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
-            }
-          },
-          child: GlassContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: 0.5),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(
-                  () => Text(
-                    textController.text.isEmpty ? hint : textController.text,
-                    style: TextStyle(
-                      color: textController.text.isEmpty
-                          ? Colors.grey[400]
-                          : Colors.black,
-                    ),
-                  ),
-                ),
-                Icon(
-                  Icons.calendar_month_outlined,
-                  color: Colors.grey[400],
-                  size: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
+InkWell(
+           onTap: () async {
+             final date = await showDatePicker(
+               context: context,
+               initialDate: DateTime.now().add(const Duration(days: 1)),
+               firstDate: DateTime.now(),
+               lastDate: DateTime.now().add(const Duration(days: 365)),
+             );
+             if (date != null) {
+               textController.text =
+                   "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+             }
+           },
+           child: GlassContainer(
+             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+             borderRadius: BorderRadius.circular(16),
+             color: Colors.white.withValues(alpha: 0.5),
+             border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 Text(
+                   textController.text.isEmpty ? hint : textController.text,
+                   style: TextStyle(
+                     color: textController.text.isEmpty
+                         ? Colors.grey[400]
+                         : Colors.black,
+                   ),
+                 ),
+                 Icon(
+                   Icons.calendar_month_outlined,
+                   color: Colors.grey[400],
+                   size: 20,
+                 ),
+               ],
+             ),
+           ),
+         ),
       ],
     );
   }
@@ -186,40 +184,38 @@ class BookingFormView extends GetView<BookingFlowController> {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 12),
-        InkWell(
-          onTap: () async {
-            final time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-            );
-            if (time != null) {
-              textController.text =
-                  "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
-            }
-          },
-          child: GlassContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: 0.5),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(
-                  () => Text(
-                    textController.text.isEmpty ? hint : textController.text,
-                    style: TextStyle(
-                      color: textController.text.isEmpty
-                          ? Colors.grey[400]
-                          : Colors.black,
-                    ),
-                  ),
-                ),
-                Icon(Icons.access_time, color: Colors.grey[400], size: 20),
-              ],
-            ),
-          ),
-        ),
+InkWell(
+           onTap: () async {
+             final time = await showTimePicker(
+               context: context,
+               initialTime: TimeOfDay.now(),
+             );
+             if (time != null) {
+               textController.text =
+                   "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+             }
+           },
+           child: GlassContainer(
+             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+             borderRadius: BorderRadius.circular(16),
+             color: Colors.white.withValues(alpha: 0.5),
+             border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 Text(
+                   textController.text.isEmpty ? hint : textController.text,
+                   style: TextStyle(
+                     color: textController.text.isEmpty
+                         ? Colors.grey[400]
+                         : Colors.black,
+                   ),
+                 ),
+                 Icon(Icons.access_time, color: Colors.grey[400], size: 20),
+               ],
+             ),
+           ),
+         ),
       ],
     );
   }

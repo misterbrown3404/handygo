@@ -67,8 +67,7 @@ class AuthRepository {
 
   Future<AuthResponse> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn.instance;
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) throw Exception('Google sign-in cancelled');
+    final googleUser = await googleSignIn.authenticate();
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(

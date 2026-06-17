@@ -14,12 +14,22 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'nullable|string|max:255',
+            'bio' => 'nullable|string|max:500',
+            'specialty' => 'nullable|string|max:255',
         ]);
 
         $user = $request->user();
         $user->name = $request->name;
         $user->phone = $request->phone;
-        $user->save();
+
+        $workerData = ['name' => $request->name, 'phone' => $request->phone];
+
+        if ($request->has('bio')) {
+            $workerData['bio'] = $request->bio;
+        }
+        if ($request->has('specialty')) {
+            $workerData['specialty'] = $request->specialty;
+        }
 
         if ($user->role === 'customer' && $user->customer) {
             $user->customer->update([
@@ -28,13 +38,10 @@ class ProfileController extends Controller
                 'address' => $request->address,
             ]);
         } elseif ($user->role === 'worker' && $user->worker) {
-            $user->worker->update([
-                'name' => $request->name,
-                'phone' => $request->phone,
-                // Worker might have an address or location field. Let's assume address exists.
-                // If not, we skip it or check first. For safety we only update what's in worker model.
-            ]);
+            $user->worker->update($workerData);
         }
+
+        $user->save();
 
         return response()->json([
             'success' => true,

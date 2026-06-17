@@ -6,6 +6,13 @@ class ServiceImageHeader extends StatelessWidget {
   final ServiceModel service;
   const ServiceImageHeader({super.key, required this.service});
 
+  static bool _isValidImageUrl(String? url) {
+    if (url == null || url.isEmpty) return false;
+    final trimmed = url.trim().toLowerCase();
+    return trimmed.startsWith('http://') ||
+        trimmed.startsWith('https://');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -13,19 +20,14 @@ class ServiceImageHeader extends StatelessWidget {
         SizedBox(
           height: 350,
           width: double.infinity,
-          child: service.icon != null && service.icon!.startsWith('http')
+          child: _isValidImageUrl(service.icon)
               ? Image.network(
-                  service.icon!,
+                  service.icon!.trim(),
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                    'assets/images/favourite.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const _ServicePlaceholder(),
                 )
-              : Image.asset(
-                  service.icon ?? 'assets/images/favourite.jpg',
-                  fit: BoxFit.cover,
-                ),
+              : const _ServicePlaceholder(),
         ),
         Positioned(
           top: MediaQuery.of(context).padding.top + 10,
@@ -45,6 +47,33 @@ class ServiceImageHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ServicePlaceholder extends StatelessWidget {
+  const _ServicePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF55B436),
+            Color(0xFF2E7D32),
+          ],
+        ),
+      ),
+      child: const Icon(
+        Icons.auto_awesome,
+        color: Colors.white70,
+        size: 64,
+      ),
     );
   }
 }

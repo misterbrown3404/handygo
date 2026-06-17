@@ -10,11 +10,18 @@ import 'package:handygo/app/core/widgets/scale_on_tap.dart';
 class TopWorkersList extends GetView<MainController> {
   const TopWorkersList({super.key});
 
+  static const _primaryGreen = Color(0xFF55B436);
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoadingWorkers.value) {
         return _buildLoadingSkeleton();
+      }
+
+      final error = controller.workersError.value;
+      if (error != null) {
+        return _buildErrorState(error);
       }
 
       if (controller.workers.isEmpty) {
@@ -33,7 +40,7 @@ class TopWorkersList extends GetView<MainController> {
             return FadeInAnimation(
               delay: Duration(milliseconds: index * 100),
               child: ScaleOnTap(
-                onTap: () {}, // Worker profile navigation can be added here
+                onTap: () {},
                 child: GlassContainer(
                   width: 140,
                   padding: const EdgeInsets.all(16),
@@ -45,9 +52,10 @@ class TopWorkersList extends GetView<MainController> {
                         radius: 35,
                         backgroundImage:
                             worker.avatar != null &&
-                                worker.avatar!.startsWith('http')
-                            ? NetworkImage(worker.avatar!) as ImageProvider
-                            : const AssetImage(ImageStrings.profilePic),
+                                    worker.avatar!.startsWith('http')
+                                ? NetworkImage(worker.avatar!)
+                                    as ImageProvider
+                                : const AssetImage(ImageStrings.profilePic),
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -64,7 +72,8 @@ class TopWorkersList extends GetView<MainController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 14),
+                          const Icon(Icons.star,
+                              color: Colors.amber, size: 14),
                           const SizedBox(width: 4),
                           Text(
                             "${worker.rating ?? 4.8}",
@@ -100,6 +109,40 @@ class TopWorkersList extends GetView<MainController> {
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(24),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red, size: 40),
+            const SizedBox(height: 8),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () =>
+                  Get.find<MainController>().fetchWorkers(),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(_primaryGreen),
+                minimumSize: WidgetStateProperty.all(const Size(0, 36)),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              child: const Text("Retry"),
+            ),
+          ],
         ),
       ),
     );

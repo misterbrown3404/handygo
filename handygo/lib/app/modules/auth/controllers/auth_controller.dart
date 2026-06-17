@@ -25,6 +25,7 @@ class AuthController extends GetxController {
   var obscurePassword = true.obs;
   var obscureConfirmPassword = true.obs;
   var isLoading = false.obs;
+  var hasToken = false.obs;
 
   @override
   void onInit() {
@@ -34,10 +35,12 @@ class AuthController extends GetxController {
 
   void _loadUserFromStorage() {
     final userData = _storage.read('user');
+    final token = _storage.read('token');
     final rememberMe = _storage.read('rememberMe') ?? false;
     isRememberMe.value = rememberMe;
+    hasToken.value = token != null;
 
-    if (rememberMe && userData != null) {
+    if (token != null && userData != null) {
       user.value = UserModel.fromJson(userData);
     }
   }
@@ -183,6 +186,19 @@ class AuthController extends GetxController {
   void verifyOtp() => Get.toNamed(Routes.NEW_PASSWORD);
   void createNewPassword() => Get.offAllNamed(Routes.SIGN_IN);
 
+  Future<void> logout() async {
+    try {
+      await _authRepo.logout();
+    } catch (_) {}
+    await _storage.remove('token');
+    await _storage.remove('user');
+    await _storage.remove('rememberMe');
+    await _storage.remove('seenOnboarding');
+    user.value = null;
+    hasToken.value = false;
+    Get.offAllNamed(Routes.SIGN_IN);
+  }
+
   void goToSignIn() => Get.toNamed(Routes.SIGN_IN);
   void goToSignUp() => Get.toNamed(Routes.SIGN_UP);
   void goToForgotPassword() => Get.toNamed(Routes.FORGOT_PASSWORD);
@@ -190,3 +206,4 @@ class AuthController extends GetxController {
   // No manual dispose needed for GetX controllers using TextEditingControllers
   // to avoid "used after being disposed" errors during route transitions.
 }
+

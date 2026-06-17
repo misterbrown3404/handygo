@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import '../../../data/models/service_model.dart';
 import '../../../data/models/worker_model.dart';
@@ -16,7 +18,9 @@ class MainController extends GetxController {
   final categories = <String>[].obs;
   final isLoadingServices = false.obs;
   final isLoadingWorkers = false.obs;
+  final workersError = RxnString();
   final servicesError = "".obs;
+  Timer? _searchTimer;
 
   @override
   void onInit() {
@@ -25,8 +29,21 @@ class MainController extends GetxController {
     fetchWorkers();
   }
 
+  @override
+  void onClose() {
+    _searchTimer?.cancel();
+    super.onClose();
+  }
+
   void changeIndex(int index) {
     selectedIndex.value = index;
+  }
+
+  void onSearchChanged(String query) {
+    _searchTimer?.cancel();
+    _searchTimer = Timer(const Duration(milliseconds: 500), () {
+      fetchWorkers(search: query.isEmpty ? null : query);
+    });
   }
 
   Future<void> fetchServices() async {
@@ -47,12 +64,14 @@ class MainController extends GetxController {
   Future<void> fetchWorkers({String? location, String? search}) async {
     try {
       isLoadingWorkers(true);
+      workersError(null);
       final data = await _workerRepo.getWorkers(
         location: location,
         search: search,
       );
       workers.assignAll(data);
     } catch (e) {
+      workersError.value = "Failed to fetch workers. Please try again.";
       print("Error fetching workers: $e");
     } finally {
       isLoadingWorkers(false);

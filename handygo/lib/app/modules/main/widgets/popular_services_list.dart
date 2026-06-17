@@ -49,21 +49,21 @@ class PopularServicesList extends GetView<MainController> {
                           ),
                           child: Stack(
                             children: [
-                              Image.network(
-                                service.icon ??
-                                    "https://via.placeholder.com/200",
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Container(
-                                      color: Colors.grey[200],
-                                      child: const Icon(
-                                        Icons.broken_image,
-                                        color: Colors.grey,
+                              if (_isValidUrl(service.icon))
+                                Image.network(
+                                  service.icon!,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      _buildPlaceholder(
+                                        label: service.name ?? "Svc",
                                       ),
-                                    ),
-                              ),
+                                )
+                              else
+                                _buildPlaceholder(
+                                  label: service.name ?? "Service",
+                                ),
                               Positioned(
                                 top: 12,
                                 right: 12,
@@ -149,6 +149,39 @@ class PopularServicesList extends GetView<MainController> {
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Text("No popular services found."),
+      ),
+    );
+  }
+
+  static bool _isValidUrl(String? url) {
+    if (url == null || url.isEmpty) return false;
+    final uri = Uri.tryParse(url);
+    return uri != null && uri.hasScheme;
+  }
+
+  Widget _buildPlaceholder({String? label}) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF55B436),
+            Color(0xFF2E7D32),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Text(
+          (label ?? "S").substring(0, 1).toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 32,
+          ),
+        ),
       ),
     );
   }

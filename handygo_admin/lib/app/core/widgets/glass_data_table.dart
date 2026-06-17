@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 
 class GlassDataTable extends StatelessWidget {
@@ -25,38 +25,44 @@ class GlassDataTable extends StatelessWidget {
         children: [
           if (title != null)
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+              padding: const EdgeInsets.fromLTRB(
+                AdminSpacing.lg,
+                AdminSpacing.lg,
+                AdminSpacing.lg,
+                0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title!,
-                    style: const TextStyle(
-                      color: AdminColors.textPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AdminTextStyles.h3,
                   ),
                   if (trailing != null) trailing!,
                 ],
               ),
             ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(AdminSpacing.md),
+            ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              physics: const AlwaysScrollableScrollPhysics(),
               child: DataTable(
-                headingRowColor: WidgetStateProperty.all(
-                  Colors.black.withValues(alpha: 0.02),
-                ),
-                dataRowColor: WidgetStateProperty.all(Colors.transparent),
+                headingRowColor:
+                    const WidgetStatePropertyAll(AdminColors.borderDark),
+                dataRowColor:
+                    const WidgetStatePropertyAll(Colors.transparent),
                 headingTextStyle: const TextStyle(
+                  fontFamily: 'Inter',
                   color: AdminColors.textSecondary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   fontSize: 12,
                   letterSpacing: 0.5,
                 ),
                 dataTextStyle: const TextStyle(
+                  fontFamily: 'Inter',
                   color: AdminColors.textPrimary,
                   fontSize: 13,
                 ),

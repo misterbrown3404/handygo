@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
-import 'package:handygo_admin/app/core/widgets/glass_card.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 
 class StatCard extends StatefulWidget {
   final String title;
@@ -33,83 +32,94 @@ class _StatCardState extends State<StatCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedScale(
-        scale: _isHovered ? 1.03 : 1.0,
+        scale: _isHovered ? 1.02 : 1.0,
         duration: const Duration(milliseconds: 200),
-        child: GlassCard(
-          glowColor: widget.color,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: widget.color.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(12),
+        curve: Curves.easeOut,
+        child: Material(
+          elevation: 2,
+          shadowColor: widget.color.withValues(alpha: 0.25),
+          borderRadius: BorderRadius.circular(AdminSpacing.lg),
+          color: AdminColors.background,
+          child: Container(
+            padding: const EdgeInsets.all(AdminSpacing.lg),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AdminSpacing.lg),
+              border: Border.all(
+                color: AdminColors.borderDark,
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Top row: icon + change badge ───────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(AdminSpacing.sm),
+                      decoration: BoxDecoration(
+                        color: widget.color.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(AdminSpacing.sm),
+                      ),
+                      child: Icon(
+                        widget.icon,
+                        color: widget.color,
+                        size: 22,
+                      ),
                     ),
-                    child: Icon(widget.icon, color: widget.color, size: 22),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color:
-                          (widget.isPositive
-                                  ? AdminColors.success
-                                  : AdminColors.error)
-                              .withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          widget.isPositive
-                              ? Icons.trending_up_rounded
-                              : Icons.trending_down_rounded,
-                          color: widget.isPositive
-                              ? AdminColors.success
-                              : AdminColors.error,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          widget.change,
-                          style: TextStyle(
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AdminSpacing.sm - 2,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: (widget.isPositive
+                                ? AdminColors.accent
+                                : AdminColors.danger)
+                            .withValues(alpha: 0.10),
+                        borderRadius: BorderRadius.circular(AdminSpacing.xs),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            widget.isPositive
+                                ? Icons.trending_up_rounded
+                                : Icons.trending_down_rounded,
                             color: widget.isPositive
-                                ? AdminColors.success
-                                : AdminColors.error,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                                ? AdminColors.accent
+                                : AdminColors.danger,
+                            size: 14,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Text(
+                            widget.change,
+                            style: AdminTextStyles.captionWith(
+                              widget.isPositive
+                                  ? AdminColors.accent
+                                  : AdminColors.danger,
+                              FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Text(
-                widget.value,
-                style: const TextStyle(
-                  color: AdminColors.textPrimary,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                  ],
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                widget.title,
-                style: const TextStyle(
-                  color: AdminColors.textSecondary,
-                  fontSize: 14,
+                // ── Flexible spacer above the value ─────────────────
+                const Spacer(flex: 2),
+                Text(
+                  widget.value,
+                  style: AdminTextStyles.h1With(AdminColors.textPrimary),
                 ),
-              ),
-            ],
+                const SizedBox(height: 2),
+                Text(
+                  widget.title,
+                  style: AdminTextStyles.bodySmallSecondary,
+                ),
+              ],
+            ),
           ),
         ),
       ),

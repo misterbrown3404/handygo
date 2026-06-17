@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handygo_worker/app/core/constant/color.dart';
 import 'package:handygo_worker/app/core/constant/spacing.dart';
 import 'package:handygo_worker/app/modules/profile/controllers/profile_controller.dart';
+import 'package:handygo_worker/app/routes/app_routes.dart';
 import 'package:handygo_worker/app/widgets/fade_in_animation.dart';
-import 'dart:ui';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
@@ -28,36 +30,36 @@ class ProfileView extends GetView<ProfileController> {
                     child: _ProfileMenu(
                       title: 'Account Settings',
                       items: [
-                        _MenuItem(
-                          Icons.person_outline_rounded,
-                          'Edit Profile',
-                          () {},
-                        ),
-                        _MenuItem(
-                          Icons.security_rounded,
-                          'KYC Verification',
-                          () {},
-                          trailing: 'Verified',
-                        ),
-                        _MenuItem(
-                          Icons.notifications_none_rounded,
-                          'Notifications',
-                          () {},
-                        ),
+                         _MenuItem(
+                           Icons.person_outline_rounded,
+                           'Edit Profile',
+                           () => Get.toNamed(Routes.EDIT_PROFILE),
+                         ),
+                         _MenuItem(
+                           Icons.security_rounded,
+                           'KYC Verification',
+                           () => Get.snackbar('Info', 'KYC verification is already submitted'),
+                           trailing: 'Verified',
+                         ),
+                         _MenuItem(
+                           Icons.notifications_none_rounded,
+                           'Notifications',
+                           () => Get.snackbar('Info', 'Notifications coming soon'),
+                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  FadeInAnimation(
+                   FadeInAnimation(
                     delay: 400,
                     child: _ProfileMenu(
                       title: 'Professional',
                       items: [
-                        _MenuItem(
-                          Icons.engineering_rounded,
-                          'My Services',
-                          () {},
-                        ),
+_MenuItem(
+                           Icons.engineering_rounded,
+                           'My Services',
+                           () => Get.toNamed(Routes.SERVICE_MANAGER),
+                         ),
                         _MenuItem(Icons.history_rounded, 'Job History', () {}),
                         _MenuItem(Icons.star_outline_rounded, 'Reviews', () {}),
                       ],
@@ -67,7 +69,7 @@ class ProfileView extends GetView<ProfileController> {
                   FadeInAnimation(
                     delay: 500,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => controller.logout(),
                       child: const Text(
                         'Sign Out',
                         style: TextStyle(
@@ -132,10 +134,19 @@ class ProfileView extends GetView<ProfileController> {
           ),
           child: Column(
             children: [
-              const CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
-              ),
+              Obx(() {
+                final avatarUrl = controller.avatarUrl.value;
+                if (avatarUrl != null && avatarUrl.isNotEmpty) {
+                  return CircleAvatar(
+                    radius: 40,
+                    backgroundImage: NetworkImage(avatarUrl),
+                  );
+                }
+                return const CircleAvatar(
+                  radius: 40,
+                  child: Icon(Icons.person, size: 40),
+                );
+              }),
               const SizedBox(height: 16),
               Obx(
                 () => Text(
@@ -147,12 +158,12 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              const Text(
-                'Professional Plumber',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
+              Obx(() => Text(
+                controller.specialty.value.isEmpty ? 'Worker' : controller.specialty.value,
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
+              )),
               const SizedBox(height: 12),
-              Container(
+              Obx(() => Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 6,
@@ -161,14 +172,14 @@ class ProfileView extends GetView<ProfileController> {
                   color: AppColors.primaryColor.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.star_rounded, color: Colors.white, size: 16),
-                    SizedBox(width: 4),
+                    const Icon(Icons.star_rounded, color: Colors.white, size: 16),
+                    const SizedBox(width: 4),
                     Text(
-                      '4.9 Rating',
-                      style: TextStyle(
+                      '${controller.rating.value.toStringAsFixed(1)} Rating',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -176,7 +187,7 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ],
                 ),
-              ),
+              )),
             ],
           ),
         ),
@@ -187,6 +198,7 @@ class ProfileView extends GetView<ProfileController> {
 
 class _ProfileStatsRow extends GetView<ProfileController> {
   const _ProfileStatsRow();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -195,16 +207,16 @@ class _ProfileStatsRow extends GetView<ProfileController> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
       ),
-      child: Row(
+      child: Obx(() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _statItem('120', 'Jobs Done'),
+          _statItem('${controller.jobsDone.value}', 'Jobs Done'),
           _divider(),
-          _statItem('4.9', 'Rating'),
+          _statItem(controller.rating.value.toStringAsFixed(1), 'Rating'),
           _divider(),
-          _statItem('3yr', 'Exp'),
+          _statItem(controller.experienceLabel.value, 'Exp'),
         ],
-      ),
+      )),
     );
   }
 

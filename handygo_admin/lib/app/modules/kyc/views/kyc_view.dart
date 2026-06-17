@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/core/widgets/glass_data_table.dart';
 import 'package:handygo_admin/app/core/widgets/status_chip.dart';
@@ -68,20 +68,20 @@ class _KycViewState extends State<KycView> {
 
   Future<void> _approveKyc(int id) async {
     try {
-      await _api.post('/admin/kyc/$id/approve');
+      await _api.post(AdminApiConstants.approveKyc(id));
       Get.snackbar(
         'Success',
         'KYC approved',
-        backgroundColor: AdminColors.success,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.accent,
+        colorText: AdminColors.white,
       );
       _fetchKyc();
     } catch (e) {
       Get.snackbar(
         'Error',
         'Failed to approve KYC',
-        backgroundColor: AdminColors.error,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.danger,
+        colorText: AdminColors.white,
       );
     }
   }
@@ -89,22 +89,22 @@ class _KycViewState extends State<KycView> {
   Future<void> _rejectKyc(int id) async {
     try {
       await _api.post(
-        '/admin/kyc/$id/reject',
+        AdminApiConstants.rejectKyc(id),
         data: {'rejection_reason': 'Documents invalid'},
-      ); // In a real app, use a dialog to get reason
+      );
       Get.snackbar(
         'Success',
         'KYC rejected',
         backgroundColor: AdminColors.warning,
-        colorText: Colors.white,
+        colorText: AdminColors.white,
       );
       _fetchKyc();
     } catch (e) {
       Get.snackbar(
         'Error',
         'Failed to reject KYC',
-        backgroundColor: AdminColors.error,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.danger,
+        colorText: AdminColors.white,
       );
     }
   }
@@ -113,202 +113,220 @@ class _KycViewState extends State<KycView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: AdminColors.error,
-                    size: 48,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    _error!,
-                    style: const TextStyle(color: AdminColors.textSecondary),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _fetchKyc,
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: AdminColors.primary),
+              )
+            : _error != null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AdminSpacing.xxl),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            'KYC Verification',
-                            style: TextStyle(
-                              color: AdminColors.textPrimary,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            padding: const EdgeInsets.all(AdminSpacing.lg),
+                            decoration: BoxDecoration(
+                              color: AdminColors.dangerLight,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.error_outline_rounded,
+                              color: AdminColors.danger,
+                              size: 48,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: AdminSpacing.sm),
                           Text(
-                            'Review and approve worker identity documents (NIN & BVN)',
-                            style: TextStyle(
-                              color: AdminColors.textSecondary,
-                              fontSize: 14,
+                            _error!,
+                            style: AdminTextStyles.bodyWith(
+                              AdminColors.textSecondary,
                             ),
+                          ),
+                          const SizedBox(height: AdminSpacing.sm),
+                          ElevatedButton(
+                            onPressed: _fetchKyc,
+                            child: const Text('Retry'),
                           ),
                         ],
                       ),
-                      ElevatedButton.icon(
-                        onPressed: _fetchKyc,
-                        icon: const Icon(Icons.refresh_rounded, size: 18),
-                        label: const Text('Refresh'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AdminColors.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 14,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  _kycStats(context),
-                  const SizedBox(height: 24),
-                  _requests.isEmpty
-                      ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(40),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.verified_user_rounded,
-                                  color: AdminColors.textSecondary.withValues(
-                                    alpha: 0.3,
+                    ),
+                  )
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.all(AdminSpacing.xl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'KYC Verification',
+                                    style: AdminTextStyles.h1,
                                   ),
-                                  size: 64,
-                                ),
-                                const SizedBox(height: 16),
-                                const Text(
-                                  'No KYC submissions yet',
-                                  style: TextStyle(
-                                    color: AdminColors.textSecondary,
-                                    fontSize: 16,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Review and approve worker identity documents (NIN & BVN)',
+                                    style: AdminTextStyles.bodySmallSecondary,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      : GlassDataTable(
-                          title: 'Verification Queue',
-                          columns: const [
-                            DataColumn(label: Text('WORKER')),
-                            DataColumn(label: Text('TYPE')),
-                            DataColumn(label: Text('DOCUMENT')),
-                            DataColumn(label: Text('SUBMITTED')),
-                            DataColumn(label: Text('STATUS')),
-                            DataColumn(label: Text('ACTIONS')),
+                            FilledButton.icon(
+                              onPressed: _fetchKyc,
+                              icon: const Icon(
+                                Icons.refresh_rounded,
+                                size: 18,
+                              ),
+                              label: const Text('Refresh'),
+                            ),
                           ],
-                          rows: _requests.map((r) {
-                            final name =
-                                r['user']?['name'] ??
-                                r['worker']?['name'] ??
-                                'Unknown';
-                            final docType = r['document_type'] ?? 'NIN';
-                            final docNumber = r['document_number'] ?? '***';
-                            final date = _formatDate(r['created_at'] ?? '');
-                            final status = _capitalize(
-                              r['status'] ?? 'pending',
-                            );
-                            final id = r['id'];
+                        ),
+                        const SizedBox(height: AdminSpacing.lg),
+                        _kycStats(context),
+                        const SizedBox(height: AdminSpacing.lg),
+                        _requests.isEmpty
+                            ? GlassCard(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.verified_user_outlined,
+                                      size: 56,
+                                      color: AdminColors.textSecondary
+                                          .withValues(alpha: 0.3),
+                                    ),
+                                    const SizedBox(height: AdminSpacing.sm),
+                                    Text(
+                                      'No KYC submissions yet',
+                                      style: AdminTextStyles.h3,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'New submissions will appear here automatically.',
+                                      style: AdminTextStyles.bodySmallSecondary,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : GlassDataTable(
+                                title: 'Verification Queue',
+                                columns: const [
+                                  DataColumn(label: Text('WORKER')),
+                                  DataColumn(label: Text('TYPE')),
+                                  DataColumn(label: Text('DOCUMENT')),
+                                  DataColumn(label: Text('SUBMITTED')),
+                                  DataColumn(label: Text('STATUS')),
+                                  DataColumn(label: Text('ACTIONS')),
+                                ],
+                                rows: _requests.map((r) {
+                                  final name =
+                                      r['user']?['name'] ??
+                                      r['worker']?['name'] ??
+                                      'Unknown';
+                                  final docType =
+                                      r['document_type'] ?? 'NIN';
+                                  final docNumber =
+                                      r['document_number'] ?? '***';
+                                  final date =
+                                      _formatDate(r['created_at'] ?? '');
+                                  final status = _capitalize(
+                                    r['status'] ?? 'pending',
+                                  );
+                                  final id = r['id'];
+                                  // Mask NIN: show only last 4
+                                  final maskedNIN = docNumber.length > 4
+                                      ? '****${docNumber.substring(docNumber.length - 4)}'
+                                      : docNumber;
 
-                            return DataRow(
-                              cells: [
-                                DataCell(
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: AdminColors.warning
-                                            .withValues(alpha: 0.15),
-                                        child: Text(
-                                          name[0],
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor:
+                                                  const Color(
+                                                    0xFFe3f9f0,
+                                                  ),
+                                              child: Text(
+                                                name[0],
+                                                style: const TextStyle(
+                                                  color: AdminColors.accent,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Flexible(
+                                              child: Text(
+                                                name,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      DataCell(
+                                        Text(
+                                          docType.toUpperCase(),
                                           style: const TextStyle(
-                                            color: AdminColors.warning,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily:
+                                                'Menlo, Consolas, monospace',
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
+                                      DataCell(
+                                        Text(
+                                          maskedNIN,
+                                          style: const TextStyle(
+                                            fontFamily: 'Menlo, Consolas, monospace',
+                                            letterSpacing: 1,
+                                          ),
                                         ),
                                       ),
+                                      DataCell(
+                                        Text(date),
+                                      ),
+                                      DataCell(StatusChip(label: status)),
+                                      DataCell(
+                                        r['status'] == 'pending'
+                                            ? Row(
+                                                children: [
+                                                  _actionBtn(
+                                                    'Approve',
+                                                    AdminColors.accent,
+                                                    () => _approveKyc(id),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  _actionBtn(
+                                                    'Reject',
+                                                    AdminColors.danger,
+                                                    () => _rejectKyc(id),
+                                                  ),
+                                                ],
+                                              )
+                                            : const SizedBox.shrink(),
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                DataCell(
-                                  Text(
-                                    docType.toUpperCase(),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                DataCell(
-                                  Text(
-                                    docNumber,
-                                    style: const TextStyle(
-                                      fontFamily: 'monospace',
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                                ),
-                                DataCell(Text(date)),
-                                DataCell(StatusChip(label: status)),
-                                DataCell(
-                                  r['status'] == 'pending'
-                                      ? Row(
-                                          children: [
-                                            _actionBtn(
-                                              'Approve',
-                                              AdminColors.success,
-                                              () => _approveKyc(id),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            _actionBtn(
-                                              'Reject',
-                                              AdminColors.error,
-                                              () => _rejectKyc(id),
-                                            ),
-                                          ],
-                                        )
-                                      : const SizedBox.shrink(),
-                                ),
-                              ],
-                            );
-                          }).toList(),
-                        ),
-                ],
-              ),
-            ),
+                                  );
+                                }).toList(),
+                              ),
+                      ],
+                    ),
+                  ),
+      ),
     );
   }
 
@@ -325,91 +343,98 @@ class _KycViewState extends State<KycView> {
   String _capitalize(String s) =>
       s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
+  // ── Stats (Wrap on mobile, Row on desktop) ────────────────────
+
   Widget _kycStats(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
-    return Flex(
-      direction: isMobile ? Axis.vertical : Axis.horizontal,
-      children: [
-        if (isMobile) ...[
-          _miniStat(
-            'Pending Review',
-            '$_pendingCount',
-            AdminColors.warning,
-            Icons.hourglass_top_rounded,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 768;
+        final stats = [
+          _KycStatData(
+            label: 'Pending Review',
+            value: '$_pendingCount',
+            color: AdminColors.warning,
+            icon: Icons.hourglass_top_rounded,
+            lightColor: AdminColors.warningLight,
           ),
-          const SizedBox(height: 16),
-          _miniStat(
-            'Verified',
-            '$_verifiedCount',
-            AdminColors.success,
-            Icons.verified_rounded,
+          _KycStatData(
+            label: 'Verified',
+            value: '$_verifiedCount',
+            color: AdminColors.accent,
+            icon: Icons.verified_rounded,
+            lightColor: AdminColors.accentLight,
           ),
-          const SizedBox(height: 16),
-          _miniStat(
-            'Rejected',
-            '$_rejectedCount',
-            AdminColors.error,
-            Icons.cancel_rounded,
+          _KycStatData(
+            label: 'Rejected',
+            value: '$_rejectedCount',
+            color: AdminColors.danger,
+            icon: Icons.cancel_rounded,
+            lightColor: AdminColors.dangerLight,
           ),
-        ] else ...[
-          Expanded(
-            child: _miniStat(
-              'Pending Review',
-              '$_pendingCount',
-              AdminColors.warning,
-              Icons.hourglass_top_rounded,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _miniStat(
-              'Verified',
-              '$_verifiedCount',
-              AdminColors.success,
-              Icons.verified_rounded,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _miniStat(
-              'Rejected',
-              '$_rejectedCount',
-              AdminColors.error,
-              Icons.cancel_rounded,
-            ),
-          ),
-        ],
-      ],
+        ];
+        if (isMobile) {
+          return Wrap(
+            spacing: AdminSpacing.sm,
+            runSpacing: AdminSpacing.sm,
+            children: stats
+                .map(
+                  (s) => SizedBox(
+                    width: (constraints.maxWidth - 2 * AdminSpacing.xl -
+                        AdminSpacing.sm) /
+                        2,
+                    child: _buildStatCard(s),
+                  ),
+                )
+                .toList(),
+          );
+        }
+        return Row(
+          children:
+              stats
+                  .map(
+                    (s) => Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: stats.last == s
+                              ? 0
+                              : AdminSpacing.sm,
+                        ),
+                        child: _buildStatCard(s),
+                      ),
+                    ),
+                  )
+                  .toList(),
+        );
+      },
     );
   }
 
-  Widget _miniStat(String label, String value, Color color, IconData icon) {
+  Widget _buildStatCard(_KycStatData s) {
     return GlassCard(
-      glowColor: color,
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(AdminSpacing.sm),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+              color: s.lightColor,
+              borderRadius: BorderRadius.circular(AdminSpacing.sm),
             ),
-            child: Icon(icon, color: color, size: 20),
+            child: Icon(s.icon, color: s.color, size: 20),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AdminSpacing.md),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                value,
+                s.value,
                 style: TextStyle(
-                  color: color,
+                  color: s.color,
                   fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               Text(
-                label,
+                s.label,
                 style: const TextStyle(
                   color: AdminColors.textSecondary,
                   fontSize: 12,
@@ -428,22 +453,42 @@ class _KycViewState extends State<KycView> {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AdminSpacing.sm,
+            vertical: 4,
+          ),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withValues(alpha: 0.25)),
+            color: color.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(AdminSpacing.sm),
+            border: Border.all(
+              color: color.withValues(alpha: 0.25),
+            ),
           ),
           child: Text(
             label,
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
       ),
     );
   }
+}
+
+class _KycStatData {
+  final String label;
+  final String value;
+  final Color color;
+  final IconData icon;
+  final Color lightColor;
+  const _KycStatData({
+    required this.label,
+    required this.value,
+    required this.color,
+    required this.icon,
+    required this.lightColor,
+  });
 }

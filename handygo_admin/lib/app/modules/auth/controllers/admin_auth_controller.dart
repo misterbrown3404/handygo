@@ -57,8 +57,19 @@ class AdminAuthController extends GetxController {
         final token = data['access_token'] ?? data['token'];
         final user = data['user'];
 
-        // Verify this user is an admin
-        if (user['role'] != 'admin') {
+        // Verify this user has the admin role
+        final roles = user['roles'] as List?;
+        final roleNames =
+            roles
+                    ?.map((r) => r is Map ? r['name']?.toString() : r?.toString())
+                    .where((n) => n != null && n.isNotEmpty)
+                    .cast<String>()
+                    .toList() ??
+                [];
+        final isAdmin = roleNames.contains('admin') ||
+            (user['role']?.toString() == 'admin');
+
+        if (!isAdmin) {
           Get.snackbar(
             'Access Denied',
             'Only admin accounts can access this panel',

@@ -71,9 +71,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('customers',     CustomerController::class);
 
         // ── Workers ───────────────────────────────────────────────────────
-        Route::get('workers/nearby',         [WorkerController::class, 'nearby']);
-        Route::post('workers/{worker}/toggle-status', [WorkerController::class, 'toggleStatus']);
-        Route::apiResource('workers',        WorkerController::class);
+        Route::post('workers/{id}/toggle-status', [WorkerController::class, 'toggleStatus']);
+        Route::apiResource('workers', WorkerController::class);
 
         // ── Services ──────────────────────────────────────────────────────
         Route::apiResource('services',       ServiceController::class);

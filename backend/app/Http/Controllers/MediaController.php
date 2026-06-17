@@ -29,8 +29,8 @@ class MediaController extends Controller
         $url = Storage::disk($disk)->url($path);
 
         $media = Media::create([
-            'model_type' => $request->model_type,
-            'model_id' => $request->model_id,
+            'model_type' => $request->model_type ?? 'App\\Models\\User',
+            'model_id' => $request->model_id ?? auth()->id(),
             'disk' => $disk,
             'path' => $path,
             'url' => $url,

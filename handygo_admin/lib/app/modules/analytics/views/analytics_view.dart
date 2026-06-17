@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/modules/analytics/controllers/analytics_controller.dart';
 import 'package:handygo_admin/app/modules/analytics/widgets/charts.dart';
@@ -16,128 +16,184 @@ class AnalyticsView extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(color: AdminColors.primary),
+          );
         }
 
-        if (controller.error.isNotEmpty) {
+        if (controller.error.value.isNotEmpty) {
           return Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: AdminColors.error,
-                  size: 48,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  controller.error.value,
-                  style: const TextStyle(color: AdminColors.textSecondary),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: controller.fetchAnalytics,
-                  child: const Text('Retry'),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(AdminSpacing.xxl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AdminSpacing.lg),
+                    decoration: BoxDecoration(
+                      color: AdminColors.dangerLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.error_outline_rounded,
+                      color: AdminColors.danger,
+                      size: 48,
+                    ),
+                  ),
+                  const SizedBox(height: AdminSpacing.sm),
+                  Text(
+                    controller.error.value,
+                    textAlign: TextAlign.center,
+                    style: AdminTextStyles.bodyWith(
+                      AdminColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: AdminSpacing.sm),
+                  ElevatedButton(
+                    onPressed: controller.fetchAnalytics,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
           );
         }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _header(controller),
-              const SizedBox(height: 32),
-              _kpiRow(controller),
-              const SizedBox(height: 32),
-              RevenueChart(data: controller.revenueData),
-              const SizedBox(height: 32),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 900) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: WeeklyJobsChart(data: controller.weeklyVolume),
-                        ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: JobCategoryChart(
-                            data: controller.jobsByCategory,
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AdminSpacing.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _header(controller),
+                const SizedBox(height: AdminSpacing.xxl),
+                _kpiRow(controller),
+                const SizedBox(height: AdminSpacing.xxl),
+                RevenueChart(data: controller.revenueData),
+                const SizedBox(height: AdminSpacing.xxl),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth > 900) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: WeeklyJobsChart(
+                              data: controller.weeklyVolume,
+                            ),
                           ),
+                          const SizedBox(width: AdminSpacing.lg),
+                          Expanded(
+                            flex: 2,
+                            child: JobCategoryChart(
+                              data: controller.jobsByCategory,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Column(
+                      children: [
+                        WeeklyJobsChart(data: controller.weeklyVolume),
+                        const SizedBox(height: AdminSpacing.lg),
+                        JobCategoryChart(
+                          data: controller.jobsByCategory,
                         ),
                       ],
                     );
-                  }
-                  return Column(
-                    children: [
-                      WeeklyJobsChart(data: controller.weeklyVolume),
-                      const SizedBox(height: 24),
-                      JobCategoryChart(data: controller.jobsByCategory),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 32),
-              _topWorkersSection(controller),
-            ],
+                  },
+                ),
+                const SizedBox(height: AdminSpacing.xxl),
+                _topWorkersSection(controller),
+              ],
+            ),
           ),
         );
       }),
     );
   }
 
+  // ── Header ─────────────────────────────────────────────────────
+
   Widget _header(AnalyticsController controller) {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth > 600;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Analytics & Reports',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.analytics_rounded,
+                        color: AdminColors.primary,
+                        size: 24,
+                      ),
+                      const SizedBox(width: AdminSpacing.xs),
+                      Text('Analytics & Reports', style: AdminTextStyles.h1),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Deep insights into platform performance and growth',
+                    style: AdminTextStyles.bodySmallSecondary,
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 4),
-            Text(
-              'Deep insights into platform performance and growth',
-              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
+            if (wide) const SizedBox(width: AdminSpacing.lg),
+            Wrap(
+              spacing: AdminSpacing.sm,
+              runSpacing: AdminSpacing.sm,
+              children: [
+                // Export button
+                OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.download_rounded, size: 17),
+                  label: const Text('Export'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AdminColors.primary,
+                    side: const BorderSide(color: AdminColors.primary),
+                  ),
+                ),
+                // Date range selector
+                FilterChip(
+                  label: const Text('Last 30 days'),
+                  selected: true,
+                  onSelected: (_) {},
+                  selectedColor: AdminColors.primaryLight,
+                  labelStyle: const TextStyle(
+                    color: AdminColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  checkmarkColor: AdminColors.primary,
+                  side: const BorderSide(color: AdminColors.primary),
+                ),
+                FilledButton.icon(
+                  onPressed: controller.fetchAnalytics,
+                  icon: const Icon(Icons.refresh_rounded, size: 18),
+                  label: const Text('Refresh Data'),
+                ),
+              ],
             ),
           ],
-        ),
-        ElevatedButton.icon(
-          onPressed: controller.fetchAnalytics,
-          icon: const Icon(Icons.refresh_rounded, size: 18),
-          label: const Text('Refresh Data'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AdminColors.primary,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
+
+  // ── KPI row ────────────────────────────────────────────────────
 
   Widget _kpiRow(AnalyticsController controller) {
     final kpis = controller.kpis;
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 800;
+        final isWide = constraints.maxWidth > 768;
         final items = [
           _kpiCard(
             'Avg. Job Value',
@@ -166,33 +222,46 @@ class AnalyticsView extends StatelessWidget {
         ];
         if (isWide) {
           return Row(
-            children: items
-                .map(
-                  (e) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: e,
-                    ),
-                  ),
-                )
-                .toList(),
+            children:
+                items
+                    .map(
+                      (e) => Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: items.last == e ? 0 : AdminSpacing.sm,
+                          ),
+                          child: e,
+                        ),
+                      ),
+                    )
+                    .toList(),
           );
         }
         return Column(
-          children: items
-              .map(
-                (e) => Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: e,
-                ),
-              )
-              .toList(),
+          children:
+              items
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.only(bottom: AdminSpacing.sm),
+                      child: e,
+                    ),
+                  )
+                  .toList(),
         );
       },
     );
   }
 
-  Widget _kpiCard(String title, String value, String change, IconData icon) {
+  Widget _kpiCard(
+    String title,
+    String value,
+    String change,
+    IconData icon,
+  ) {
+    final isPositiveChange = change.startsWith('+');
+    final changeColor = isPositiveChange
+        ? AdminColors.accent
+        : AdminColors.danger;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,40 +269,35 @@ class AnalyticsView extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: AdminColors.primary, size: 18),
-              const SizedBox(width: 8),
+              const SizedBox(width: AdminSpacing.xs),
               Text(
                 title,
-                style: const TextStyle(
-                  color: AdminColors.textSecondary,
-                  fontSize: 13,
-                ),
+                style: AdminTextStyles.captionWith(AdminColors.textSecondary),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AdminSpacing.sm),
           Row(
             children: [
               Text(
                 value,
-                style: const TextStyle(
-                  color: AdminColors.textPrimary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AdminTextStyles.h2,
               ),
-              const Spacer(),
+              Expanded(child: Container()),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: AdminColors.success.withValues(alpha: 0.1),
+                  color: changeColor.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   change,
-                  style: const TextStyle(
-                    color: AdminColors.success,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                  style: AdminTextStyles.captionWith(
+                    changeColor,
+                    FontWeight.w700,
                   ),
                 ),
               ),
@@ -244,31 +308,27 @@ class AnalyticsView extends StatelessWidget {
     );
   }
 
+  // ── Top workers ────────────────────────────────────────────────
+
   Widget _topWorkersSection(AnalyticsController controller) {
+    final workers = controller.topWorkers;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.emoji_events_rounded,
                 color: AdminColors.warning,
                 size: 22,
               ),
-              SizedBox(width: 8),
-              Text(
-                'Top Performing Workers',
-                style: TextStyle(
-                  color: AdminColors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const SizedBox(width: AdminSpacing.xs),
+              Text('Top Performing Workers', style: AdminTextStyles.h3),
             ],
           ),
-          const SizedBox(height: 16),
-          if (controller.topWorkers.isEmpty)
+          const SizedBox(height: AdminSpacing.md),
+          if (workers.isEmpty)
             const Center(
               child: Padding(
                 padding: EdgeInsets.all(20),
@@ -277,102 +337,107 @@ class AnalyticsView extends StatelessWidget {
                   style: TextStyle(color: AdminColors.textSecondary),
                 ),
               ),
-            ),
-          ...controller.topWorkers.asMap().entries.map((entry) {
-            final index = entry.key;
-            final w = entry.value;
-            final rank = index + 1;
+            )
+          else
+            ...workers.asMap().entries.map((entry) {
+              final index = entry.key;
+              final w = entry.value;
+              final rank = index + 1;
 
-            return Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: AdminColors.borderDark.withValues(alpha: 0.3),
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: AdminSpacing.sm),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AdminColors.borderDark.withValues(alpha: 0.3),
+                    ),
                   ),
                 ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 28,
-                    height: 28,
-                    decoration: BoxDecoration(
-                      color: rank == 1
-                          ? AdminColors.warning.withValues(alpha: 0.2)
-                          : Colors.black.withValues(alpha: 0.04),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '#$rank',
-                        style: TextStyle(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: rank == 1
+                            ? AdminColors.warning.withValues(alpha: 0.15)
+                            : AdminColors.neutral100,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
                           color: rank == 1
-                              ? AdminColors.warning
-                              : AdminColors.textSecondary,
+                              ? AdminColors.warning.withValues(alpha: 0.3)
+                              : AdminColors.borderDark,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '#$rank',
+                          style: TextStyle(
+                            color: rank == 1
+                                ? AdminColors.warning
+                                : AdminColors.textSecondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AdminSpacing.sm),
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor:
+                          AdminColors.primaryLight,
+                      child: Text(
+                        w['name']?[0] ?? '?',
+                        style: const TextStyle(
+                          color: AdminColors.primary,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  CircleAvatar(
-                    radius: 16,
-                    backgroundColor: AdminColors.primary.withValues(
-                      alpha: 0.15,
-                    ),
-                    child: Text(
-                      w['name']?[0] ?? '?',
-                      style: const TextStyle(
-                        color: AdminColors.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(width: AdminSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            w['name'] ?? 'Unknown',
+                            style: const TextStyle(
+                              color: AdminColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            w['specialty'] ?? 'N/A',
+                            style: const TextStyle(
+                              color: AdminColors.textSecondary,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          w['name'] ?? 'Unknown',
-                          style: const TextStyle(
-                            color: AdminColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
-                        Text(
-                          w['specialty'] ?? 'N/A',
-                          style: const TextStyle(
-                            color: AdminColors.textSecondary,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
+                    _miniInfo(
+                      Icons.task_alt_rounded,
+                      '${w['jobs_count'] ?? 0} jobs',
                     ),
-                  ),
-                  _miniInfo(
-                    Icons.task_alt_rounded,
-                    '${w['jobs_count'] ?? 0} jobs',
-                  ),
-                  const SizedBox(width: 24),
-                  _miniInfo(Icons.star_rounded, '${w['rating'] ?? 0.0}'),
-                  const SizedBox(width: 24),
-                  Text(
-                    '₦${w['earnings'] ?? 0}',
-                    style: const TextStyle(
-                      color: AdminColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                    const SizedBox(width: AdminSpacing.lg),
+                    _miniInfo(Icons.star_rounded, '${w['rating'] ?? 0.0}'),
+                    const SizedBox(width: AdminSpacing.lg),
+                    Text(
+                      '₦${w['earnings'] ?? 0}',
+                      style: const TextStyle(
+                        color: AdminColors.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            }),
         ],
       ),
     );

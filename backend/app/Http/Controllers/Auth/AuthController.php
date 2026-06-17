@@ -34,7 +34,6 @@ class AuthController extends Controller
                 'role' => $request->role,
             ]);
 
-            // Assign Spatie role
             $user->assignRole($request->role);
 
             if ($request->role === 'customer') {
@@ -57,9 +56,12 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user,
+                'success' => true,
+                'message' => 'Registration successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => $user->load(['customer', 'worker']),
+                ],
             ]);
         });
     }
@@ -67,11 +69,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|string',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $login = $request->email;
+        $user = User::where('email', $login)
+            ->orWhere('phone', $login)
+            ->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -80,21 +85,32 @@ class AuthController extends Controller
         }
 
         if (!$user->is_active) {
-            return response()->json(['message' => 'Your account is deactivated.'], 403);
+            return response()->json([
+                'success' => false,
+                'message' => 'Your account is deactivated.',
+                'data' => null,
+            ], 403);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user->load(['customer', 'worker']),
+            'success' => true,
+            'message' => 'Login successful',
+            'data' => [
+                'token' => $token,
+                'user' => $user->load(['customer', 'worker']),
+            ],
         ]);
     }
 
     public function me(Request $request)
     {
-        return response()->json($request->user()->load(['customer', 'worker', 'roles']));
+        return response()->json([
+            'success' => true,
+            'message' => 'User retrieved',
+            'data' => $request->user()->load(['customer', 'worker', 'roles']),
+        ]);
     }
 
     public function logout(Request $request)

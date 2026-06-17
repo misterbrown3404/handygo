@@ -31,11 +31,13 @@ class WorkerController extends Controller
             });
         })
         ->paginate(20);
-        
+
+        $workerData = WorkerResource::collection($workers)->response()->getData(true);
+
         return response()->json([
             'success' => true,
             'message' => 'Workers retrieved',
-            'data' => WorkerResource::collection($workers)->response()->getData(true)
+            'data' => $workerData['data'] ?? $workerData,
         ]);
     }
 
@@ -101,10 +103,18 @@ class WorkerController extends Controller
 
     public function toggleStatus(Request $request, $id)
     {
+        $user = $request->user();
         $worker = Worker::findOrFail($id);
-        $this->authorize('update', $worker);
 
-        $worker->update(['is_available' => !$worker->is_available]);
+        if (!$user->hasRole('admin') && $user->id !== $worker->user_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This action is unauthorized.',
+                'data' => null,
+            ], 403);
+        }
+
+        $worker->update(['status' => $worker->status === 'active' ? 'inactive' : 'active']);
 
         return response()->json([
             'success' => true,

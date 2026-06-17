@@ -78,13 +78,15 @@ class _HeaderSection extends GetView<DashboardController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Welcome back,', style: TextStyle(color: Colors.grey)),
-            Text(
-              'John Provider',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            const Text('Welcome back,', style: TextStyle(color: Colors.grey)),
+            Obx(
+              () => Text(
+                controller.workerName.value,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
@@ -104,13 +106,17 @@ class _HeaderSection extends GetView<DashboardController> {
             Positioned(
               right: 0,
               bottom: 0,
-              child: Container(
-                width: 14,
-                height: 14,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF55B436),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+              child: Obx(
+                () => Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: controller.isOnline.value
+                        ? const Color(0xFF55B436)
+                        : Colors.grey,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
                 ),
               ),
             ),
@@ -125,27 +131,29 @@ class _StatsGrid extends GetView<DashboardController> {
   const _StatsGrid();
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      childAspectRatio: 1.2,
-      children: [
-        _glassStatCard(
-          'Earnings',
-          controller.totalEarnings.value,
-          Icons.payments_rounded,
-          Colors.blue,
-        ),
-        _glassStatCard(
-          'Jobs Done',
-          controller.jobsDone.value,
-          Icons.task_alt_rounded,
-          Colors.orange,
-        ),
-      ],
+    return Obx(
+      () => GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 1.2,
+        children: [
+          _glassStatCard(
+            'Earnings',
+            controller.totalEarnings.value,
+            Icons.payments_rounded,
+            Colors.blue,
+          ),
+          _glassStatCard(
+            'Jobs Done',
+            controller.jobsDone.value,
+            Icons.task_alt_rounded,
+            Colors.orange,
+          ),
+        ],
+      ),
     );
   }
 

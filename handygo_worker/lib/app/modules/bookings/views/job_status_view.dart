@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handygo_worker/app/core/constant/color.dart';
 import 'package:handygo_worker/app/core/constant/spacing.dart';
+import 'package:handygo_worker/app/core/services/storage_service.dart';
 import 'package:handygo_worker/app/widgets/primary_button.dart';
 import 'package:handygo_worker/app/widgets/fade_in_animation.dart';
 
@@ -13,7 +14,7 @@ class JobStatusView extends StatefulWidget {
 }
 
 class _JobStatusViewState extends State<JobStatusView> {
-  int currentStep = 1; // 0: To Location, 1: Arrived, 2: In Progress
+  int currentStep = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,7 @@ class _JobStatusViewState extends State<JobStatusView> {
       appBar: AppBar(
         title: const Text('Job In Progress'),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.help_outline_rounded),
-          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.help_outline_rounded)),
         ],
       ),
       body: Column(
@@ -89,6 +87,8 @@ class _JobStatusViewState extends State<JobStatusView> {
   }
 
   Widget _buildTimeline() {
+    final userData = Get.find<StorageService>().read('user') ?? {};
+    final workerName = userData['name']?.toString() ?? 'Worker';
     return Column(
       children: [
         _timelineStep(
@@ -100,7 +100,7 @@ class _JobStatusViewState extends State<JobStatusView> {
         _timelineStep(
           1,
           'Arrived',
-          'Provider has arrived at location',
+          '$workerName has arrived at location',
           isDone: currentStep > 1,
           isActive: currentStep == 1,
         ),
@@ -129,49 +129,50 @@ class _JobStatusViewState extends State<JobStatusView> {
             Column(
               children: [
                 Container(
-                  width: 24,
-                  height: 24,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
-                    color: isDone
-                        ? AppColors.primaryColor
-                        : (isActive
-                              ? AppColors.primaryColor.withValues(alpha: 0.2)
-                              : Colors.grey[300]),
+                    color: isDone || isActive ? AppColors.primaryColor : Colors.grey[300],
                     shape: BoxShape.circle,
-                    border: isActive
-                        ? Border.all(color: AppColors.primaryColor, width: 2)
-                        : null,
                   ),
-                  child: isDone
-                      ? const Icon(Icons.check, color: Colors.white, size: 14)
-                      : null,
+                  child: Icon(
+                    isDone ? Icons.check : Icons.circle,
+                    color: Colors.white,
+                    size: 18,
+                  ),
                 ),
-                Expanded(
-                  child: Container(
+                if (index < 2)
+                  Container(
                     width: 2,
-                    color: index == 2 ? Colors.transparent : Colors.grey[300],
+                    height: 40,
+                    color: isDone ? AppColors.primaryColor : Colors.grey[300],
                   ),
-                ),
               ],
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: isActive || isDone ? Colors.black : Colors.grey,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                        color: isDone || isActive ? Colors.black : Colors.grey,
+                      ),
                     ),
-                  ),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                  const SizedBox(height: 24),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -186,94 +187,42 @@ class _JobStatusViewState extends State<JobStatusView> {
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10),
         ],
       ),
       child: SafeArea(
-        child: PrimaryButton(
-          text: currentStep == 1
-              ? 'Start Service'
-              : (currentStep == 2 ? 'Complete Job' : 'I have Arrived'),
-          onPressed: () {
-            if (currentStep < 2) {
-              setState(() => currentStep++);
-            } else {
-              _showCompletionDialog();
-            }
-          },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Call Customer',
+                    icon: Icons.phone_rounded,
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Message',
+                    icon: Icons.message_rounded,
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: PrimaryButton(
+                text: 'Mark as Completed',
+                isLoading: false,
+                onPressed: () {},
+              ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  void _showCompletionDialog() {
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.check_circle_rounded,
-                color: AppColors.primaryColor,
-                size: 64,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Job Complete!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const Text(
-                'Are you sure you want to finish?',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 24),
-              _uploadBox('Take Completion Photo'),
-              const SizedBox(height: 24),
-              PrimaryButton(
-                text: 'Submit & Earn N12,000',
-                onPressed: () {
-                  Get.back();
-                  Get.back();
-                  Get.snackbar(
-                    'Success',
-                    'Job completed and funds added to wallet!',
-                    backgroundColor: AppColors.primaryColor,
-                    colorText: Colors.white,
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _uploadBox(String label) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      child: Column(
-        children: [
-          const Icon(Icons.camera_alt_rounded, color: AppColors.primaryColor),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-          ),
-        ],
       ),
     );
   }
@@ -281,38 +230,62 @@ class _JobStatusViewState extends State<JobStatusView> {
 
 class _JobDetailHeader extends StatelessWidget {
   const _JobDetailHeader();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: const Row(
-        children: [
-          CircleAvatar(radius: 24, child: Icon(Icons.person)),
-          SizedBox(width: 12),
-          Column(
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Icon(
+            Icons.plumbing_rounded,
+            color: AppColors.primaryColor,
+            size: 24,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Sarah Williams',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              const Text(
+                'Kitchen Plumbing Repair',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              const SizedBox(height: 4),
               Text(
-                'Kitchen Plumbing Service',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
+                'Lekki Phase 1, Lagos',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
               ),
             ],
           ),
-          Spacer(),
-          Icon(
-            Icons.chat_bubble_outline_rounded,
-            color: AppColors.primaryColor,
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
-      ),
+          child: const Text(
+            'Active',
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

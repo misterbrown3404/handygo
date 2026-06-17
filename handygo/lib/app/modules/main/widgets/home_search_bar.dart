@@ -7,7 +7,7 @@ import 'package:handygo/app/modules/main/controllers/main_controller.dart';
 
 import 'package:handygo/app/core/widgets/scale_on_tap.dart';
 
-class HomeSearchBar extends StatelessWidget {
+class HomeSearchBar extends GetView<MainController> {
   const HomeSearchBar({super.key});
 
   @override
@@ -20,11 +20,9 @@ class HomeSearchBar extends StatelessWidget {
             height: 55,
             borderRadius: BorderRadius.circular(15),
             child: TextField(
-              onSubmitted: (value) {
-                Get.find<MainController>().fetchWorkers(search: value);
-              },
+              onChanged: controller.onSearchChanged,
               decoration: const InputDecoration(
-                hintText: "Search...",
+                hintText: "Search workers, services...",
                 hintStyle: TextStyle(color: Colors.grey),
                 icon: Icon(Icons.search, color: AppColors.primaryColor),
                 border: InputBorder.none,

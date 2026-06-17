@@ -1,62 +1,53 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
+
+/// ── SurfaceCard (formerly `GlassCard`) ─────────────────────────
+///
+/// A clean Material-based card for the admin interface.
+/// The class name stays `GlassCard` for backward compatibility,
+/// but the appearance is solid-surface with soft elevation.
+///
+/// All glass/backdrop effects are removed.
 
 class GlassCard extends StatelessWidget {
   final Widget child;
   final double borderRadius;
   final EdgeInsetsGeometry? padding;
-  final double blur;
-  final Color? glowColor;
+  final double elevation;
+  final Color? surfaceColor;
+  final Color? borderColor;
 
   const GlassCard({
     super.key,
     required this.child,
-    this.borderRadius = 20,
+    this.borderRadius = AdminSpacing.md,
     this.padding,
-    this.blur = 12,
-    this.glowColor,
+    this.elevation = 2.0,
+    this.surfaceColor,
+    this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return Material(
+      elevation: elevation,
       borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          padding: padding ?? const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
-            color: AdminColors.cardDark.withValues(alpha: 0.75),
-            border: Border.all(
-              color: AdminColors.borderDark.withValues(alpha: 0.8),
-              width: 1,
+      color: surfaceColor ?? AdminColors.background,
+      child: Container(
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              horizontal: AdminSpacing.lg,
+              vertical: AdminSpacing.lg,
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withValues(alpha: 0.4),
-                Colors.white.withValues(alpha: 0.1),
-              ],
-            ),
-            boxShadow: [
-              if (glowColor != null)
-                BoxShadow(
-                  color: glowColor!.withValues(alpha: 0.15),
-                  blurRadius: 30,
-                  offset: const Offset(0, 10),
-                ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          color: surfaceColor ?? AdminColors.background,
+          border: Border.all(
+            color: borderColor ?? AdminColors.borderDark,
+            width: 1,
           ),
-          child: child,
         ),
+        child: child,
       ),
     );
   }

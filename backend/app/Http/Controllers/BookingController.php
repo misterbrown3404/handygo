@@ -70,6 +70,13 @@ class BookingController extends Controller
         return new BookingResource($booking);
     }
 
+    public function decline(Request $request, $id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->update(['status' => 'declined']);
+        return new BookingResource($booking);
+    }
+
     public function complete(Request $request, $id)
     {
         $booking = Booking::findOrFail($id);

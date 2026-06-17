@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/stat_card.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/modules/analytics/widgets/charts.dart';
@@ -17,48 +17,64 @@ class DashboardView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Obx(() {
+        // Loading
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(color: AdminColors.primary),
+          );
         }
 
+        // Error
         if (controller.error.value.isNotEmpty) {
           return Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: AdminColors.error,
-                  size: 48,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  controller.error.value,
-                  style: const TextStyle(color: AdminColors.textSecondary),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: controller.fetchDashboard,
-                  child: const Text('Retry'),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(AdminSpacing.xxl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AdminSpacing.lg),
+                    decoration: BoxDecoration(
+                      color: AdminColors.dangerLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.error_outline_rounded,
+                      color: AdminColors.danger,
+                      size: 56,
+                    ),
+                  ),
+                  const SizedBox(height: AdminSpacing.lg),
+                  Text(
+                    controller.error.value,
+                    textAlign: TextAlign.center,
+                    style: AdminTextStyles.bodyWith(AdminColors.textSecondary),
+                  ),
+                  const SizedBox(height: AdminSpacing.lg),
+                  ElevatedButton(
+                    onPressed: controller.fetchDashboard,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
           );
         }
 
         return RefreshIndicator(
           onRefresh: controller.fetchDashboard,
+          color: AdminColors.primary,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AdminSpacing.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _header(controller),
-                const SizedBox(height: 32),
+                const SizedBox(height: AdminSpacing.xxl),
                 _statsRow(controller),
-                const SizedBox(height: 32),
+                const SizedBox(height: AdminSpacing.xxl),
                 _chartsRow(controller),
-                const SizedBox(height: 32),
+                const SizedBox(height: AdminSpacing.xxl),
                 _bottomSection(controller),
               ],
             ),
@@ -68,102 +84,95 @@ class DashboardView extends StatelessWidget {
     );
   }
 
+  // ── Page header ────────────────────────────────────────────────
+
   Widget _header(DashboardController c) {
     final now = DateFormat('MMMM yyyy').format(DateTime.now());
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth > 600;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Dashboard',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Welcome back, Admin. Here\'s your platform overview.',
-              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
-            ),
-          ],
-        ),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GlassCard(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(
-                    Icons.calendar_today_rounded,
-                    color: AdminColors.textSecondary,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
+                  Text('Dashboard', style: AdminTextStyles.h1),
+                  const SizedBox(height: 2),
                   Text(
-                    now,
-                    style: const TextStyle(
-                      color: AdminColors.textSecondary,
-                      fontSize: 13,
-                    ),
+                    "Welcome back, Admin. Here's your platform overview.",
+                    style: AdminTextStyles.bodySmallSecondary,
                   ),
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: c.fetchDashboard,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AdminColors.primary, AdminColors.primaryDark],
+            if (wide) const SizedBox(width: AdminSpacing.lg),
+            Wrap(
+              spacing: AdminSpacing.sm,
+              runSpacing: AdminSpacing.sm,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                GlassCard(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AdminSpacing.sm,
+                    vertical: AdminSpacing.xs,
                   ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.calendar_today_rounded,
+                        color: AdminColors.textSecondary,
+                        size: 16,
+                      ),
+                      const SizedBox(width: AdminSpacing.xs),
+                      Text(
+                        now,
+                        style: AdminTextStyles.bodySmallSecondary,
+                      ),
+                    ],
+                  ),
+                ),
+                Material(
+                  color: AdminColors.primary,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AdminColors.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                  child: InkWell(
+                    onTap: c.fetchDashboard,
+                    borderRadius: BorderRadius.circular(12),
+                    child: const Padding(
+                      padding: EdgeInsets.all(AdminSpacing.sm),
+                      child: Icon(
+                        Icons.refresh_rounded,
+                        color: AdminColors.white,
+                        size: 20,
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-                child: const Icon(
-                  Icons.refresh_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
+
+  // ── Stat cards ─────────────────────────────────────────────────
 
   Widget _statsRow(DashboardController c) {
     final formatter = NumberFormat('#,###');
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = constraints.maxWidth > 1200
-            ? 4
-            : (constraints.maxWidth > 800 ? 2 : 1);
+        // Desktop: 2×2 grid, Tablet: 2-cols, Phone: 1-col
+        final isTablet = constraints.maxWidth >= 800;
         return GridView.count(
-          crossAxisCount: crossAxisCount,
+          crossAxisCount: isTablet ? 2 : 1,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-          childAspectRatio: 2.0,
+          crossAxisSpacing: AdminSpacing.lg,
+          mainAxisSpacing: AdminSpacing.lg,
+          childAspectRatio: 1.8,
           children: [
             StatCard(
               title: 'Total Revenue',
@@ -199,6 +208,8 @@ class DashboardView extends StatelessWidget {
     );
   }
 
+  // ── Revenue + Pie charts ───────────────────────────────────────
+
   Widget _chartsRow(DashboardController c) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -206,22 +217,24 @@ class DashboardView extends StatelessWidget {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(flex: 2, child: RevenueChart(data: c.revenueChart)),
-              const SizedBox(width: 24),
-              Expanded(child: JobCategoryChart(data: c.workersByCategory)),
+              Expanded(flex: 3, child: RevenueChart(data: c.revenueChart)),
+              const SizedBox(width: AdminSpacing.lg),
+              Expanded(flex: 2, child: JobCategoryChart(data: c.workersByCategory)),
             ],
           );
         }
         return Column(
           children: [
             RevenueChart(data: c.revenueChart),
-            const SizedBox(height: 24),
+            const SizedBox(height: AdminSpacing.lg),
             JobCategoryChart(data: c.workersByCategory),
           ],
         );
       },
     );
   }
+
+  // ── Weekly jobs + Recent activity ─────────────────────────────
 
   Widget _bottomSection(DashboardController c) {
     return LayoutBuilder(
@@ -232,8 +245,8 @@ class DashboardView extends StatelessWidget {
             children: [
               const Expanded(
                 child: WeeklyJobsChart(data: []),
-              ), // No weekly volume on dashboard yet
-              const SizedBox(width: 24),
+              ),
+              const SizedBox(width: AdminSpacing.lg),
               Expanded(child: _recentActivity(c)),
             ],
           );
@@ -241,7 +254,7 @@ class DashboardView extends StatelessWidget {
         return Column(
           children: [
             const WeeklyJobsChart(data: []),
-            const SizedBox(height: 24),
+            const SizedBox(height: AdminSpacing.lg),
             _recentActivity(c),
           ],
         );
@@ -249,81 +262,69 @@ class DashboardView extends StatelessWidget {
     );
   }
 
+  // ── Recent activity list ───────────────────────────────────────
+
   Widget _recentActivity(DashboardController c) {
     final activities = c.recentActivity;
-    if (activities.isEmpty) {
-      return GlassCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Recent Activity',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+    return GlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.history_rounded,
+                color: AdminColors.accent,
+                size: 18,
               ),
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(width: AdminSpacing.xs),
+              Text('Recent Activity', style: AdminTextStyles.h3),
+            ],
+          ),
+          const SizedBox(height: AdminSpacing.lg),
+          if (activities.isEmpty)
             Center(
               child: Column(
                 children: [
                   Icon(
                     Icons.inbox_rounded,
-                    color: AdminColors.textSecondary.withValues(alpha: 0.4),
+                    color: AdminColors.textSecondary.withValues(alpha: 0.3),
                     size: 48,
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  const SizedBox(height: AdminSpacing.sm),
+                  Text(
                     'No recent activity',
-                    style: TextStyle(color: AdminColors.textSecondary),
+                    style: AdminTextStyles.bodySmallSecondary,
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return GlassCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Recent Activity',
-            style: TextStyle(
-              color: AdminColors.textPrimary,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ...activities.map((a) {
-            final type = a['type'] ?? 'worker';
-            IconData icon;
-            Color color;
-            switch (type) {
-              case 'subscription':
-                icon = Icons.payment_rounded;
-                color = AdminColors.primary;
-                break;
-              case 'kyc':
-                icon = Icons.verified_user_rounded;
-                color = AdminColors.warning;
-                break;
-              default:
-                icon = Icons.person_add_rounded;
-                color = AdminColors.accent;
-            }
-            return _activityItem(
-              a['title'] ?? '',
-              a['sub'] ?? '',
-              a['time'] ?? '',
-              icon,
-              color,
-            );
-          }),
+            )
+          else
+            ...activities.map((a) {
+              final type = a['type'] ?? 'worker';
+              IconData icon;
+              Color color;
+              switch (type) {
+                case 'subscription':
+                  icon = Icons.payment_rounded;
+                  color = AdminColors.primary;
+                  break;
+                case 'kyc':
+                  icon = Icons.verified_user_rounded;
+                  color = AdminColors.warning;
+                  break;
+                default:
+                  icon = Icons.person_add_rounded;
+                  color = AdminColors.accent;
+              }
+              return _activityItem(
+                a['title'] ?? '',
+                a['sub'] ?? '',
+                a['time'] ?? '',
+                icon,
+                color,
+              );
+            }),
         ],
       ),
     );
@@ -341,14 +342,14 @@ class DashboardView extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(AdminSpacing.sm),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
+              color: color.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: color, size: 18),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: AdminSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

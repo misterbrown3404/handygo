@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
+import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/core/widgets/glass_data_table.dart';
 import 'package:handygo_admin/app/core/widgets/status_chip.dart';
 import 'package:handygo_admin/app/data/providers/admin_api_client.dart';
@@ -18,11 +19,18 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
   List<Map<String, dynamic>> _services = [];
   bool _isLoading = true;
   String? _error;
+  final TextEditingController _searchCtrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _fetchServices();
+  }
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchServices() async {
@@ -47,9 +55,14 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
   Future<void> _deleteService(int id) async {
     final confirm = await Get.dialog<bool>(
       AlertDialog(
-        title: const Text('Delete Service'),
+        backgroundColor: AdminColors.surface,
+        title: const Text(
+          'Delete Service',
+          style: TextStyle(color: AdminColors.textPrimary),
+        ),
         content: const Text(
           'Are you sure you want to delete this service category?',
+          style: TextStyle(color: AdminColors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -60,7 +73,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
             onPressed: () => Get.back(result: true),
             child: const Text(
               'Delete',
-              style: TextStyle(color: AdminColors.error),
+              style: TextStyle(color: AdminColors.danger),
             ),
           ),
         ],
@@ -73,16 +86,16 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
         Get.snackbar(
           'Success',
           'Service deleted',
-          backgroundColor: AdminColors.success,
-          colorText: Colors.white,
+          backgroundColor: AdminColors.accent,
+          colorText: AdminColors.white,
         );
         _fetchServices();
       } catch (e) {
         Get.snackbar(
           'Error',
           'Failed to delete service',
-          backgroundColor: AdminColors.error,
-          colorText: Colors.white,
+          backgroundColor: AdminColors.danger,
+          colorText: AdminColors.white,
         );
       }
     }
@@ -101,31 +114,36 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
     );
     final iconCtrl = TextEditingController(text: existing?['icon'] ?? '');
 
+    final isEdit = existing != null;
     Get.dialog(
       AlertDialog(
-        title: Text(existing != null ? 'Edit Service' : 'Create New Service'),
+        backgroundColor: AdminColors.surface,
+        title: Text(
+          isEdit ? 'Edit Service' : 'Create New Service',
+          style: const TextStyle(color: AdminColors.textPrimary),
+        ),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               _dialogField(nameCtrl, 'Service Name', Icons.build_outlined),
-              const SizedBox(height: 12),
+              const SizedBox(height: AdminSpacing.sm),
               _dialogField(categoryCtrl, 'Category', Icons.category_outlined),
-              const SizedBox(height: 12),
+              const SizedBox(height: AdminSpacing.sm),
               _dialogField(
                 descCtrl,
                 'Description',
                 Icons.description_outlined,
                 maxLines: 3,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AdminSpacing.sm),
               _dialogField(
                 priceCtrl,
                 'Base Price (₦)',
                 Icons.payments_outlined,
                 keyboardType: TextInputType.number,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AdminSpacing.sm),
               _dialogField(
                 iconCtrl,
                 'Icon URL (optional)',
@@ -133,6 +151,10 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
               ),
             ],
           ),
+        ),
+        actionsPadding: const EdgeInsets.symmetric(
+          horizontal: AdminSpacing.md,
+          vertical: AdminSpacing.sm,
         ),
         actions: [
           TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
@@ -149,8 +171,8 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
               backgroundColor: AdminColors.primary,
             ),
             child: Text(
-              existing != null ? 'Update' : 'Create',
-              style: const TextStyle(color: Colors.white),
+              isEdit ? 'Update' : 'Create',
+              style: const TextStyle(color: AdminColors.white),
             ),
           ),
         ],
@@ -169,13 +191,16 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
       controller: ctrl,
       maxLines: maxLines,
       keyboardType: keyboardType,
+      style: const TextStyle(color: AdminColors.textPrimary),
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, size: 20),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        prefixIcon: Icon(icon, size: 20, color: AdminColors.textSecondary),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AdminSpacing.sm),
+        ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 12,
+          horizontal: AdminSpacing.sm,
+          vertical: AdminSpacing.xs + 2,
         ),
       ),
     );
@@ -193,8 +218,8 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
       Get.snackbar(
         'Error',
         'Name and Category are required',
-        backgroundColor: AdminColors.error,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.danger,
+        colorText: AdminColors.white,
       );
       return;
     }
@@ -213,16 +238,16 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
         Get.snackbar(
           'Success',
           'Service updated',
-          backgroundColor: AdminColors.success,
-          colorText: Colors.white,
+          backgroundColor: AdminColors.accent,
+          colorText: AdminColors.white,
         );
       } else {
         await _api.post(AdminApiConstants.adminServices, data: data);
         Get.snackbar(
           'Success',
           'Service created',
-          backgroundColor: AdminColors.success,
-          colorText: Colors.white,
+          backgroundColor: AdminColors.accent,
+          colorText: AdminColors.white,
         );
       }
       Get.back();
@@ -231,184 +256,263 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
       Get.snackbar(
         'Error',
         'Failed to save service',
-        backgroundColor: AdminColors.error,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.danger,
+        colorText: AdminColors.white,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final query = _searchCtrl.text.trim().toLowerCase();
+    final filtered = query.isEmpty
+        ? _services
+        : _services.where((s) {
+            final name = (s['name'] ?? '').toString().toLowerCase();
+            final cat = (s['category'] ?? '').toString().toLowerCase();
+            return name.contains(query) || cat.contains(query);
+          }).toList();
+
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _header(),
-            const SizedBox(height: 24),
-            if (_isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (_error != null)
-              Center(
-                child: Column(
-                  children: [
-                    Text(
-                      _error!,
-                      style: const TextStyle(color: AdminColors.error),
-                    ),
-                    const SizedBox(height: 12),
-                    ElevatedButton(
-                      onPressed: _fetchServices,
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+      body: SafeArea(
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: AdminColors.primary),
               )
-            else
-              GlassDataTable(
-                title: 'Service Categories',
-                trailing: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AdminColors.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    '${_services.length} Services',
-                    style: const TextStyle(
-                      color: AdminColors.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                columns: const [
-                  DataColumn(label: Text('NAME')),
-                  DataColumn(label: Text('CATEGORY')),
-                  DataColumn(label: Text('BASE PRICE')),
-                  DataColumn(label: Text('STATUS')),
-                  DataColumn(label: Text('ACTIONS')),
-                ],
-                rows: _services
-                    .map(
-                      (s) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text(
-                              s['name'] ?? '',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
+            : _error != null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AdminSpacing.xxl),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(AdminSpacing.lg),
+                            decoration: BoxDecoration(
+                              color: AdminColors.dangerLight,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.error_outline_rounded,
+                              color: AdminColors.danger,
+                              size: 48,
                             ),
                           ),
-                          DataCell(
-                            Text(
-                              s['category'] ?? '',
-                              style: const TextStyle(
-                                color: AdminColors.textSecondary,
-                              ),
-                            ),
+                          const SizedBox(height: AdminSpacing.sm),
+                          Text(
+                            _error!,
+                            style: const TextStyle(color: AdminColors.error),
                           ),
-                          DataCell(
-                            Text(
-                              s['base_price'] != null
-                                  ? '₦${s['base_price']}'
-                                  : 'N/A',
-                              style: const TextStyle(
-                                color: AdminColors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          DataCell(
-                            StatusChip(
-                              label:
-                                  (s['is_active'] == true ||
-                                      s['is_active'] == 1)
-                                  ? 'Active'
-                                  : 'Inactive',
-                            ),
-                          ),
-                          DataCell(
-                            Row(
-                              children: [
-                                _actionIcon(
-                                  Icons.edit_rounded,
-                                  AdminColors.accent,
-                                  'Edit',
-                                  () => _showCreateEditDialog(existing: s),
-                                ),
-                                const SizedBox(width: 8),
-                                _actionIcon(
-                                  Icons.delete_rounded,
-                                  AdminColors.error,
-                                  'Delete',
-                                  () => _deleteService(s['id']),
-                                ),
-                              ],
-                            ),
+                          const SizedBox(height: AdminSpacing.sm),
+                          ElevatedButton(
+                            onPressed: _fetchServices,
+                            child: const Text('Retry'),
                           ),
                         ],
                       ),
-                    )
-                    .toList(),
-              ),
-          ],
-        ),
+                    ),
+                  )
+                : filtered.isEmpty
+                    ? GlassCard(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.category_outlined,
+                              size: 56,
+                              color: AdminColors.textSecondary
+                                  .withValues(alpha: 0.3),
+                            ),
+                            const SizedBox(height: AdminSpacing.sm),
+                            Text(
+                              'No services found',
+                              style: AdminTextStyles.h3,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              _searchCtrl.text.isEmpty
+                                  ? 'Create your first service category to get started.'
+                                  : 'No service matches your search.',
+                              style: AdminTextStyles.bodySmallSecondary,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.all(AdminSpacing.xl),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _header(),
+                            const SizedBox(height: AdminSpacing.lg),
+                            _buildSearchBar(context),
+                            const SizedBox(height: AdminSpacing.lg),
+                            GlassDataTable(
+                              title: 'Service Categories',
+                              trailing: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AdminSpacing.sm,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AdminColors.primaryLight,
+                                  borderRadius: BorderRadius.circular(
+                                    AdminSpacing.xs,
+                                  ),
+                                ),
+                                child: Text(
+                                  '${filtered.length} Services',
+                                  style: const TextStyle(
+                                    color: AdminColors.primary,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              columns: const [
+                                DataColumn(label: Text('NAME')),
+                                DataColumn(label: Text('CATEGORY')),
+                                DataColumn(label: Text('BASE PRICE')),
+                                DataColumn(label: Text('STATUS')),
+                                DataColumn(label: Text('ACTIONS')),
+                              ],
+                              rows: filtered
+                                  .map(
+                                    (s) => DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Text(
+                                            s['name'] ?? '',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            s['category'] ?? '',
+                                            style: const TextStyle(
+                                              color: AdminColors.textSecondary,
+                                            ),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                            s['base_price'] != null
+                                                ? '₦${s['base_price']}'
+                                                : 'N/A',
+                                            style: const TextStyle(
+                                              color: AdminColors.primary,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                        DataCell(
+                                          StatusChip(
+                                            label: (s['is_active'] == true ||
+                                                    s['is_active'] == 1)
+                                                ? 'Active'
+                                                : 'Inactive',
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Row(
+                                            children: [
+                                              _actionBtn(
+                                                Icons.edit_rounded,
+                                                AdminColors.accent,
+                                                'Edit',
+                                                () =>
+                                                    _showCreateEditDialog(
+                                                      existing: s,
+                                                    ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              _actionBtn(
+                                                Icons.delete_rounded,
+                                                AdminColors.danger,
+                                                'Delete',
+                                                () =>
+                                                    _deleteService(s['id']),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                      ),
       ),
     );
   }
 
+  // ── Header ─────────────────────────────────────────────────────
+
   Widget _header() {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Services & Categories',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Services & Categories', style: AdminTextStyles.h1),
+              const SizedBox(height: 4),
+              Text(
+                'Manage the service categories available on HandyGo',
+                style: AdminTextStyles.bodySmallSecondary,
               ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Manage the service categories available on HandyGo',
-              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
-            ),
-          ],
+            ],
+          ),
         ),
-        ElevatedButton.icon(
+        FilledButton.icon(
           onPressed: () => _showCreateEditDialog(),
           icon: const Icon(Icons.add_rounded, size: 18),
           label: const Text('Add Service'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AdminColors.primary,
-            foregroundColor: Colors.white,
-            elevation: 4,
-            shadowColor: AdminColors.primary.withValues(alpha: 0.4),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
         ),
       ],
     );
   }
 
-  Widget _actionIcon(
+  // ── Search bar ────────────────────────────────────────────────
+
+  Widget _buildSearchBar(BuildContext context) {
+    return GlassCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AdminSpacing.sm,
+        vertical: AdminSpacing.xs,
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.search_rounded, color: AdminColors.textSecondary),
+          const SizedBox(width: AdminSpacing.xs),
+          Expanded(
+            child: TextField(
+              controller: _searchCtrl,
+              style: const TextStyle(color: AdminColors.textPrimary),
+              decoration: const InputDecoration(
+                hintText: 'Search services...',
+                hintStyle: TextStyle(
+                  color: AdminColors.textSecondary,
+                  fontSize: 14,
+                ),
+                border: InputBorder.none,
+                isDense: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _actionBtn(
     IconData icon,
     Color color,
     String tooltip,
@@ -420,8 +524,8 @@ class _ServicesAdminViewState extends State<ServicesAdminView> {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(8),
-          hoverColor: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AdminSpacing.xs),
+          hoverColor: color.withValues(alpha: 0.10),
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: Icon(icon, size: 18, color: color),

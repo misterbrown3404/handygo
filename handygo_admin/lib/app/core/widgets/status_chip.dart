@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 
 class StatusChip extends StatelessWidget {
   final String label;
@@ -11,19 +11,20 @@ class StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final chipColor = color ?? _colorForStatus(label);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AdminSpacing.sm,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
         color: chipColor.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: chipColor.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(AdminSpacing.sm),
+        border: Border.all(
+          color: chipColor.withValues(alpha: 0.2),
+        ),
       ),
       child: Text(
         label,
-        style: TextStyle(
-          color: chipColor,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
+        style: AdminTextStyles.captionWith(chipColor, FontWeight.w700),
       ),
     );
   }
@@ -33,15 +34,19 @@ class StatusChip extends StatelessWidget {
       case 'active':
       case 'verified':
       case 'completed':
+      case 'approved':
         return AdminColors.success;
       case 'pending':
+      case 'in_progress':
       case 'in progress':
         return AdminColors.warning;
+      case 'highest':
+        return AdminColors.accent;
       case 'suspended':
       case 'rejected':
       case 'cancelled':
       case 'disputed':
-        return AdminColors.error;
+        return AdminColors.danger;
       default:
         return AdminColors.accent;
     }

@@ -1,60 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handygo_worker/app/modules/bookings/views/job_status_view.dart';
+import 'package:handygo_worker/app/modules/dashboard/controllers/dashboard_controller.dart';
 
-class ActiveJobCard extends StatelessWidget {
+class ActiveJobCard extends GetView<DashboardController> {
   const ActiveJobCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF55B436), Color(0xFF2E7D32)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(() {
+      final job = controller.nextJob.value;
+      if (job == null) {
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.grey[200]!),
+          ),
+          child: const Column(
             children: [
+              Icon(Icons.calendar_today_rounded, color: Colors.grey, size: 32),
+              SizedBox(height: 12),
               Text(
-                'Next Scheduled Job',
-                style: TextStyle(color: Colors.white70),
+                'No Active Schedule',
+                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
               ),
-              Icon(Icons.more_horiz, color: Colors.white),
+              Text(
+                'Go online to receive new requests.',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
-          const Text(
-            'Full House Cleaning',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+        );
+      }
+
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF55B436), Color(0xFF2E7D32)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${job.status.toUpperCase()} Job',
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                const Icon(Icons.more_horiz, color: Colors.white),
+              ],
             ),
-          ),
-          const Text(
-            '12:30 PM • 12, Lagos Street',
-            style: TextStyle(color: Colors.white),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => Get.to(() => const JobStatusView()),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF55B436),
-              minimumSize: const Size(double.infinity, 45),
+            const SizedBox(height: 12),
+            Text(
+              job.serviceType,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            child: const Text('View Details'),
-          ),
-        ],
-      ),
-    );
+            Text(
+              '${job.customerName} • ${job.location}',
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Get.to(() => const JobStatusView()),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF55B436),
+                minimumSize: const Size(double.infinity, 45),
+              ),
+              child: const Text('View Details'),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

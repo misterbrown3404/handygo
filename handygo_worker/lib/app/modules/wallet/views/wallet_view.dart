@@ -4,6 +4,7 @@ import 'package:handygo_worker/app/core/constant/spacing.dart';
 import 'package:handygo_worker/app/modules/wallet/controllers/wallet_controller.dart';
 import 'package:handygo_worker/app/modules/wallet/widgets/withdrawal_sheet.dart';
 import 'package:handygo_worker/app/widgets/fade_in_animation.dart';
+import 'package:handygo_worker/app/data/models/transaction_model.dart';
 
 class WalletView extends GetView<WalletController> {
   const WalletView({super.key});
@@ -13,34 +14,70 @@ class WalletView extends GetView<WalletController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(title: const Text('My Wallet'), centerTitle: false),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FadeInAnimation(child: _GlassBalanceCard()),
-            const SizedBox(height: AppSpacing.xl),
-            const FadeInAnimation(
-              delay: 100,
-              child: Text(
-                'Transaction History',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Obx(
-              () => ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.transactions.length,
-                itemBuilder: (context, index) => FadeInAnimation(
-                  delay: 200 + (index * 100),
-                  child: _TransactionItem(data: controller.transactions[index]),
-                ),
-              ),
-            ),
-          ],
-        ),
+      body: Obx(
+        () => controller.isLoading.value && controller.transactions.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : controller.hasError.value
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+                        const SizedBox(height: 16),
+                        const Text('Failed to load wallet data'),
+                        TextButton(
+                          onPressed: () {
+                            controller.fetchBalance();
+                            controller.fetchTransactions();
+                          },
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  )
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const FadeInAnimation(child: _GlassBalanceCard()),
+                        const SizedBox(height: AppSpacing.xl),
+                        const FadeInAnimation(
+                          delay: 100,
+                          child: Text(
+                            'Transaction History',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        Obx(() => controller.transactionsLoading.value
+                            ? const Center(child: CircularProgressIndicator())
+                            : controller.transactionsError.value
+                                ? Center(
+                                    child: Column(
+                                      children: [
+                                        const Text('Failed to load transactions', style: TextStyle(color: Colors.grey)),
+                                        TextButton(
+                                          onPressed: controller.fetchTransactions,
+                                          child: const Text('Retry'),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : controller.transactions.isEmpty
+                                    ? const Center(child: Text('No transactions yet', style: TextStyle(color: Colors.grey)))
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: controller.transactions.length,
+                                        itemBuilder: (context, index) => FadeInAnimation(
+                                          delay: 200 + (index * 100),
+                                          child: _TransactionItem(data: controller.transactions[index]),
+                                        ),
+                                      )),
+                      ],
+                    ),
+                  ),
       ),
     );
   }
@@ -48,6 +85,13 @@ class WalletView extends GetView<WalletController> {
 
 class _GlassBalanceCard extends GetView<WalletController> {
   const _GlassBalanceCard();
+
+  String _formatBalance(double amount) {
+    return '₦${amount.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]},',
+    )}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +137,7 @@ class _GlassBalanceCard extends GetView<WalletController> {
                   const SizedBox(height: 8),
                   Obx(
                     () => Text(
-                      controller.balance.value,
+                      _formatBalance(controller.balance.value),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 36,
@@ -109,8 +153,7 @@ class _GlassBalanceCard extends GetView<WalletController> {
                       _actionButton(
                         Icons.north_east_rounded,
                         'Withdraw',
-                        onTap: () =>
-                            WithdrawalSheet.show(controller.balance.value),
+                        onTap: () => WithdrawalSheet.show(controller.balance.value),
                       ),
                     ],
                   ),
@@ -152,12 +195,12 @@ class _GlassBalanceCard extends GetView<WalletController> {
 }
 
 class _TransactionItem extends StatelessWidget {
-  final Map<String, String> data;
+  final TransactionModel data;
   const _TransactionItem({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    final bool isCredit = data['amount']!.contains('+');
+    final bool isCredit = data.isCredit;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -170,9 +213,7 @@ class _TransactionItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isCredit
-                  ? Colors.green.withValues(alpha: 0.1)
-                  : Colors.red.withValues(alpha: 0.1),
+              color: isCredit ? Colors.green.withValues(alpha: 0.1) : Colors.red.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -186,18 +227,18 @@ class _TransactionItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data['title']!,
+                  data.type,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  data['date']!,
+                  data.formattedDate,
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
             ),
           ),
           Text(
-            data['amount']!,
+            data.formattedAmount,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isCredit ? Colors.green : Colors.black,

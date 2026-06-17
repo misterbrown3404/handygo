@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:handygo_worker/app/core/theme/theme.dart';
 import 'package:handygo_worker/app/core/bindings/initial_binding.dart';
 import 'package:handygo_worker/app/routes/app_pages.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const WorkerApp());
 }
 

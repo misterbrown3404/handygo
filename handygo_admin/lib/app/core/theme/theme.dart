@@ -1,31 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:handygo_admin/app/core/constant/color.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 
 ThemeData adminTheme() {
-  return ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    textTheme:
-        GoogleFonts.interTextTheme(), // Inter for a more professional feel
-    primaryColor: AppColors.adminPrimary,
-    colorScheme: const ColorScheme.light(
-      primary: AppColors.adminPrimary,
-      secondary: AppColors.primaryColor,
-      surface: AppColors.surfaceColor,
-      error: AppColors.errorColor,
-    ),
-    scaffoldBackgroundColor: AppColors.backgroundColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.adminPrimary,
-      elevation: 0,
-      centerTitle: false,
-      titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
+  final base = ThemeData.light(useMaterial3: true);
+
+  return base.copyWith(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: AdminColors.background,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AdminColors.primary,
+        brightness: Brightness.light,
+        primary: AdminColors.primary,
+        onPrimary: AdminColors.surface,
+        secondary: AdminColors.accent,
+        onSecondary: AdminColors.surface,
+        error: AdminColors.error,
+        onError: AdminColors.surface,
+        surface: AdminColors.surface,
+        onSurface: AdminColors.textPrimary,
       ),
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
+      textTheme: GoogleFonts.interTextTheme(base.textTheme),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AdminColors.surface,
+        elevation: 0,
+        centerTitle: false,
+        surfaceTintColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: AdminColors.textSecondary,
+          size: 22,
+        ),
+        titleTextStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: AdminColors.textPrimary,
+        ),
+      ));
+}
+
+ThemeData glassTheme() {
+  return adminTheme().copyWith(
+    scaffoldBackgroundColor:
+        AdminColors.neutral50.withValues(alpha: 0.6),
   );
 }

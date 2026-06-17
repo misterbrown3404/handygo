@@ -14,18 +14,15 @@ class ChatModel {
     this.unreadCount = 0,
     this.profileImage,
   });
-}
 
-class MessageModel {
-  final String senderId;
-  final String text;
-  final DateTime time;
-  final bool isMe;
-
-  MessageModel({
-    required this.senderId,
-    required this.text,
-    required this.time,
-    required this.isMe,
-  });
+  factory ChatModel.fromJson(Map<String, dynamic> json) {
+    return ChatModel(
+      id: '${json['id'] ?? json['sender_id'] ?? json['receiver_id'] ?? 0}',
+      senderName: json['name'] ?? 'User',
+      lastMessage: json['last_message'] ?? json['content'] ?? '',
+      time: json['time'] ?? '',
+      unreadCount: json['unread_count'] ?? 0,
+      profileImage: json['profile_image'] ?? json['avatar'],
+    );
+  }
 }

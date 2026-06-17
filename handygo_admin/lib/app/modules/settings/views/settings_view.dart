@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import '../controllers/settings_controller.dart';
 
@@ -13,94 +13,86 @@ class SettingsView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(color: AdminColors.primary),
-          );
-        }
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(color: AdminColors.primary),
+            );
+          }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Settings',
-                style: TextStyle(
-                  color: AdminColors.textPrimary,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(AdminSpacing.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Settings', style: AdminTextStyles.h1),
+                const SizedBox(height: 4),
+                Text(
+                  'Configure platform settings and preferences',
+                  style: AdminTextStyles.bodySmallSecondary,
                 ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Configure platform settings and preferences',
-                style: TextStyle(
-                  color: AdminColors.textSecondary,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 32),
+                const SizedBox(height: AdminSpacing.xxl),
 
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 900) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth > 900) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildGroupCard(
+                              controller,
+                              'general',
+                              'General',
+                              Icons.tune_rounded,
+                            ),
+                          ),
+                          const SizedBox(width: AdminSpacing.lg),
+                          Expanded(
+                            child: _buildGroupCard(
+                              controller,
+                              'notifications',
+                              'Notifications',
+                              Icons.notifications_none_rounded,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Column(
                       children: [
-                        Expanded(
-                          child: _buildGroupCard(
-                            controller,
-                            'general',
-                            'General',
-                            Icons.tune_rounded,
-                          ),
+                        _buildGroupCard(
+                          controller,
+                          'general',
+                          'General',
+                          Icons.tune_rounded,
                         ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: _buildGroupCard(
-                            controller,
-                            'notifications',
-                            'Notifications',
-                            Icons.notifications_none_rounded,
-                          ),
+                        const SizedBox(height: AdminSpacing.lg),
+                        _buildGroupCard(
+                          controller,
+                          'notifications',
+                          'Notifications',
+                          Icons.notifications_none_rounded,
                         ),
                       ],
                     );
-                  }
-                  return Column(
-                    children: [
-                      _buildGroupCard(
-                        controller,
-                        'general',
-                        'General',
-                        Icons.tune_rounded,
-                      ),
-                      const SizedBox(height: 24),
-                      _buildGroupCard(
-                        controller,
-                        'notifications',
-                        'Notifications',
-                        Icons.notifications_none_rounded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 24),
-              _buildGroupCard(
-                controller,
-                'commission',
-                'Commission & Fees',
-                Icons.percent_rounded,
-              ),
-              const SizedBox(height: 24),
-              _dangerZone(),
-            ],
-          ),
-        );
-      }),
+                  },
+                ),
+                const SizedBox(height: AdminSpacing.lg),
+                _buildGroupCard(
+                  controller,
+                  'commission',
+                  'Commission & Fees',
+                  Icons.percent_rounded,
+                ),
+                const SizedBox(height: AdminSpacing.lg),
+                _dangerZone(),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -119,18 +111,18 @@ class SettingsView extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: AdminColors.primary, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AdminSpacing.xs),
               Text(
                 title,
                 style: const TextStyle(
                   color: AdminColors.textPrimary,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AdminSpacing.md),
           ...items.map((item) {
             if (item['value'] == '1' || item['value'] == '0') {
               return _toggleRow(
@@ -145,7 +137,7 @@ class SettingsView extends StatelessWidget {
             }
             return _settingRow(
               (item['key'] as String).replaceAll('_', ' ').capitalizeFirst!,
-              item['value'],
+              item['value'].toString(),
               (newVal) {
                 controller.updateSettings([
                   {'key': item['key'], 'value': newVal},
@@ -160,7 +152,7 @@ class SettingsView extends StatelessWidget {
 
   Widget _settingRow(String label, String value, Function(String) onSave) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: AdminSpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -174,13 +166,18 @@ class SettingsView extends StatelessWidget {
           ),
           InkWell(
             onTap: () => _showEditDialog(label, value, onSave),
+            borderRadius: BorderRadius.circular(AdminSpacing.xs),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AdminSpacing.sm,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.04),
-                borderRadius: BorderRadius.circular(8),
+                color: AdminColors.neutral100,
+                borderRadius: BorderRadius.circular(AdminSpacing.xs),
                 border: Border.all(
-                  color: AdminColors.borderDark.withValues(alpha: 0.5),
+                  color: AdminColors.borderDark,
+                  width: 1,
                 ),
               ),
               child: Row(
@@ -193,7 +190,7 @@ class SettingsView extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   const Icon(
                     Icons.edit_rounded,
                     size: 14,
@@ -210,7 +207,7 @@ class SettingsView extends StatelessWidget {
 
   Widget _toggleRow(String label, bool isOn, Function(bool) onChanged) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: AdminSpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -232,28 +229,55 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(String label, String value, Function(String) onSave) {
-    final controller = TextEditingController(text: value);
+  void _showEditDialog(
+    String label,
+    String value,
+    Function(String) onSave,
+  ) {
+    final fieldCtrl = TextEditingController(text: value);
     Get.dialog(
       AlertDialog(
         backgroundColor: AdminColors.surface,
         title: Text(
           'Edit $label',
-          style: const TextStyle(color: AdminColors.textPrimary),
+          style: const TextStyle(
+            color: AdminColors.textPrimary,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         content: TextField(
-          controller: controller,
+          controller: fieldCtrl,
           autofocus: true,
           style: const TextStyle(color: AdminColors.textPrimary),
           decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            hintText: label,
+            fillColor: AdminColors.neutral100,
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AdminSpacing.xs),
+              borderSide: const BorderSide(color: AdminColors.borderDark),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AdminSpacing.xs),
+              borderSide: const BorderSide(color: AdminColors.borderDark),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AdminSpacing.xs),
+              borderSide: const BorderSide(
+                color: AdminColors.primary,
+                width: 2,
+              ),
+            ),
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel'),
+          ),
           ElevatedButton(
             onPressed: () {
-              onSave(controller.text);
+              onSave(fieldCtrl.text);
               Get.back();
             },
             child: const Text('Save'),
@@ -263,31 +287,32 @@ class SettingsView extends StatelessWidget {
     );
   }
 
+  // ── Danger zone ────────────────────────────────────────────────
+
   Widget _dangerZone() {
     return GlassCard(
-      glowColor: AdminColors.error,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.warning_amber_rounded,
-                color: AdminColors.error,
+                color: AdminColors.danger,
                 size: 20,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: AdminSpacing.xs),
               Text(
                 'Danger Zone',
-                style: TextStyle(
-                  color: AdminColors.error,
+                style: const TextStyle(
+                  color: AdminColors.danger,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AdminSpacing.md),
           _dangerRow(
             'Suspend All Workers',
             'Temporarily disable all worker accounts',
@@ -301,7 +326,7 @@ class SettingsView extends StatelessWidget {
 
   Widget _dangerRow(String title, String subtitle) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: AdminSpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -329,13 +354,20 @@ class SettingsView extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: AdminColors.error.withValues(alpha: 0.1),
-              foregroundColor: AdminColors.error,
+              backgroundColor: AdminColors.danger.withValues(alpha: 0.08),
+              foregroundColor: AdminColors.danger,
               elevation: 0,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: const Text(
               'Execute',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
             ),
           ),
         ],

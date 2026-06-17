@@ -4,12 +4,16 @@ import 'package:handygo_worker/app/core/constant/spacing.dart';
 import 'package:handygo_worker/app/data/models/job_request_model.dart';
 import 'dart:ui';
 
+import 'package:get/get.dart';
+import 'package:handygo_worker/app/modules/bookings/controllers/bookings_controller.dart';
+
 class JobRequestCard extends StatelessWidget {
   final JobRequestModel request;
   const JobRequestCard({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<BookingsController>();
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: ClipRRect(
@@ -35,12 +39,12 @@ class JobRequestCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundImage: AssetImage(
-                        request.customerImage ?? 'assets/images/profile.jpg',
-                      ),
-                    ),
+CircleAvatar(
+                       radius: 24,
+                       backgroundImage: request.customerImage != null && request.customerImage!.startsWith('http')
+                           ? NetworkImage(request.customerImage!)
+                           : const AssetImage('assets/images/profile.jpg') as ImageProvider,
+                     ),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +122,7 @@ class JobRequestCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () => controller.declineRequest(request.id),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -134,7 +138,7 @@ class JobRequestCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => controller.acceptRequest(request.id),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor,
                           foregroundColor: Colors.white,

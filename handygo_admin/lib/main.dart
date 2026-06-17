@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:handygo_admin/app/core/theme/admin_theme.dart';
+import 'package:handygo_admin/app/core/theme/theme.dart';
 import 'package:handygo_admin/app/core/widgets/admin_shell.dart';
 import 'package:handygo_admin/app/data/providers/admin_api_client.dart';
 import 'package:handygo_admin/app/modules/auth/controllers/admin_auth_controller.dart';

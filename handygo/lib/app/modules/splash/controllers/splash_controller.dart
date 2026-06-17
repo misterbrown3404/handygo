@@ -10,13 +10,13 @@ class SplashController extends GetxController {
   }
 
   void _navigateToNext() {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       final authController = Get.find<AuthController>();
 
-      if (authController.isFirstTime()) {
-        Get.offNamed(Routes.ONBOARDING);
-      } else if (authController.user.value != null) {
+      if (authController.hasToken.value && authController.user.value != null) {
         Get.offNamed(Routes.MAIN);
+      } else if (authController.isFirstTime()) {
+        Get.offNamed(Routes.ONBOARDING);
       } else {
         Get.offNamed(Routes.SIGN_IN);
       }

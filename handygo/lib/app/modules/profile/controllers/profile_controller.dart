@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:handygo/app/data/models/user_model.dart';
 import 'package:handygo/app/data/repositories/profile_repository.dart';
 import 'package:handygo/app/modules/auth/controllers/auth_controller.dart';
-import 'package:handygo/app/routes/app_pages.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
@@ -110,11 +109,7 @@ class ProfileController extends GetxController {
   }
 
   void logout() async {
-    await _storage.remove('token');
-    await _storage.remove('user');
-    await _storage.remove('rememberMe');
-    authController.user.value = null;
-    Get.offAllNamed(Routes.SIGN_IN);
+    await authController.logout();
   }
 
   @override

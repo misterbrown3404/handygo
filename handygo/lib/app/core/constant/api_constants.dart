@@ -1,6 +1,17 @@
+import 'dart:io' show Platform;
+
 class ApiConstants {
-  static const String baseUrl =
-      'http://172.20.10.4:8000/api/v1'; // Real IP for Physical Device
+    static String get baseUrl {
+    try {
+      if (Platform.isAndroid) {
+        return 'http://10.0.2.2:8000/api/v1';
+      }
+    } catch (_) {}
+    return 'http://127.0.0.1:8000/api/v1';
+  }
+
+  //static const String baseUrl =
+    //  'http://172.20.10.4:8000/api/v1'; // Real IP for Physical Device
   // '0.0.0.0' is for the server, the client must use the IP address.
 
   // Auth Endpoints

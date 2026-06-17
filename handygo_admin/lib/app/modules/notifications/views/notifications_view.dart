@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_admin/app/core/constants/colors.dart';
+import 'package:handygo_admin/core/colors/admin_colors.dart';
 import 'package:handygo_admin/app/core/widgets/glass_card.dart';
 import 'package:handygo_admin/app/data/providers/admin_api_client.dart';
 import 'package:handygo_admin/app/core/constant/api_constants.dart';
@@ -41,8 +41,8 @@ class _NotificationsViewState extends State<NotificationsView> {
         Get.snackbar(
           'Success',
           'Broadcast sent successfully',
-          backgroundColor: AdminColors.success,
-          colorText: Colors.white,
+          backgroundColor: AdminColors.accent,
+          colorText: AdminColors.white,
         );
         _titleController.clear();
         _bodyController.clear();
@@ -53,8 +53,8 @@ class _NotificationsViewState extends State<NotificationsView> {
       Get.snackbar(
         'Error',
         e.toString(),
-        backgroundColor: AdminColors.error,
-        colorText: Colors.white,
+        backgroundColor: AdminColors.danger,
+        colorText: AdminColors.white,
       );
     } finally {
       setState(() => _isSending = false);
@@ -65,137 +65,208 @@ class _NotificationsViewState extends State<NotificationsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Notifications',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(AdminSpacing.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.notifications_rounded,
+                    color: AdminColors.accent,
+                    size: 24,
+                  ),
+                  const SizedBox(width: AdminSpacing.xs),
+                  const Text(
+                    'Notifications',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 28,
+                      color: AdminColors.textPrimary,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'Send push notifications and broadcast messages to users',
-              style: TextStyle(color: AdminColors.textSecondary, fontSize: 14),
-            ),
-            const SizedBox(height: 32),
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(flex: 3, child: _buildBroadcastForm()),
-                const SizedBox(width: 24),
-                Expanded(flex: 2, child: _buildNotificationTips()),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBroadcastForm() {
-    return GlassCard(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'New Broadcast Message',
-              style: TextStyle(
-                color: AdminColors.textPrimary,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 4),
+              Text(
+                'Send push notifications and broadcast messages to users',
+                style: AdminTextStyles.bodySmallSecondary,
               ),
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(height: AdminSpacing.xxl),
 
-            _label('Target Audience'),
-            const SizedBox(height: 8),
-            _buildTargetSelector(),
-            const SizedBox(height: 16),
-
-            SwitchListTile(
-              value: _sendEmail,
-              onChanged: (v) => setState(() => _sendEmail = v),
-              title: const Text('Also send via Email', style: TextStyle(color: AdminColors.textPrimary, fontSize: 14)),
-              subtitle: const Text('Sends a copy of this message to the users inbox', style: TextStyle(color: AdminColors.textSecondary, fontSize: 12)),
-              activeThumbColor: AdminColors.primary,
-              contentPadding: EdgeInsets.zero,
-            ),
-            const SizedBox(height: 24),
-
-            _label('Notification Title'),
-            const SizedBox(height: 8),
-            TextFormField(
-              controller: _titleController,
-              style: const TextStyle(color: AdminColors.textPrimary),
-              decoration: _inputDecoration('Enter a catchy title...'),
-              validator: (v) => v!.isEmpty ? 'Title is required' : null,
-            ),
-            const SizedBox(height: 24),
-
-            _label('Message Body'),
-            const SizedBox(height: 8),
-            TextFormField(
-              controller: _bodyController,
-              style: const TextStyle(color: AdminColors.textPrimary),
-              maxLines: 5,
-              decoration: _inputDecoration(
-                'What would you like to tell your users?',
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  // Main content spans full width — tip cards live below.
+                ],
               ),
-              validator: (v) => v!.isEmpty ? 'Message body is required' : null,
-            ),
-            const SizedBox(height: 32),
+              const SizedBox(height: AdminSpacing.xl),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isSending ? null : _sendBroadcast,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AdminColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              // ── Broadcast form ──────────────────────────────────
+              GlassCard(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.campaign_rounded,
+                            color: AdminColors.accent,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text('New Broadcast Message', style: AdminTextStyles.h3),
+                        ],
+                      ),
+                      const SizedBox(height: AdminSpacing.lg),
+
+                      _label('Target Audience'),
+                      const SizedBox(height: AdminSpacing.xs),
+                      _buildTargetSelector(),
+                      const SizedBox(height: AdminSpacing.md),
+
+                      SwitchListTile(
+                        value: _sendEmail,
+                        onChanged: (v) => setState(() => _sendEmail = v),
+                        title: Text(
+                          'Also send via Email',
+                          style: const TextStyle(
+                            color: AdminColors.textPrimary,
+                            fontSize: 14,
+                          ),
+                        ),
+                        subtitle: const Text(
+                          'Sends a copy of this message to the user\'s inbox',
+                          style: TextStyle(
+                            color: AdminColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        activeThumbColor: AdminColors.primary,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      const SizedBox(height: AdminSpacing.md),
+
+                      _label('Notification Title'),
+                      const SizedBox(height: AdminSpacing.xs),
+                      TextFormField(
+                        controller: _titleController,
+                        style: const TextStyle(color: AdminColors.textPrimary),
+                        decoration: _inputDecoration(
+                          'Enter a catchy title...',
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Title is required' : null,
+                      ),
+                      const SizedBox(height: AdminSpacing.md),
+
+                      _label('Message Body'),
+                      const SizedBox(height: AdminSpacing.xs),
+                      TextFormField(
+                        controller: _bodyController,
+                        style: const TextStyle(color: AdminColors.textPrimary),
+                        maxLines: 5,
+                        decoration: _inputDecoration(
+                          'What would you like to tell your users?',
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Message body is required' : null,
+                      ),
+                      const SizedBox(height: AdminSpacing.lg),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: _isSending ? null : _sendBroadcast,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AdminColors.primary,
+                          ),
+                          child: _isSending
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: AdminColors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text(
+                                  'Send Broadcast Now',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: _isSending
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text(
-                        'Send Broadcast Now',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: AdminSpacing.lg),
+
+              // ── Tips column ────────────────────────────────────
+              Column(
+                children: [
+                  _tipCard(
+                    'Engagement Tip',
+                    'Use concise titles and personalized messages to increase open rates.',
+                    Icons.lightbulb_outline_rounded,
+                    AdminColors.accent,
+                  ),
+                  const SizedBox(height: AdminSpacing.sm),
+                  _tipCard(
+                    'Timing',
+                    'Sending notifications between 9 AM and 11 AM usually gets the best engagement.',
+                    Icons.schedule_rounded,
+                    AdminColors.warning,
+                  ),
+                  const SizedBox(height: AdminSpacing.sm),
+                  _tipCard(
+                    'Compliance',
+                    'Ensure your messages follow platform guidelines to avoid being marked as spam.',
+                    Icons.gavel_rounded,
+                    AdminColors.danger,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  // ── Target selector: wrapped flex ─────────────────────────────
+
   Widget _buildTargetSelector() {
-    return Row(
-      children: [
-        _targetOption('All Users', 'all', Icons.groups_rounded),
-        const SizedBox(width: 12),
-        _targetOption('Workers Only', 'workers', Icons.engineering_rounded),
-        const SizedBox(width: 12),
-        _targetOption('Customers Only', 'customers', Icons.person_rounded),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 400) {
+          return Row(
+            children: [
+              _targetOption('All Users', 'all', Icons.groups_rounded),
+              const SizedBox(width: AdminSpacing.xs),
+              _targetOption('Workers Only', 'workers', Icons.engineering_rounded),
+              const SizedBox(width: AdminSpacing.xs),
+              _targetOption('Customers Only', 'customers', Icons.person_rounded),
+            ],
+          );
+        }
+        return Column(
+          children: [
+            _targetOption('All Users', 'all', Icons.groups_rounded),
+            const SizedBox(height: AdminSpacing.xs),
+            _targetOption('Workers Only', 'workers', Icons.engineering_rounded),
+            const SizedBox(height: AdminSpacing.xs),
+            _targetOption('Customers Only', 'customers', Icons.person_rounded),
+          ],
+        );
+      },
     );
   }
 
@@ -207,17 +278,23 @@ class _NotificationsViewState extends State<NotificationsView> {
         borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: AdminSpacing.sm + 2,
+          ),
           decoration: BoxDecoration(
             color: isSelected
-                ? AdminColors.primary.withValues(alpha: 0.1)
-                : Colors.white,
+                ? AdminColors.primaryLight
+                : AdminColors.surface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isSelected ? AdminColors.primary : AdminColors.borderDark,
+              color: isSelected
+                  ? AdminColors.primary
+                  : AdminColors.borderDark,
+              width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 icon,
@@ -225,7 +302,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                     ? AdminColors.primary
                     : AdminColors.textSecondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 label,
                 style: TextStyle(
@@ -233,7 +310,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                       ? AdminColors.primary
                       : AdminColors.textSecondary,
                   fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 ),
               ),
             ],
@@ -243,41 +320,18 @@ class _NotificationsViewState extends State<NotificationsView> {
     );
   }
 
-  Widget _buildNotificationTips() {
-    return Column(
-      children: [
-        _tipCard(
-          'Engagement Tip',
-          'Use concise titles and personalized messages to increase open rates.',
-          Icons.lightbulb_outline_rounded,
-          AdminColors.accent,
-        ),
-        const SizedBox(height: 16),
-        _tipCard(
-          'Timing',
-          'Sending notifications between 9 AM and 11 AM usually gets the best engagement.',
-          Icons.schedule_rounded,
-          AdminColors.warning,
-        ),
-        const SizedBox(height: 16),
-        _tipCard(
-          'Compliance',
-          'Ensure your messages follow platform guidelines to avoid being marked as spam.',
-          Icons.gavel_rounded,
-          AdminColors.error,
-        ),
-      ],
-    );
-  }
-
-  Widget _tipCard(String title, String content, IconData icon, Color color) {
+  Widget _tipCard(
+    String title,
+    String content,
+    IconData icon,
+    Color color,
+  ) {
     return GlassCard(
-      glowColor: color,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(width: 16),
+          const SizedBox(width: AdminSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +340,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                   title,
                   style: TextStyle(
                     color: color,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
                 ),
@@ -307,14 +361,16 @@ class _NotificationsViewState extends State<NotificationsView> {
     );
   }
 
-  Widget _label(String text) => Text(
-    text,
-    style: const TextStyle(
-      color: AdminColors.textPrimary,
-      fontWeight: FontWeight.w600,
-      fontSize: 14,
-    ),
-  );
+  Widget _label(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: AdminColors.textPrimary,
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
+    );
+  }
 
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
@@ -324,7 +380,7 @@ class _NotificationsViewState extends State<NotificationsView> {
         fontSize: 14,
       ),
       filled: true,
-      fillColor: Colors.black.withValues(alpha: 0.04),
+      fillColor: AdminColors.neutral100,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
@@ -339,9 +395,16 @@ class _NotificationsViewState extends State<NotificationsView> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AdminColors.primary),
+        borderSide: const BorderSide(color: AdminColors.primary, width: 2),
       ),
       contentPadding: const EdgeInsets.all(16),
     );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+    super.dispose();
   }
 }

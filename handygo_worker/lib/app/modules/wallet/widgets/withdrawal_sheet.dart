@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handygo_worker/app/core/constant/color.dart';
 import 'package:handygo_worker/app/core/constant/spacing.dart';
 import 'package:handygo_worker/app/widgets/primary_button.dart';
+import 'package:handygo_worker/app/modules/wallet/controllers/wallet_controller.dart';
 
 class WithdrawalSheet extends StatefulWidget {
-  final String balance;
-  const WithdrawalSheet({super.key, required this.balance});
+  const WithdrawalSheet({super.key});
 
-  static void show(String balance) {
+  static void show(double balance) {
     Get.bottomSheet(
-      WithdrawalSheet(balance: balance),
+      const WithdrawalSheet(),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
     );
@@ -22,10 +21,14 @@ class WithdrawalSheet extends StatefulWidget {
 
 class _WithdrawalSheetState extends State<WithdrawalSheet> {
   final amountController = TextEditingController();
-  String selectedBank = "GTBank - 0123456789";
+  final bankNameController = TextEditingController();
+  final accountNumberController = TextEditingController();
+  final accountNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<WalletController>();
+
     return Container(
       padding: EdgeInsets.only(
         top: AppSpacing.lg,
@@ -60,10 +63,10 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Text(
-            'Available Balance: ${widget.balance}',
-            style: const TextStyle(color: Colors.grey),
-          ),
+          Obx(() => Text(
+              'Available Balance: ₦${controller.balance.value.toStringAsFixed(0)}',
+              style: const TextStyle(color: Colors.grey),
+            )),
           const SizedBox(height: AppSpacing.xl),
 
           const Text(
@@ -89,47 +92,85 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
           const SizedBox(height: AppSpacing.lg),
 
           const Text(
-            'Select Bank Account',
+            'Bank Name',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[200]!),
-              borderRadius: BorderRadius.circular(16),
+          TextField(
+            controller: bankNameController,
+            decoration: InputDecoration(
+              hintText: 'GTBank',
+              filled: true,
+              fillColor: Colors.grey[100],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.account_balance_rounded,
-                  color: AppColors.primaryColor,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    selectedBank,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
-                const Icon(Icons.keyboard_arrow_down_rounded),
-              ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          const Text(
+            'Account Number',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: accountNumberController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              hintText: '0123456789',
+              filled: true,
+              fillColor: Colors.grey[100],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          const Text(
+            'Account Name',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: accountNameController,
+            decoration: InputDecoration(
+              hintText: 'John Doe',
+              filled: true,
+              fillColor: Colors.grey[100],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
 
-          PrimaryButton(
-            text: 'Withdraw Now',
-            onPressed: () {
-              Get.back();
-              Get.snackbar(
-                'Success',
-                'Withdrawal of N${amountController.text} initiated.',
-                backgroundColor: AppColors.primaryColor,
-                colorText: Colors.white,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            },
+          Obx(
+            () => PrimaryButton(
+              text: 'Withdraw Now',
+              isLoading: controller.isLoading.value,
+              onPressed: () {
+                final amount = double.tryParse(amountController.text);
+                if (amount == null || amount < 1000) {
+                  Get.snackbar('Invalid Amount', 'Minimum withdrawal is ₦1,000');
+                  return;
+                }
+                if (amount > controller.balance.value) {
+                  Get.snackbar('Insufficient Balance', 'You do not have enough funds');
+                  return;
+                }
+                controller.withdraw(
+                  bankName: bankNameController.text,
+                  accountNumber: accountNumberController.text,
+                  accountName: accountNameController.text,
+                  amount: amount,
+                );
+              },
+            ),
           ),
         ],
       ),
